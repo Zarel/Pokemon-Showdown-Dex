@@ -1492,6 +1492,10 @@ var PokedexSearchPanel = Panels.Panel.extend({
 	initialize: function () {
 		var buf = '<div class="pfx-body"><form class="pokedex">';
 		buf += '<h1><a href="/">Pok&eacute;dex</a></h1>';
+		if (this.fragment !== 'pokemon/' && this.fragment !== 'moves/' && this.fragment !== '') {
+			buf += '<p><strong style="color: red">Not found: ' + this.fragment + '</strong></p>';
+			this.fragment = '';
+		}
 		buf += '<ul class="tabbar centered" style="margin-bottom: 18px"><li><button class="button nav-first' + (this.fragment === '' ? ' cur' : '') + '" value="">Search</button></li>';
 		buf += '<li><button class="button' + (this.fragment === 'pokemon/' ? ' cur' : '') + '" value="pokemon/">Pok&eacute;mon</button></li>';
 		buf += '<li><button class="button nav-last' + (this.fragment === 'moves/' ? ' cur' : '') + '" value="moves/">Moves</button></li></ul>';
@@ -1664,7 +1668,7 @@ var App = Panels.App.extend({
 		':q': PokedexSearchPanel
 	},
 	initialize: function() {
-		this.routePanel('*path', PokedexResultPanel); // catch-all default
+		this.routePanel('*path', PokedexSearchPanel); // catch-all default
 
 		for (var i in this.states2) {
 			this.routePanel(i, this.states2[i]);
