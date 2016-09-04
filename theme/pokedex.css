@@ -1,0 +1,479 @@
+.pokedex {
+	margin: 0 10px;
+	text-align: center;
+}
+.pokedex h1 {
+	margin: 0;
+	padding: 80px 0 40px 0;
+	font-size: 36pt;
+
+	transition: padding 0.2s, font-size 0.2s;
+	-webkit-transition: padding 0.2s, font-size 0.2s;
+}
+.pokedex.aboveresults h1 {
+	margin: 0;
+	padding: 12px 0 6px 0;
+	font-size: 14pt;
+
+	transition: padding 0.2s, font-size 0.2s;
+	-webkit-transition: padding 0.2s, font-size 0.2s;
+}
+.pokedex h1 a {
+	color: #555555;
+	text-decoration: none;
+}
+.pokedex .buttonbar {
+	display: block; /* I'm not sure if any browsers newer than IE5 have this bug, but it's sort of habit */
+}
+.pokedex .buttonbar .button {
+	padding: 3px 10px;
+}
+.pokedex.aboveresults .buttonbar {
+	display: none;
+}
+.searchboxwrapper {
+	margin: 0 6px 10px 0;
+}
+.searchbox {
+	width: 100%;
+	font-size: 16px;
+}
+
+.pfx-body {
+	max-width: 640px;
+}
+
+.dexentry h1 {
+	text-align: left;
+	padding: 18px 12px 6px;
+}
+.dexentry h1 code {
+	font-size: 11pt;
+	font-weight: normal;
+	font-family: Verdana, sans-serif;
+	margin-left: 5px;
+	color: #999999;
+}
+.dexentry .tier {
+	float: right;
+	padding: 2px 4px;
+	margin: 22px 10px 0 0;
+	border-radius: 4px;
+	font-size: 10pt;
+	border: 1px solid #aaa;
+	text-decoration: none;
+	color: #555;
+}
+.dexentry .sprite {
+	float:left;
+	padding:10px 10px 10px 10px;
+}
+.dexentry p {
+	padding: 0 10px;
+}
+.dexentry dl {
+	padding: 0 10px;
+	margin: 0 0 1em 0;
+}
+.dexentry dt {
+	padding: 0;
+	margin: 10px 0 0 0;
+	font-size: 9pt;
+	font-weight: bold;
+	color: #777777;
+}
+.dexentry dd {
+	padding: 0 0 0 10px;
+	margin: 0;
+}
+.dexentry .fa-mars {
+	font-weight: bold;
+	color: #001144;
+}
+.dexentry .fa-venus {
+	font-weight: bold;
+	color: #440022;
+}
+/*	margin-left: 106px; */
+.dexentry dl.typeentry,
+.dexentry dl.sizeentry {
+	float: left;
+	padding-left: 0;
+	margin: 0;
+	width: 175px;
+}
+.dexentry dl.colentry {
+	float: left;
+	width: 225px;
+}
+.dexentry dl.colentry dt {
+	margin-top: 0;
+}
+.dexentry dl.sizeentry {
+	font-size: 9pt;
+}
+.dexentry dl.abilityentry {
+	margin-top: 65px;
+	margin-left: 106px;
+}
+.dexentry dl.movetypeentry {
+	margin: 0;
+}
+.dexentry dl.powerentry,
+.dexentry dl.accuracyentry,
+.dexentry dl.ppentry {
+	float: left;
+	margin: 0;
+	width: 90px;
+}
+.dexentry dl.powerentry dd {
+	font-size: 24pt;
+}
+.dexentry dl.accuracyentry dd {
+    padding-top: 3px;
+	font-size: 20pt;
+}
+.dexentry dl.ppentry dd {
+    padding-top: 2px;
+	font-size: 13pt;
+    color: #555;
+}
+.dexentry dl.accuracyentry {
+	width: 100px;
+}
+.dexentry .minor {
+	color: #777;
+    display: block;
+	font-size: 8pt;
+}
+
+.movetag {
+	padding-left: 8px;
+	color: #555;
+	font-weight: bold;
+	font-size: 10pt;
+}
+.dexentry .movetag {
+	padding-left: 18px;
+}
+.movetag small {
+	font-size: 9pt;
+	font-weight: normal;
+}
+
+table.stats,
+table.evos,
+table.sprites {
+	border-spacing: 0;
+}
+table.stats td,
+table.stats th,
+table.evos td,
+table.evos th {
+	vertical-align: middle;
+	margin: 0;
+	padding: 1px 6px 1px 0;
+	border: 0;
+}
+
+table.stats {
+	margin-top: -15px;
+}
+table.stats td,
+table.stats th {
+	text-align: right;
+}
+table.stats th {
+	font-size: 9pt;
+	font-weight: normal;
+}
+table.stats small {
+	font-size: 10pt;
+	font-weight: normal;
+}
+table.stats .ministat,
+table.stats th.ministat {
+	text-align: center;
+	width: 40px;
+	color: #555555;
+}
+table.stats th.ministat {
+	font-style: italic;
+}
+table.stats .bst {
+	color: #777777;
+}
+table.stats td.bst {
+	font-weight: normal;
+}
+table.stats .stat {
+	width: 38px;
+	font-weight: bold;
+}
+.statbar span {
+	display: block;
+	background: #aaa;
+	height: 12px;
+	width: 50px;
+	margin: 1px 0 0 0;
+	border-radius: 2px;
+	box-shadow: inset 1px 4px 0 rgba(255,255,255,.4), inset -1px -1px 0 rgba(0,0,0,.3);
+}
+table.sprites {
+	float: left;
+}
+table.sprites td {
+	margin: 0;
+	padding: 0;
+	width: 98px;
+	height: 96px;
+	text-align: center;
+	vertical-align: middle;
+}
+
+@media (max-width:500px) {
+	table.stats {
+		margin-top: 0;
+	}
+	table.stats .ministat {
+		display: none;
+	}
+	table.stats td.statbar {
+		padding: 1px 0;
+	}
+	.header .nav-play {
+		display: none;
+	}
+	.nav a.button {
+		display: none;
+	}
+	.nav a.button.nav-first {
+		display: inline;
+	}
+	.nav a.button.cur {
+		border-top-right-radius: 5px;
+		border-bottom-right-radius: 5px;
+		display: inline;
+	}
+	.dexentry dl.abilityentry {
+		margin: 0;
+		clear: left;
+	}
+}
+@media (max-width:340px) {
+	table.stats .stat {
+		width: 32px;
+		font-weight: bold;
+		font-size: 10pt;
+	}
+	table.stats .bst {
+		font-weight: normal;
+		font-size: 10pt;
+	}
+	table.stats td,
+	table.stats th,
+	table.evos td,
+	table.evos th {
+		padding: 1px 4px 1px 0;
+	}
+	.dexentry {
+		font-size: 10pt;
+	}
+	table.evos .pokemonicon,
+	table.evos .picon {
+		display: block;
+	}
+	.dexentry dd {
+		padding: 0 10px 0 16px;
+	}
+}
+
+table.evos .arrow {
+	padding: 0;
+	font-size: 21px;
+}
+
+.metricchart li {
+	height: 30px;
+}
+
+.utilichart a {
+	border-radius: 4px;
+	padding: 1px 1px 1px 5px;
+	margin: 0 5px 1px 5px;
+	background: transparent;
+	overflow: hidden;
+	white-space: nowrap;
+	cursor: pointer;
+}
+.utilichart a.active,
+.utilichart a.active:hover,
+.utilichart.nokbd a:hover {
+	padding: 0px 0px 0px 4px;
+	border: 1px solid #D8D8D8;
+	background: #F8F8F8;
+}
+.utilichart a.sel,
+.utilichart a.sel:hover,
+.utilichart a.cur,
+.utilichart a.cur:hover {
+	padding: 0px 0px 0px 4px;
+	border: 1px solid #B5B5B5;
+	background: #E8E8E8;
+}
+.utilichart dd a {
+    height: auto;
+    margin-left: -5px;
+}
+.utilichart .notfound em {
+	display: block;
+	padding: 2px 0 4px;
+	color: #777;
+}
+
+.utilichart .content {
+	padding: 0 6px;
+}
+.utilichart {
+	margin-bottom: 30px;
+}
+
+.type {
+	display: inline-block;
+	width: 60px;
+	height: 14px;
+	padding: 1px 0;
+	background-color: #CBC9CB;
+	background: linear-gradient(#CBC9CB,#AAA6AA);
+	border: 1px solid #A99890;
+	border-radius: 3px;
+	color: #FFFFFF;
+	font-size: 10px;
+	text-align: center;
+	text-shadow: 1px 1px 1px #333333;
+	text-transform: uppercase;
+}
+
+a.type {
+	color: #FFFFFF;
+	text-decoration: none;
+}
+a.type:hover {
+	opacity: .7;
+}
+
+a.subtle {
+	color: black;
+	text-decoration: none;
+}
+a.subtle:hover {
+	color: #8195b8;
+	text-decoration: underline;
+}
+
+.type.normal{background-color:#8A8A59;background:linear-gradient(#A8A878,#8A8A59);border-color:#79794E;}
+.type.fire{background-color:#F08030;background:linear-gradient(#F08030,#DD6610);border-color:#B4530D;}
+.type.water{background-color:#6890F0;background:linear-gradient(#6890F0,#386CEB);border-color:#1753E3;}
+.type.electric{background-color:#F8D030;background:linear-gradient(#F8D030,#F0C108);border-color:#C19B07;}
+.type.fairy{background-color:#F830D0;background:linear-gradient(#F830D0,#F008C1);border-color:#C1079B;}
+.type.grass{background-color:#78C850;background:linear-gradient(#78C850,#5CA935);border-color:#4A892B;}
+.type.ice{background-color:#98D8D8;background:linear-gradient(#98D8D8,#69C6C6);border-color:#45B6B6;}
+.type.fighting{background-color:#C03028;background:linear-gradient(#C03028,#9D2721);border-color:#82211B;}
+.type.poison{background-color:#A040A0;background:linear-gradient(#A040A0,#803380);border-color:#662966;}
+.type.ground{background-color:#E0C068;background:linear-gradient(#E0C068,#D4A82F);border-color:#AA8623;}
+.type.flying{background-color:#A890F0;background:linear-gradient(#A890F0,#9180C4);border-color:#7762B6;}
+.type.psychic{background-color:#F85888;background:linear-gradient(#F85888,#F61C5D);border-color:#D60945;}
+.type.bug{background-color:#A8B820;background:linear-gradient(#A8B820,#8D9A1B);border-color:#616B13;}
+.type.rock{background-color:#B8A038;background:linear-gradient(#B8A038,#93802D);border-color:#746523;}
+.type.ghost{background-color:#705898;background:linear-gradient(#705898,#554374);border-color:#413359;}
+.type.dragon{background-color:#7038F8;background:linear-gradient(#7038F8,#4C08EF);border-color:#3D07C0;}
+.type.steel{background-color:#B8B8D0;background:linear-gradient(#B8B8D0,#9797BA);border-color:#7A7AA7;}
+.type.dark{background-color:#705848;background:linear-gradient(#705848,#513F34);border-color:#362A23;}
+.type.question{background-color:#68A090;background:linear-gradient(#68A090,#4E7C6F);border-color:#41685D;}
+
+.type.physical{background-color:#E39088;background:linear-gradient(#E39088,#D65D51);border-color:#A99890;color:#FBC290;}
+.type.special{background-color:#ADB1BD;background:linear-gradient(#ADB1BD,#7D828D);border-color:#A1A5AD;color:#E0E2E4;}
+.type.status{background-color:#CBC9CB;background:linear-gradient(#CBC9CB,#AAA6AA);border-color:#A99890;color:#F5F4F5;}
+
+.pokemonicon, .picon {
+	display: inline-block;
+	vertical-align: -6px;
+	width: 32px;
+	height: 24px;
+}
+.picon {
+	width: 40px;
+	height: 30px;
+}
+.itemicon {
+	display: inline-block;
+	vertical-align: -6px;
+	width: 24px;
+	height: 24px;
+}
+
+.warning {
+	border: 1px solid #F56C11;
+	background: #F7DECE;
+	border-radius: 3px;
+	padding: 5px 9px;
+	margin: 1em 2em;
+}
+
+.tabbar {
+	display: block;
+	list-style: none;
+	margin: 0;
+	padding: 5px 0 0 10px;
+	text-align: left;
+}
+.tabbar.centered {
+	padding: 5px 0 0 0;
+	text-align: center;
+}
+.tabbar:after {
+	content: "";
+	display: block;
+	height: 6px;
+	background: #f8f8f8;
+	border: solid 1px #AAAAAA;
+	margin: -1px 0 -8px -11px;
+}
+.tabbar.centered:after {
+	margin-left: 0;
+}
+.tabbar li {
+	display: inline;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+.tabbar .button {
+	position: relative;
+	padding: 4px 10px 4px 10px;
+	margin: 0 -1px 0 0;
+	top: 1px;
+	border-radius: 0;
+	box-shadow: none;
+	font-size: 10pt;
+}
+.tabbar .button.cur,
+.tabbar .button.cur:hover {
+	color: #777777;
+	background: #f8f8f8;
+	box-shadow: none;
+	border-color: #AAAAAA;
+	border-bottom: 0;
+	cursor: default;
+	padding: 4px 10px 6px 10px;
+	top: 0px;
+}
+.tabbar .button:hover {
+	z-index: 10;
+}
+.tabbar .button.nav-first {
+	border-top-left-radius: 5px;
+}
+.tabbar .button.nav-last {
+	border-top-right-radius: 5px;
+}

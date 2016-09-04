@@ -1,0 +1,40 @@
+# -FrontPage-
+
+IndexIgnore .htaccess */.??* *~ *# */HEADER* */README* */_vti*
+
+<Limit GET POST>
+order deny,allow
+deny from all
+allow from all
+</Limit>
+<Limit PUT DELETE>
+order deny,allow
+deny from all
+</Limit>
+
+<IfModule mod_rewrite.c>
+
+RewriteEngine on
+
+RewriteCond %{HTTP:X-Forwarded-Proto} ^https$
+RewriteRule ^(.*) - [E=P_SUFFIX:s]
+
+RewriteCond %{HTTP_HOST} ^www\.dex\.pokemonshowdown\.com$
+RewriteRule ^(.*)$ http%{ENV:P_SUFFIX}://dex.pokemonshowdown.com/$1 [R=301,NE,L]
+
+RewriteRule ^pokedex(\/.*)?$ / [R=302,L]
+RewriteRule ^pokemon(\/.*)?$ index.php [L,QSA]
+RewriteRule ^items(\/.*)?$ index.php [L,QSA]
+RewriteRule ^abilities(\/.*)?$ index.php [L,QSA]
+RewriteRule ^tags(\/.*)?$ index.php [L,QSA]
+RewriteRule ^egggroups(\/.*)?$ index.php [L,QSA]
+RewriteRule ^moves(\/.*)?$ index.php [L,QSA]
+RewriteRule ^types(\/.*)?$ index.php [L,QSA]
+RewriteRule ^categories(\/.*)?$ index.php [L,QSA]
+
+RewriteRule ^\.git/ - [F]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(apple-touch-icon-precomposed\.png)$ - [R=404,L]
+
+</IfModule>
