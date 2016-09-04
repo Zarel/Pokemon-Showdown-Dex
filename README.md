@@ -10,9 +10,14 @@ Navigation: [Website][1] | [Server repository][2] | [Client repository][3] | **D
 Introduction
 ------------------------------------------------------------------------
 
-This is a repository for Pokémon Showdown's Pokédex.
+This is a repository for [**Pokémon Showdown's Pokédex**][4].
 
 This is what runs `dex.pokemonshowdown.com`.
+
+  [4]: http://dex.pokemonshowdown.com/
+
+Features
+------------------------------------------------------------------------
 
 Important features include:
 
@@ -30,10 +35,10 @@ Important features include:
 
 - **Nickname search** - type commonly-used community names like "pdon" to match Primal Groudon
 
-Warning
+Testing
 ------------------------------------------------------------------------
 
-We don't currently have instructions to set up a test environment. This will be fixed soon!
+You can make and test changes simply by opening `testclient.html`.
 
 License
 ------------------------------------------------------------------------

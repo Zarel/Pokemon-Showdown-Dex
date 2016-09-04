@@ -1493,7 +1493,9 @@ var PokedexSearchPanel = Panels.Panel.extend({
 		var buf = '<div class="pfx-body"><form class="pokedex">';
 		buf += '<h1><a href="/">Pok&eacute;dex</a></h1>';
 		if (this.fragment !== 'pokemon/' && this.fragment !== 'moves/' && this.fragment !== '') {
-			buf += '<p><strong style="color: red">Not found: ' + this.fragment + '</strong></p>';
+			if (this.fragment.slice(-15) !== 'testclient.html') {
+				buf += '<p><strong style="color: red">Not found: ' + this.fragment + '</strong></p>';
+			}
 			this.fragment = '';
 		}
 		buf += '<ul class="tabbar centered" style="margin-bottom: 18px"><li><button class="button nav-first' + (this.fragment === '' ? ' cur' : '') + '" value="">Search</button></li>';
