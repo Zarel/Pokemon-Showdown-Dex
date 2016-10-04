@@ -1493,19 +1493,16 @@ var PokedexSearchPanel = Panels.Panel.extend({
 	},
 	activeLink: null,
 	initialize: function () {
+		var fragment = this.fragment;
+		var questionIndex = fragment.indexOf('?');
+		if (questionIndex >= 0) fragment = fragment.slice(0, questionIndex);
 		var buf = '<div class="pfx-body"><form class="pokedex">';
 		buf += '<h1><a href="/">Pok&eacute;dex</a></h1>';
-		if (this.fragment !== 'pokemon/' && this.fragment !== 'moves/' && this.fragment !== '') {
-			if (this.fragment.slice(-15) !== 'testclient.html') {
-				buf += '<p><strong style="color: red">Not found: ' + this.fragment + '</strong></p>';
-			}
-			this.fragment = '';
-		}
-		buf += '<ul class="tabbar centered" style="margin-bottom: 18px"><li><button class="button nav-first' + (this.fragment === '' ? ' cur' : '') + '" value="">Search</button></li>';
-		buf += '<li><button class="button' + (this.fragment === 'pokemon/' ? ' cur' : '') + '" value="pokemon/">Pok&eacute;mon</button></li>';
-		buf += '<li><button class="button nav-last' + (this.fragment === 'moves/' ? ' cur' : '') + '" value="moves/">Moves</button></li></ul>';
+		buf += '<ul class="tabbar centered" style="margin-bottom: 18px"><li><button class="button nav-first' + (fragment === '' ? ' cur' : '') + '" value="">Search</button></li>';
+		buf += '<li><button class="button' + (fragment === 'pokemon/' ? ' cur' : '') + '" value="pokemon/">Pok&eacute;mon</button></li>';
+		buf += '<li><button class="button nav-last' + (fragment === 'moves/' ? ' cur' : '') + '" value="moves/">Moves</button></li></ul>';
 		buf += '<div class="searchboxwrapper"><input class="textbox searchbox" type="search" name="q" value="' + Tools.escapeHTML(this.$('.searchbox').val() || '') + '" autocomplete="off" autofocus placeholder="Search Pok&eacute;mon, moves, abilities, items, types, or more" /></div>';
-		if (this.fragment === '') {
+		if (fragment === '') {
 			buf += '<p class="buttonbar"><button class="button"><strong>Pok&eacute;dex Search</strong></button> <button name="lucky" class="button">I\'m Feeling Lucky</button></p>';
 		}
 		buf += '</form>';
@@ -1518,11 +1515,11 @@ var PokedexSearchPanel = Panels.Panel.extend({
 			this.$el.on('scroll', function () {
 				search.updateScroll();
 			});
-			if (this.fragment === 'pokemon/') {
+			if (fragment === 'pokemon/') {
 				search.qType = 'pokemon';
 				$searchbox.attr('placeholder', 'Search pokemon OR filter by type, move, ability, egg group');
 				this.$('.buttonbar').remove();
-			} else if (this.fragment === 'moves/') {
+			} else if (fragment === 'moves/') {
 				search.qType = 'move';
 				$searchbox.attr('placeholder', 'Search moves OR filter by type, category, pokemon');
 				this.$('.buttonbar').remove();
