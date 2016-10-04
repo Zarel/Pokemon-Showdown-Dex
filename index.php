@@ -35,7 +35,7 @@
 		</div>
 	</div>
 	<div class="pfx-panel"><div class="pfx-body">
-<?php if (substr($_SERVER['REQUEST_URI'], 0, 5) === '/') { ?>
+<?php if ($_SERVER['REQUEST_URI'][0] === '/' && !ctype_alnum($_SERVER['REQUEST_URI'][1])) { ?>
 		<form class="pokedex">
 			<h1>
 				<a href="/">Pok&eacute;dex</a>
