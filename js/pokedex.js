@@ -1482,6 +1482,7 @@ var PokedexSearchPanel = Panels.Panel.extend({
 	events: {
 		'keyup input.searchbox': 'updateSearch',
 		'change input.searchbox': 'updateSearch',
+		'search input.searchbox': 'updateSearch',
 		'submit': 'submit',
 		'keydown': 'keydown',
 		'click': 'click',
@@ -1501,7 +1502,7 @@ var PokedexSearchPanel = Panels.Panel.extend({
 		buf += '<ul class="tabbar centered" style="margin-bottom: 18px"><li><button class="button nav-first' + (this.fragment === '' ? ' cur' : '') + '" value="">Search</button></li>';
 		buf += '<li><button class="button' + (this.fragment === 'pokemon/' ? ' cur' : '') + '" value="pokemon/">Pok&eacute;mon</button></li>';
 		buf += '<li><button class="button nav-last' + (this.fragment === 'moves/' ? ' cur' : '') + '" value="moves/">Moves</button></li></ul>';
-		buf += '<div class="searchboxwrapper"><input class="textbox searchbox" type="text" name="q" value="' + Tools.escapeHTML(this.$('.searchbox').val() || '') + '" autocomplete="off" autofocus placeholder="Search Pok&eacute;mon, moves, abilities, items, types, or more" /></div>';
+		buf += '<div class="searchboxwrapper"><input class="textbox searchbox" type="search" name="q" value="' + Tools.escapeHTML(this.$('.searchbox').val() || '') + '" autocomplete="off" autofocus placeholder="Search Pok&eacute;mon, moves, abilities, items, types, or more" /></div>';
 		if (this.fragment === '') {
 			buf += '<p class="buttonbar"><button class="button"><strong>Pok&eacute;dex Search</strong></button> <button name="lucky" class="button">I\'m Feeling Lucky</button></p>';
 		}
