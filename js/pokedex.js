@@ -1615,7 +1615,9 @@ var PokedexSearchPanel = Panels.Panel.extend({
 			alert(['That\'s pretty cool.','Your mom\'s feeling lucky.','I see.','If you feel lucky for more than four hours, perhaps you should see a doctor.'][Math.floor(Math.random()*4)]);
 			return;
 		}
+		var scrollLoc = this.$el.scrollTop();
 		this.$('.searchbox').focus();
+		this.$el.scrollTop(scrollLoc);
 	},
 	clickResult: function(e) {
 		if (this.search.addFilter(e.currentTarget)) {
