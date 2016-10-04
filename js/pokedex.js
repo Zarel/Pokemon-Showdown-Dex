@@ -122,6 +122,8 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 						if (!evos[0].exists) {
 							if (evos[1] === 'dustox') {
 								buf += '</td><td class="arrow"><span>&rarr;<br />&rarr;</span></td><td>';
+							} else if (template.evoLevel) {
+								buf += '</td><td class="arrow"><span><abbr title="level ' + template.evoLevel + '">&rarr;</abbr></span></td><td>';
 							} else {
 								buf += '</td><td class="arrow"><span>&rarr;</span></td><td>';
 							}
