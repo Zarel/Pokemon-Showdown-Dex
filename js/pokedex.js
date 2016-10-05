@@ -170,7 +170,7 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 		buf += '</dd></dl>';
 
 		if (pokemon.eggGroups) {
-			buf += '<dl class="colentry"><dt>Egg groups:</dt><dd><span class="pokemonicon" style="margin-top:-3px;'+Tools.getIcon('egg')+'"></span><a href="/egggroups/'+pokemon.eggGroups.map(toId).join('+')+'" data-target="push">'+pokemon.eggGroups.join(', ')+'</a></dd></dl>';
+			buf += '<dl class="colentry"><dt>Egg groups:</dt><dd><span class="pokemonicon" style="margin-top:-3px;'+Tools.getPokemonIcon('egg')+'"></span><a href="/egggroups/'+pokemon.eggGroups.map(toId).join('+')+'" data-target="push">'+pokemon.eggGroups.join(', ')+'</a></dd></dl>';
 			buf += '<dl class="colentry"><dt>Gender ratio:</dt><dd>';
 			if (pokemon.gender) switch (pokemon.gender) {
 			case 'M':
@@ -363,15 +363,15 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 					break;
 				case 'f': // egg move
 					if (lastChanged) buf += '<li class="resultheader"><h3>Egg</h3></li>';
-					desc = '<span class="pokemonicon" style="margin-top:-3px;'+Tools.getIcon('egg')+'"></span>';
+					desc = '<span class="pokemonicon" style="margin-top:-3px;'+Tools.getPokemonIcon('egg')+'"></span>';
 					break;
 				case 'g': // prevo1 egg move
 					if (lastChanged) buf += '<li class="resultheader"><h3>Egg from '+BattlePokedex[prevo1].species+'</h3></li>';
-					desc = '<span class="pokemonicon" style="margin-top:-3px;'+Tools.getIcon('egg')+'"></span>';
+					desc = '<span class="pokemonicon" style="margin-top:-3px;'+Tools.getPokemonIcon('egg')+'"></span>';
 					break;
 				case 'h': // prevo2 egg move
 					if (lastChanged) buf += '<li class="resultheader"><h3>Egg from '+BattlePokedex[prevo2].species+'</h3></li>';
-					desc = '<span class="pokemonicon" style="margin-top:-3px;'+Tools.getIcon('egg')+'"></span>';
+					desc = '<span class="pokemonicon" style="margin-top:-3px;'+Tools.getPokemonIcon('egg')+'"></span>';
 					break;
 				case 'i': // event
 					if (lastChanged) buf += '<li class="resultheader"><h3>Event</h3></li>';
@@ -704,7 +704,7 @@ var PokedexMovePanel = PokedexResultPanel.extend({
 				desc = '<img src="//play.pokemonshowdown.com/sprites/tutor.png" style="margin-top:-4px;opacity:.7" width="27" height="26" alt="T" />';
 				break;
 			case 'd': // egg move
-				desc = '<span class="pokemonicon" style="margin-top:-3px;'+Tools.getIcon('egg')+'"></span>';
+				desc = '<span class="pokemonicon" style="margin-top:-3px;'+Tools.getPokemonIcon('egg')+'"></span>';
 				break;
 			case 'e': // event
 				desc = '!';
@@ -1330,7 +1330,7 @@ var PokedexEggGroupPanel = PokedexResultPanel.extend({
 		if (offscreen) {
 			return ''+template.species+' '+template.abilities['0']+' '+(template.abilities['1']||'')+' '+(template.abilities['H']||'')+'';
 		} else {
-			return BattleSearch.renderTaggedPokemonRowInner(template, '<span class="pokemonicon" style="margin-top:-3px;'+Tools.getIcon('egg')+'"></span>');
+			return BattleSearch.renderTaggedPokemonRowInner(template, '<span class="pokemonicon" style="margin-top:-3px;'+Tools.getPokemonIcon('egg')+'"></span>');
 		}
 	},
 	handleScroll: function() {
