@@ -7,11 +7,11 @@
 
 	<meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=IE8" />
 	<link rel="stylesheet" href="//play.pokemonshowdown.com/style/font-awesome.css" />
-	<link rel="stylesheet" href="/theme/panels.css?b1" />
-	<link rel="stylesheet" href="/theme/main.css?b1" />
+	<link rel="stylesheet" href="/theme/panels.css?" />
+	<link rel="stylesheet" href="/theme/main.css?" />
 	<meta name="viewport" content="width=device-width,initial-scale=1">
-	<link rel="stylesheet" href="//play.pokemonshowdown.com/style/utilichart.css?b359" />
-	<link rel="stylesheet" href="/theme/pokedex.css?b359" />
+	<link rel="stylesheet" href="//play.pokemonshowdown.com/style/utilichart.css?" />
+	<link rel="stylesheet" href="/theme/pokedex.css?" />
 
 	<!-- Workarounds for IE bugs to display trees correctly. -->
 	<!--[if lte IE 6]><style> li.tree { height: 1px; } </style><![endif]-->
@@ -67,17 +67,17 @@
 	<script src="/js/lib/backbone-min.js"></script>
 	<script src="/js/panels.js"></script>
 
-	<script src="//play.pokemonshowdown.com/js/battledata.js?v0.9xy31"></script>
-	<script src="//play.pokemonshowdown.com/data/search-index.js?v0.9xy31"></script>
-	<script src="//play.pokemonshowdown.com/data/pokedex.js?v0.9xy31"></script>
-	<script src="//play.pokemonshowdown.com/data/teambuilder-tables.js?v0.9xy31"></script>
-	<script src="//play.pokemonshowdown.com/data/learnsets-g6.js?v0.9xy31"></script>
-	<script src="//play.pokemonshowdown.com/data/moves.js?v0.9xy31"></script>
-	<script src="//play.pokemonshowdown.com/data/abilities.js?v0.9xy31"></script>
-	<script src="//play.pokemonshowdown.com/data/items.js?v0.9xy31"></script>
-	<script src="//play.pokemonshowdown.com/data/typechart.js?v0.9xy31"></script>
-	<script src="//play.pokemonshowdown.com/data/aliases.js?v0.9xy31"></script>
-	<script src="//play.pokemonshowdown.com/js/search.js?b359"></script>
-	<script src="/js/pokedex.js?b359"></script>
+	<script src="//play.pokemonshowdown.com/js/battledata.js?"></script>
+	<script src="//play.pokemonshowdown.com/data/search-index.js?"></script>
+	<script src="//play.pokemonshowdown.com/data/pokedex.js?"></script>
+	<script src="//play.pokemonshowdown.com/data/teambuilder-tables.js?"></script>
+	<script src="//play.pokemonshowdown.com/data/learnsets-g6.js?"></script>
+	<script src="//play.pokemonshowdown.com/data/moves.js?"></script>
+	<script src="//play.pokemonshowdown.com/data/abilities.js?"></script>
+	<script src="//play.pokemonshowdown.com/data/items.js?"></script>
+	<script src="//play.pokemonshowdown.com/data/typechart.js?"></script>
+	<script src="//play.pokemonshowdown.com/data/aliases.js?"></script>
+	<script src="//play.pokemonshowdown.com/js/search.js?"></script>
+	<script src="/js/pokedex.js?"></script>
 
 </body></html>
