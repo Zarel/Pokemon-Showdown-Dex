@@ -1495,6 +1495,8 @@ var PokedexSearchPanel = Panels.Panel.extend({
 	initialize: function () {
 		var fragment = this.fragment;
 		var questionIndex = fragment.indexOf('?');
+		if (fragment === 'moves') fragment = 'moves/';
+		if (fragment === 'pokemon') fragment = 'pokemon/';
 		if (questionIndex >= 0) fragment = fragment.slice(0, questionIndex);
 		var buf = '<div class="pfx-body"><form class="pokedex">';
 		buf += '<h1><a href="/">Pok&eacute;dex</a></h1>';
