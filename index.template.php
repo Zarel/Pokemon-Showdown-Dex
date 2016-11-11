@@ -79,5 +79,7 @@
 	<script src="//play.pokemonshowdown.com/data/aliases.js?"></script>
 	<script src="//play.pokemonshowdown.com/js/search.js?"></script>
 	<script src="/js/pokedex.js?"></script>
+	<script src="/js/pokedex-pokemon.js?"></script>
+	<script src="/js/router.js?"></script>
 
 </body></html>
