@@ -122,7 +122,7 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 						if (!evos[0].exists) {
 							if (evos[1] === 'dustox') {
 								buf += '</td><td class="arrow"><span>&rarr;<br />&rarr;</span></td><td>';
-							} else if (template.evoLevel) {
+							} else if (template.evoLevel >= 3) {
 								buf += '</td><td class="arrow"><span><abbr title="level ' + template.evoLevel + '">&rarr;</abbr></span></td><td>';
 							} else {
 								buf += '</td><td class="arrow"><span>&rarr;</span></td><td>';
@@ -140,6 +140,9 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 				evos = template.evos;
 			}
 			buf += '</td></tr></table>';
+			if (pokemon.evoLevel && pokemon.evoLevel >= 3) {
+				buf += '<div><small>Evolves from ' + Tools.getTemplate(pokemon.prevo).species + ' at level ' + pokemon.evoLevel + '</small></div>';
+			}
 		} else {
 			buf += '<em>Does not evolve</em>';
 		}
@@ -165,6 +168,9 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 				} else {
 					buf += ', <a href="/pokemon/'+template.id+'" data-target="replace">'+name+'</a>';
 				}
+			}
+			if (pokemon.requiredItem) {
+				buf += '<div><small>Must hold <a href="/items/' + toId(pokemon.requiredItem) + '" data-target="push">' + pokemon.requiredItem + '</a></small></div>';
 			}
 		}
 		buf += '</dd></dl>';
