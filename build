@@ -8,21 +8,26 @@
 const path = require('path');
 const fs = require('fs');
 const crypto = require('crypto');
+const child_process = require('child_process');
+
+process.chdir(__dirname);
+
+if (process.argv[2] === 'full') {
+	child_process.execSync('../play.pokemonshowdown.com/githooks/build-indexes', {stdio: 'inherit'});
+}
 
 function updateIndex() {
-	let indexContents = fs.readFileSync(path.resolve(__dirname, 'index.template.php'), {encoding: 'utf8'});
+	let indexContents = fs.readFileSync('index.template.php', {encoding: 'utf8'});
 
 	// add hashes to js and css files
 	process.stdout.write("Updating hashes... ");
 	indexContents = indexContents.replace(/(src|href)="\/(.*?)\?[a-z0-9]*?"/g, function (a, b, c) {
 		let hash = Math.random(); // just in case creating the hash fails
 		try {
-			var filepath;
+			var filepath = c;
 			if (c.includes('/play.pokemonshowdown.com/')) {
 				const filename = c.replace('/play.pokemonshowdown.com/', '');
-				filepath = path.resolve(__dirname, '..', 'play.pokemonshowdown.com', filename);
-			} else {
-				filepath = path.resolve(__dirname, c);
+				filepath = '../play.pokemonshowdown.com/' + filename;
 			}
 			const fstr = fs.readFileSync(filepath, {encoding: 'utf8'});
 			hash = crypto.createHash('md5').update(fstr).digest('hex').substr(0, 8);
@@ -33,8 +38,10 @@ function updateIndex() {
 	console.log("DONE");
 
 	process.stdout.write("Writing new `index.php` file... ");
-	fs.writeFileSync(path.resolve(__dirname, 'index.php'), indexContents);
+	fs.writeFileSync('index.php', indexContents);
 	console.log("DONE");
 }
 
 updateIndex();
+
+child_process.execSync('./cms/build', {stdio: 'inherit'});

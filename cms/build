@@ -1,0 +1,83 @@
+#!/usr/bin/env node
+'use strict';
+
+const fs = require('fs');
+const showdown = require('showdown');
+const converter = new showdown.Converter();
+
+process.chdir(__dirname);
+
+process.stdout.write("Generating articles... ");
+
+const files = fs.readdirSync('../articles/');
+// const template = '' + fs.readFileSync('template.html');
+
+const searchIndex = require('../../play.pokemonshowdown.com/data/search-index.js').BattleSearchIndex;
+const searchIndexTable = {};
+for (const [id, type, more] of searchIndex) {
+	if (more) continue;
+	if (!searchIndexTable[id]) {
+		searchIndexTable[id] = [type];
+	} else {
+		searchIndexTable[id].push(type);
+	}
+}
+function toId(text) {
+	// this is a duplicate of Dex.getId, for performance reasons
+	if (text && text.id) {
+		text = text.id;
+	} else if (text && text.userid) {
+		text = text.userid;
+	}
+	if (typeof text !== 'string' && typeof text !== 'number') return '';
+	return ('' + text).toLowerCase().replace(/[^a-z0-9]+/g, '');
+}
+function pluralType(type) {
+	if (type === 'move') return 'moves';
+	if (type === 'ability') return 'abilities';
+	if (type === 'item') return 'items';
+	if (type === 'type') return 'types';
+	if (type === 'category') return 'categories';
+	if (type === 'egggroup') return 'egggroups';
+	if (type === 'tier') return 'tiers';
+	if (type === 'article') return 'articles';
+	return type;
+}
+
+for (const file of files) {
+	if (!file.endsWith('.md')) continue;
+	if (/[A-Z]/.test(file)) continue;
+	let buf = '' + fs.readFileSync('../articles/' + file);
+	const name = file.slice(0, -3);
+	const nlIndex = buf.indexOf('\n');
+	const title = buf.slice(2, nlIndex);
+	const secondHashIndex = buf.indexOf('\n# ');
+	if (secondHashIndex > 0 && buf.slice(nlIndex, secondHashIndex).trim() === '') {
+		buf = buf.slice(secondHashIndex + 1);
+	}
+	buf = converter.makeHtml(buf);
+	buf = buf.replace(/<a href="http/g, `<a target="_blank" href="http`);
+
+	buf = buf.replace(/\n/g, '\n\t\t').replace(/\n\t\t\n/g, '\n\n');
+
+	// buf = template.replace('{title}', title).replace('{content}', buf);
+	buf = buf.replace(`<a href="/${name}">`, `<a href="/${name}" class="cur">`);
+	// showdown doesn't convert Unicode to entities automatically
+	buf = buf.replace(/é/g, '&eacute;');
+
+	buf = buf.replace(/\[\[([^\]]+)\]\]/g, (match, submatch) => {
+		const id = toId(submatch);
+		const types = searchIndexTable[id];
+		if (!types) {
+			return `${submatch} (?)`;
+		} else if (types.length === 1) {
+			return `<a href="/${pluralType(types[0])}/${id}" data-target="push">${submatch}</a>`;
+		} else {
+			return `${submatch} (` + types.map(type => `<a href="/${pluralType(type)}/${id}" data-target="push">${type}</a>`).join(`, `) + `)`;
+		}
+	});
+
+	fs.writeFileSync('../.articles-cached/' + name + '.html', buf);
+}
+
+console.log("DONE");

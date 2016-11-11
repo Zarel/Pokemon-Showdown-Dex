@@ -1047,6 +1047,29 @@ var PokedexTierPanel = PokedexResultPanel.extend({
 		this.$('.utilichart').html(buf);
 	}
 });
+var PokedexArticlePanel = PokedexResultPanel.extend({
+	initialize: function(id) {
+		this.shortTitle = id;
+
+		var buf = '<div class="pfx-body dexentry">';
+		buf += '<a href="/" class="pfx-backbutton" data-target="back"><i class="fa fa-chevron-left"></i> Pok&eacute;dex</a>';
+		buf += '<h1><a href="/articles/'+id+'" data-target="push" class="subtle">'+id+'</a></h1>';
+		buf += '<div class="article-content"><em>Loading...</em></div>';
+		buf += '</div>';
+
+		this.html(buf);
+
+		var self = this;
+		$.get('/.articles-cached/' + id + '.html').done(function (html) {
+			var html = html.replace(/<h1[^>]*>([^<]+)<\/h1>/, function (match, innerMatch) {
+				self.shortTitle = innerMatch;
+				self.$('h1').first().html(innerMatch);
+				return '';
+			});
+			self.$('.article-content').html(html);
+		});
+	}
+});
 
 var PokedexSearchPanel = Panels.Panel.extend({
 	minWidth: 639,
