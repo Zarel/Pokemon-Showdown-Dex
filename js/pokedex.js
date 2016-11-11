@@ -1261,7 +1261,7 @@ var PokedexEggGroupPanel = PokedexResultPanel.extend({
 		buf += '<h1><a href="/egggroups/'+id+'" data-target="push" class="subtle">'+names+'</a></h1>';
 
 		if (this.id2) {
-			buf += '<p>All Pok&eacute;mon in either the '+this.table[ids[0]].name+' or '+this.table[ids[1]].name+' egg group.</p>';
+			buf += '<p>All Pok&eacute;mon in either the <a href="/egggroups/'+this.id+'" data-target="push">'+this.table[ids[0]].name+'</a> or <a href="/egggroups/'+this.id2+'" data-target="push">'+this.table[ids[1]].name+'</a> egg group.</p>';
 		} else {
 			buf += '<p>'+this.table[ids[0]].desc+'</p>';
 		}
