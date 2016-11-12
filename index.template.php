@@ -75,6 +75,7 @@
 	<script src="//play.pokemonshowdown.com/data/moves.js?"></script>
 	<script src="//play.pokemonshowdown.com/data/abilities.js?"></script>
 	<script src="//play.pokemonshowdown.com/data/items.js?"></script>
+	<script src="//play.pokemonshowdown.com/data/formats-data.js?"></script>
 	<script src="//play.pokemonshowdown.com/data/typechart.js?"></script>
 	<script src="//play.pokemonshowdown.com/data/aliases.js?"></script>
 	<script src="//play.pokemonshowdown.com/js/search.js?"></script>
