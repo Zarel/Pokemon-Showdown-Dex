@@ -11,6 +11,7 @@ var PokedexSearchPanel = Panels.Panel.extend({
 		'keydown': 'keydown',
 		'click': 'click',
 		'click .result a': 'clickResult',
+		'click .filter': 'removeFilter',
 		'mouseover .result a': 'hoverlink'
 	},
 	activeLink: null,
@@ -33,6 +34,8 @@ var PokedexSearchPanel = Panels.Panel.extend({
 		buf += '<div class="results"></div></div>';
 		this.$el.html(buf);
 		var $searchbox = this.$('.searchbox');
+		this.$searchbox = $searchbox;
+		this.$searchfilters = null;
 		var results = this.$('.results');
 		if (results.length) {
 			var search = this.search = new BattleSearch(results, this.$el);
@@ -48,6 +51,7 @@ var PokedexSearchPanel = Panels.Panel.extend({
 				$searchbox.attr('placeholder', 'Search moves OR filter by type, category, pokemon');
 				this.$('.buttonbar').remove();
 			}
+			this.search.externalFilter = true;
 		} else {
 			this.search = null;
 		}
@@ -57,6 +61,43 @@ var PokedexSearchPanel = Panels.Panel.extend({
 	},
 	updateSearch: function(e) {
 		this.find(e.currentTarget.value);
+	},
+	removeFilter: function(e) {
+		this.search.removeFilter(e);
+		this.updateFilters();
+		this.$searchbox.focus();
+	},
+	updateFilters: function() {
+		// this.search.externalFilter = true;
+		var buf = '';
+		if (this.search.qType === 'pokemon') {
+			buf = '<button class="filter noclear" value=":">Pokémon</button> ';
+		} else if (this.search.qType === 'move') {
+			buf = '<button class="filter noclear" value=":">Moves</button> ';
+		} else {
+			this.$('.searchbox-filters').remove();
+			this.$searchbox.css('padding', '2px');
+			return;
+		}
+		if (this.search.filters) {
+			for (var i = 0; i < this.search.filters.length; i++) {
+				var filter = this.search.filters[i];
+				var text = filter[1];
+				if (filter[0] === 'move') text = Tools.getMove(text).name;
+				if (filter[0] === 'pokemon') text = Tools.getTemplate(text).name;
+				buf += '<button class="filter" value="' + Tools.escapeHTML(filter.join(':')) + '">' + text + ' <i class="fa fa-times-circle"></i></button> ';
+			}
+		}
+		if (!this.$searchfilters) {
+			this.$searchfilters = $('<div class="searchbox-filters"></div>').insertAfter(this.$searchbox);
+		}
+		this.$searchfilters.html(buf);
+		var filterWidth = this.$searchfilters.width();
+		if (filterWidth > this.$searchbox.outerWidth() / 2) {
+			this.$searchbox.css('padding', '' + (this.$searchfilters.height() + 4) + 'px 2px 2px 2px');
+		} else {
+			this.$searchbox.css('padding', '2px 2px 2px ' + (filterWidth + 6) + 'px');
+		}
 	},
 	submit: function(e) {
 		e.preventDefault();
@@ -68,13 +109,18 @@ var PokedexSearchPanel = Panels.Panel.extend({
 			e.preventDefault();
 			e.stopPropagation();
 			if (this.search.addFilter(this.activeLink)) {
-				this.$('.searchbox').val('');
+				this.$searchbox.val('');
 				this.find('');
 				return;
 			}
 			if (this.activeLink) {
-				this.app.go(this.activeLink.pathname.substr(1), this, false, $(this.activeLink));
-			} else if (!this.$('.searchbox').val()) {
+				var path = this.activeLink.pathname.substr(1);
+				if (path === 'moves/' || path === 'pokemon/') {
+					this.app.go(path, this, true);
+					return;
+				}
+				this.app.go(path, this, false, $(this.activeLink));
+			} else if (!this.$searchbox.val()) {
 				this.app.slicePanel(this);
 			}
 			break;
@@ -82,8 +128,23 @@ var PokedexSearchPanel = Panels.Panel.extend({
 			if (this.search.addFilter(this.activeLink)) {
 				e.preventDefault();
 				e.stopPropagation();
-				this.$('.searchbox').val('');
+				this.$searchbox.val('');
 				this.find('');
+				return;
+			}
+			break;
+		case 32: // space
+			var id = toId(this.$searchbox.val());
+			if (id === 'ds' || id === 'pokemon') {
+				e.preventDefault();
+				e.stopPropagation();
+				this.app.go('pokemon/', this, true);
+				return;
+			}
+			if (id === 'ms' || id === 'move' || id === 'moves') {
+				e.preventDefault();
+				e.stopPropagation();
+				this.app.go('moves/', this, true);
 				return;
 			}
 			break;
@@ -111,11 +172,17 @@ var PokedexSearchPanel = Panels.Panel.extend({
 			break;
 		case 27: // esc
 		case 8: // backspace
-			if (!this.$('.searchbox').val() && this.search.removeFilter()) {
+			if (this.$searchbox.val()) break;
+
+			if (this.search.removeFilter()) {
 				this.find('');
 				return;
 			}
-			if (!this.$('.searchbox').val() && this.app.panels.length > 1) {
+			if (this.search.qType) {
+				this.app.go('', this, true);
+				return;
+			}
+			if (this.app.panels.length > 1) {
 				e.preventDefault();
 				e.stopPropagation();
 				this.app.slicePanel(this);
@@ -137,14 +204,14 @@ var PokedexSearchPanel = Panels.Panel.extend({
 			return;
 		}
 		var scrollLoc = this.$el.scrollTop();
-		this.$('.searchbox').focus();
+		this.$searchbox.focus();
 		this.$el.scrollTop(scrollLoc);
 	},
 	clickResult: function(e) {
 		if (this.search.addFilter(e.currentTarget)) {
 			e.preventDefault();
 			e.stopImmediatePropagation();
-			this.$('.searchbox').val('');
+			this.$searchbox.val('');
 			this.find('');
 			return;
 		}
@@ -157,6 +224,7 @@ var PokedexSearchPanel = Panels.Panel.extend({
 	find: function(val) {
 		if (!this.search) return;
 		if (!val) val = '';
+		this.updateFilters();
 		if (!this.search.find(val)) return;
 		if (this.search.q || this.search.filters) {
 			this.$('.pokedex').addClass('aboveresults');
