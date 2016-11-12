@@ -80,6 +80,8 @@
 	<script src="//play.pokemonshowdown.com/js/search.js?"></script>
 	<script src="/js/pokedex.js?"></script>
 	<script src="/js/pokedex-pokemon.js?"></script>
+	<script src="/js/pokedex-moves.js?"></script>
+	<script src="/js/pokedex-search.js?"></script>
 	<script src="/js/router.js?"></script>
 
 </body></html>
