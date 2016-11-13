@@ -86,8 +86,8 @@ if (!Function.prototype.bind) {
 		fragment: '',
 		states: {},
 		panels: null,
-		i: 0,
-		j: 0,
+		i: 0, // rightmost visible panel's index
+		j: 0, // leftmost visible panel's index
 
 		topbarView: null,
 		topbar: null,
@@ -111,7 +111,9 @@ if (!Function.prototype.bind) {
 			// no matter what, if the panel exists, we're going straight to it
 			var i = this.getFragmentIndex(fragment);
 			if (i >= 0) {
-				if (i >= this.j && i < this.i) {
+				if (i === this.i) {
+					this.focusPanel(i, instant, true); // already rightmost; maximize it
+				} else if (i >= this.j && i < this.i) {
 					this.focusPanel(i, instant); // already in view; focus it
 				} else {
 					this.scrollIntoView(i, instant);
@@ -150,6 +152,14 @@ if (!Function.prototype.bind) {
 				}
 			}
 			return -1;
+		},
+		slicePanelLeft: function() {
+			while (this.j) {
+				var panel = this.panels.shift();
+				panel.remove();
+				this.j--;
+			}
+			this.i = this.j;
 		},
 		navigatePanel: function(name, fragment, args) {
 			if (!this.panels.length) {
@@ -258,9 +268,9 @@ if (!Function.prototype.bind) {
 			this.calculateLayout();
 			this.commitLayout(true);
 		},
-		focusPanel: function(index, instant) {
+		focusPanel: function(index, instant, limit1) {
 			// scroll so that panel at index is rightmost
-			instant = !this.calculateLayout(index) || instant;
+			instant = !this.calculateLayout(index, limit1) || instant;
 			this.commitLayout(instant);
 		},
 		scrollIntoView: function(index, instant) {
@@ -453,7 +463,7 @@ if (!Function.prototype.bind) {
 			this.calculateLayout(this.i);
 			this.commitLayout(true);
 		},
-		calculateLayout: function(loc) {
+		calculateLayout: function(loc, limit1) {
 			if (loc === undefined) loc = this.i;
 			this.targetI = loc;
 			var panels = this.panels;
@@ -481,8 +491,8 @@ if (!Function.prototype.bind) {
 				curBuffer += buffer;
 				numPanels++;
 				loc--;
-			} while (panels[loc]);
-			if (numPanels <= 1 && panels[loc] && panels[loc].sidebarWidth) {
+			} while (!limit1 && panels[loc]);
+			if (!limit1 && numPanels <= 1 && panels[loc] && panels[loc].sidebarWidth) {
 				// no room for more than one full panel, but maybe a sidebar will fit
 				if (curWidth + panels[loc].sidebarWidth <= maxWidth - (loc?goLeftWidth:0)) {
 					var targetWidth = panels[loc].sidebarWidth+curBuffer;
