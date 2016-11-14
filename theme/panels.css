@@ -257,11 +257,11 @@ a.button {
 }
 .pfx-go-left {
 	left: 0;
-	background: #FFFFFF url(go-left.png) no-repeat scroll left 10px center;
+	background: #FFFFFF url(go-left.png) no-repeat scroll left 20px center;
 }
 .pfx-go-right {
 	right: 0;
-	background: #FFFFFF url(go-right.png) no-repeat scroll right 10px center;
+	background: #FFFFFF url(go-right.png) no-repeat scroll right 20px center;
 
 	border-left: 1px solid #2A4066;
 }
