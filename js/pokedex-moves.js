@@ -149,6 +149,59 @@ var PokedexMovePanel = PokedexResultPanel.extend({
 			if (atLeastOne) buf += '</ul>';
 		}
 
+		// past gens
+		var pastGenChanges = false;
+		if (BattleTeambuilderTable) for (var genNum = 5; genNum >= 1; genNum--) {
+			var genTable = BattleTeambuilderTable['gen' + genNum];
+			var nextGenTable = BattleTeambuilderTable['gen' + (genNum + 1)];
+			var changes = '';
+
+			var nextGenType = move.type;
+			if (nextGenTable && nextGenTable.overrideMoveType[id]) nextGenType = nextGenTable.overrideMoveType[id];
+			var curGenType = genTable.overrideMoveType[id] || nextGenType;
+			if (curGenType !== nextGenType) {
+				changes += 'Type: ' + curGenType + ' <i class="fa fa-long-arrow-right"></i> ' + nextGenType + '<br />';
+			}
+
+			var nextGenBP = move.basePower;
+			if (nextGenTable && nextGenTable.overrideBP[id]) nextGenBP = nextGenTable.overrideBP[id];
+			var curGenBP = genTable.overrideBP[id] || nextGenBP;
+			if (curGenBP !== nextGenBP) {
+				changes += 'Base power: ' + curGenBP + ' <i class="fa fa-long-arrow-right"></i> ' + nextGenBP + '<br />';
+			}
+
+			var nextGenPP = move.pp;
+			if (nextGenTable && nextGenTable.overridePP[id]) nextGenPP = nextGenTable.overridePP[id];
+			var curGenPP = genTable.overridePP[id] || nextGenPP;
+			if (curGenPP !== nextGenPP) {
+				changes += 'PP: ' + curGenPP + ' <i class="fa fa-long-arrow-right"></i> ' + nextGenPP + '<br />';
+			}
+
+			var nextGenAcc = move.accuracy;
+			if (nextGenTable && nextGenTable.overrideAcc[id]) nextGenAcc = nextGenTable.overrideAcc[id];
+			var curGenAcc = genTable.overrideAcc[id] || nextGenAcc;
+			if (curGenAcc !== nextGenAcc) {
+				var curGenAccText = (curGenAcc === true ? 'nevermiss' : curGenAcc + '%');
+				var nextGenAccText = (nextGenAcc === true ? 'nevermiss' : nextGenAcc + '%');
+				changes += 'Accuracy: ' + curGenAccText + ' <i class="fa fa-long-arrow-right"></i> ' + nextGenAccText + '<br />';
+			}
+
+			var nextGenDesc = move.shortDesc;
+			if (nextGenTable && nextGenTable.overrideMoveDesc[id]) nextGenDesc = nextGenTable.overrideMoveDesc[id];
+			var curGenDesc = genTable.overrideMoveDesc[id] || nextGenDesc;
+			if (curGenDesc !== nextGenDesc) {
+				changes += curGenDesc + ' <i class="fa fa-long-arrow-right"></i> ' + nextGenDesc + '<br />';
+			}
+
+			if (changes) {
+				if (!pastGenChanges) buf += '<h3>Past gens</h3><dl>';
+				buf += '<dt>Gen ' + genNum + ' <i class="fa fa-arrow-right"></i> ' + (genNum + 1) + ':</dt>';
+				buf += '<dd>' + changes + '</dd>';
+				pastGenChanges = true;
+			}
+		}
+		if (pastGenChanges) buf += '</dl>';
+
 		// distribution
 		buf += '<ul class="utilichart metricchart nokbd">';
 		buf += '</ul>';

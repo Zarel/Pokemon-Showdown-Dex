@@ -26,6 +26,30 @@ var PokedexItemPanel = PokedexResultPanel.extend({
 		buf += '<a href="/" class="pfx-backbutton" data-target="back"><i class="fa fa-chevron-left"></i> Pok&eacute;dex</a>';
 		buf += '<h1><span class="itemicon" style="'+Tools.getItemIcon(item)+'"></span> <a href="/items/'+id+'" data-target="push" class="subtle">'+item.name+'</a></h1>';
 		buf += '<p>'+Tools.escapeHTML(item.desc||item.shortDesc)+'</p>';
+
+		// past gens
+		var pastGenChanges = false;
+		if (BattleTeambuilderTable) for (var genNum = 5; genNum >= 1; genNum--) {
+			var genTable = BattleTeambuilderTable['gen' + genNum];
+			var nextGenTable = BattleTeambuilderTable['gen' + (genNum + 1)];
+			var changes = '';
+
+			var nextGenDesc = (item.shortDesc || item.desc);
+			if (nextGenTable && nextGenTable.overrideItemDesc[id]) nextGenDesc = nextGenTable.overrideItemDesc[id];
+			var curGenDesc = genTable.overrideItemDesc[id] || nextGenDesc;
+			if (curGenDesc !== nextGenDesc) {
+				changes += curGenDesc + ' <i class="fa fa-long-arrow-right"></i> ' + nextGenDesc + '<br />';
+			}
+
+			if (changes) {
+				if (!pastGenChanges) buf += '<h3>Past gens</h3><dl>';
+				buf += '<dt>Gen ' + genNum + ' <i class="fa fa-arrow-right"></i> ' + (genNum + 1) + ':</dt>';
+				buf += '<dd>' + changes + '</dd>';
+				pastGenChanges = true;
+			}
+		}
+		if (pastGenChanges) buf += '</dl>';
+
 		buf += '</div>';
 
 		this.html(buf);

@@ -178,6 +178,49 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 			buf += '<div style="clear:left"></div>';
 		}
 
+		// past gens
+		var pastGenChanges = false;
+		var latestGenType = pokemon.types.join('/');
+		if (BattleTeambuilderTable) for (var genNum = 5; genNum >= 1; genNum--) {
+			var genTable = BattleTeambuilderTable['gen' + genNum];
+			var nextGenTable = BattleTeambuilderTable['gen' + (genNum + 1)];
+			var changes = '';
+
+			var nextGenType = latestGenType;
+			if (nextGenTable && id in nextGenTable.overrideType) nextGenType = nextGenTable.overrideType[id];
+			var curGenType = genTable.overrideType[id] || nextGenType;
+			if (curGenType !== nextGenType) {
+				changes += 'Type: ' + curGenType + ' <i class="fa fa-long-arrow-right"></i> ' + nextGenType + '<br />';
+			}
+
+			for (var i in BattleStatNames) {
+				if (genNum === 1 && (i === 'spa' || i === 'spd')) continue;
+				var nextGenStat = pokemon.baseStats[i];
+				if (nextGenTable && nextGenTable.overrideStats[id] && nextGenTable.overrideStats[id][i]) nextGenStat = nextGenTable.overrideStats[id][i];
+				var curGenStat = (genTable.overrideStats[id] && genTable.overrideStats[id][i]) || nextGenStat;
+				if (curGenStat !== nextGenStat) {
+					changes += BattleStatNames[i] + ': ' + curGenStat + ' <i class="fa fa-long-arrow-right"></i> ' + nextGenStat + '<br />';
+				}
+			}
+
+			if (genNum === 1 && pokemon.num <= 151 && !pokemon.forme) {
+				var nextGenSpA = pokemon.baseStats['spa'];
+				if (nextGenTable && nextGenTable.overrideStats[id] && nextGenTable.overrideStats[id]['spa']) nextGenSpA = nextGenTable.overrideStats[id]['spa'];
+				var nextGenSpD = pokemon.baseStats['spd'];
+				if (nextGenTable && nextGenTable.overrideStats[id] && nextGenTable.overrideStats[id]['spd']) nextGenSpD = nextGenTable.overrideStats[id]['spd'];
+				var curGenSpc = (genTable.overrideStats[id] && genTable.overrideStats[id]['spa']) || nextGenSpA;
+				changes += '' + curGenSpc + ' Spc <i class="fa fa-long-arrow-right"></i> ' + nextGenSpA + ' SpA, ' + nextGenSpD + ' SpD<br />';
+			}
+
+			if (changes) {
+				if (!pastGenChanges) buf += '<h3>Past gens</h3><dl>';
+				buf += '<dt>Gen ' + genNum + ' <i class="fa fa-arrow-right"></i> ' + (genNum + 1) + ':</dt>';
+				buf += '<dd>' + changes + '</dd>';
+				pastGenChanges = true;
+			}
+		}
+		if (pastGenChanges) buf += '</dl>';
+
 		// learnset
 		if (window.BattleFormatsData && BattleFormatsData[id] && BattleFormatsData[id].eventPokemon) {
 			buf += '<ul class="tabbar"><li><button class="button nav-first cur" value="move">Moves</button></li><li><button class="button" value="details">Flavor</button></li><li><button class="button nav-last" value="events">Events</button></li></ul>';
