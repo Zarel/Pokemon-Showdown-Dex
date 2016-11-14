@@ -76,6 +76,79 @@ var PokedexMovePanel = PokedexResultPanel.extend({
 			buf += '<p class="movetag"><a href="/tags/ballistic" data-target="push">&#x2713; Ballistic</a> <small>(doesn\'t affect <a class="subtle" href="/abilities/bulletproof" data-target="push">Bulletproof</a> pokemon)</small></p>';
 		}
 
+		// getting it
+		// warning: excessive trickiness
+		var leftPanel = this.app.panels[this.app.panels.length - 2];
+		if (leftPanel && leftPanel.fragment.slice(0, 8) === 'pokemon/') {
+			var pokemon = Tools.getTemplate(leftPanel.id);
+			var learnset = BattleLearnsets[pokemon.id] && BattleLearnsets[pokemon.id].learnset;
+			if (!learnset) learnset = BattleLearnsets[toId(pokemon.baseSpecies)].learnset;
+			var eg1 = pokemon.eggGroups[0];
+			var eg2 = pokemon.eggGroups[2];
+			var sources = learnset[id];
+			var template = null;
+			var atLeastOne = false;
+			while (true) {
+				if (!template) {
+					template = pokemon;
+				} else {
+					if (!template.prevo) break;
+					template = Tools.getTemplate(template.prevo);
+					sources = BattleLearnsets[template.speciesid].learnset[id];
+				}
+
+				if (!sources) continue;
+
+				if (!atLeastOne) {
+					buf += '<h3>Getting it on ' + pokemon.species + '</h3><ul>';
+					atLeastOne = true;
+				}
+
+				if (template.speciesid !== pokemon.speciesid) {
+					buf += '</ul><p>From ' + template.species + ':</p><ul>';
+				}
+
+				if (!sources.length) buf += '<li>(Past gen only)</li>';
+
+				if (typeof sources === 'string') sources = [sources];
+				for (var i=0, len=sources.length; i<len; i++) {
+					var source = sources[i];
+					if (source.substr(0,2) === '6L') {
+						buf += '<li>Level ' + parseInt(source.slice(2, 5), 10) + '</li>';
+					} else if (source === '6M') {
+						buf += '<li>TM/HM</li>';
+					} else if (source === '6T') {
+						buf += '<li>Tutor</li>';
+					} else if (source === '6E') {
+						buf += '<li>Egg move: breed with ';
+						var hasBreeders = false;
+						for (var breederid in BattleLearnsets) {
+							if (!(id in BattleLearnsets[breederid].learnset)) continue;
+							var breeder = BattlePokedex[breederid];
+							if (breeder.isNonstandard) continue;
+							if (breeder.gender && breeder.gender !== 'M') continue;
+							if (breederid === 'dragonite' && template.speciesid === 'dratini' && id === 'extremespeed') {
+								buf += 'Event <a href="/pokemon/dragonite">Dragonite</a>';
+								hasBreeders = true;
+							}
+							if (breederid === pokemon.speciesid || breederid === template.speciesid || breederid === pokemon.prevo) continue;
+							if (eg1 === breeder.eggGroups[0] || eg1 === breeder.eggGroups[1] ||
+								(eg2 && (eg2 === breeder.eggGroups[0] || eg2 === breeder.eggGroups[1]))) {
+								if (hasBreeders) buf += ', ';
+								buf += '<a href="/pokemon/' + breederid + '" data-target="push">' + breeder.species + '</a>';
+								hasBreeders = true;
+							}
+						}
+						if (!hasBreeders) buf += 'itself';
+						buf += '</li>';
+					} else if (source.charAt(1) === 'S') {
+						buf += '<li>Event move</li>';
+					}
+				}
+			}
+			if (atLeastOne) buf += '</ul>';
+		}
+
 		// distribution
 		buf += '<ul class="utilichart metricchart nokbd">';
 		buf += '</ul>';
