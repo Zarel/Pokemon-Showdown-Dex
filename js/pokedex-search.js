@@ -9,6 +9,7 @@ var PokedexSearchPanel = Panels.Panel.extend({
 		'search input.searchbox': 'updateSearch',
 		'submit': 'submit',
 		'keydown': 'keydown',
+		'keyup': 'keyup',
 		'click': 'click',
 		'click .result a': 'clickResult',
 		'click .filter': 'removeFilter',
@@ -102,6 +103,29 @@ var PokedexSearchPanel = Panels.Panel.extend({
 	submit: function(e) {
 		e.preventDefault();
 		this.$('.searchbox').attr('placeholder', 'Type in: Pokemon, move, item, ability...').focus();
+	},
+	keyup: function (e) {
+		var val = this.$searchbox.val();
+		var id = toId(val);
+		if (!id) return;
+		var lastchar = val.charAt(val.length - 1);
+		if (lastchar === ',' || lastchar === ' ') {
+			if (id === 'ds' || id === 'dexsearch' || id === 'pokemon') {
+				this.app.go('pokemon/', this, true);
+				return;
+			}
+			if (id === 'ms' || id === 'movesearch' || id === 'move' || id === 'moves') {
+				this.app.go('moves/', this, true);
+				return;
+			}
+		}
+		if (lastchar === ',') {
+			if (this.search.addFilter(this.activeLink)) {
+				this.$searchbox.val('');
+				this.find('');
+				return;
+			}
+		}
 	},
 	keydown: function(e) {
 		switch (e.keyCode) {
