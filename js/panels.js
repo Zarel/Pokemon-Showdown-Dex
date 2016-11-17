@@ -111,10 +111,8 @@ if (!Function.prototype.bind) {
 			// no matter what, if the panel exists, we're going straight to it
 			var i = this.getFragmentIndex(fragment);
 			if (i >= 0) {
-				if (i === this.i) {
-					this.focusPanel(i, instant, true); // already rightmost; maximize it
-				} else if (i >= this.j && i < this.i) {
-					this.focusPanel(i, instant); // already in view; focus it
+				if (i >= this.j && i <= this.i) {
+					this.focusPanel(i, instant, true); // already in view; maximize it
 				} else {
 					this.scrollIntoView(i, instant);
 				}
