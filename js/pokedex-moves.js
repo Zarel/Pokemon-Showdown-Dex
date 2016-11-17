@@ -113,13 +113,13 @@ var PokedexMovePanel = PokedexResultPanel.extend({
 				if (typeof sources === 'string') sources = [sources];
 				for (var i=0, len=sources.length; i<len; i++) {
 					var source = sources[i];
-					if (source.substr(0,2) === '6L') {
+					if (source.substr(0,2) === '7L') {
 						buf += '<li>Level ' + parseInt(source.slice(2, 5), 10) + '</li>';
-					} else if (source === '6M') {
+					} else if (source === '7M') {
 						buf += '<li>TM/HM</li>';
-					} else if (source === '6T') {
+					} else if (source === '7T') {
 						buf += '<li>Tutor</li>';
-					} else if (source === '6E') {
+					} else if (source === '7E') {
 						buf += '<li>Egg move: breed with ';
 						var hasBreeders = false;
 						for (var breederid in BattleLearnsets) {
@@ -151,7 +151,7 @@ var PokedexMovePanel = PokedexResultPanel.extend({
 
 		// past gens
 		var pastGenChanges = false;
-		if (BattleTeambuilderTable) for (var genNum = 5; genNum >= 1; genNum--) {
+		if (BattleTeambuilderTable) for (var genNum = 6; genNum >= 1; genNum--) {
 			var genTable = BattleTeambuilderTable['gen' + genNum];
 			var nextGenTable = BattleTeambuilderTable['gen' + (genNum + 1)];
 			var changes = '';
@@ -225,16 +225,16 @@ var PokedexMovePanel = PokedexResultPanel.extend({
 			var atLeastOne = false;
 			for (var i=0, len=sources.length; i<len; i++) {
 				var source = sources[i];
-				if (source.substr(0,2) === '6L') {
+				if (source.substr(0,2) === '7L') {
 					results.push('a'+sourcePad(source)+pokemonid);
 					atLeastOne = true;
-				} else if (source === '6M') {
+				} else if (source === '7M') {
 					results.push('b000 '+pokemonid);
 					atLeastOne = true;
-				} else if (source === '6T') {
+				} else if (source === '7T') {
 					results.push('c000 '+pokemonid);
 					atLeastOne = true;
-				} else if (source === '6E') {
+				} else if (source === '7E') {
 					results.push('d000 '+pokemonid);
 					atLeastOne = true;
 				} else if (source.charAt(1) === 'S' && atLeastOne !== 'S') {

@@ -29,7 +29,7 @@ var PokedexItemPanel = PokedexResultPanel.extend({
 
 		// past gens
 		var pastGenChanges = false;
-		if (BattleTeambuilderTable) for (var genNum = 5; genNum >= 1; genNum--) {
+		if (BattleTeambuilderTable) for (var genNum = 6; genNum >= 1; genNum--) {
 			var genTable = BattleTeambuilderTable['gen' + genNum];
 			var nextGenTable = BattleTeambuilderTable['gen' + (genNum + 1)];
 			var changes = '';

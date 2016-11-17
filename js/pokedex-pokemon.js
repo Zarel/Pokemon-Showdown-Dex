@@ -181,7 +181,7 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 		// past gens
 		var pastGenChanges = false;
 		var latestGenType = pokemon.types.join('/');
-		if (BattleTeambuilderTable) for (var genNum = 5; genNum >= 1; genNum--) {
+		if (BattleTeambuilderTable) for (var genNum = 6; genNum >= 1; genNum--) {
 			var genTable = BattleTeambuilderTable['gen' + genNum];
 			var nextGenTable = BattleTeambuilderTable['gen' + (genNum + 1)];
 			var changes = '';
@@ -239,7 +239,7 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 			if (typeof sources === 'string') sources = [sources];
 			for (var i=0, len=sources.length; i<len; i++) {
 				var source = sources[i];
-				if (source.substr(0,2) === '6L') {
+				if (source.substr(0,2) === '7L') {
 					moves.push('a'+sourcePad(source)+moveid);
 				}
 			}
@@ -292,16 +292,16 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 			if (typeof sources === 'string') sources = [sources];
 			for (var i=0, len=sources.length; i<len; i++) {
 				var source = sources[i];
-				if (source.substr(0,2) === '6L') {
+				if (source.substr(0,2) === '7L') {
 					moves.push('a'+sourcePad(source)+moveid);
 					shownMoves[moveid] = (shownMoves[moveid]|2);
-				} else if (source === '6M') {
+				} else if (source === '7M') {
 					moves.push('d000 '+moveid);
 					shownMoves[moveid] = (shownMoves[moveid]|1);
-				} else if (source === '6T') {
+				} else if (source === '7T') {
 					moves.push('e000 '+moveid);
 					shownMoves[moveid] = (shownMoves[moveid]|1);
-				} else if (source === '6E') {
+				} else if (source === '7E') {
 					moves.push('f000 '+moveid);
 					shownMoves[moveid] = (shownMoves[moveid]|4);
 				} else if (source.charAt(1) === 'S') {
@@ -320,11 +320,11 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 				if (typeof sources === 'string') sources = [sources];
 				for (var i=0, len=sources.length; i<len; i++) {
 					var source = sources[i];
-					if (source.substr(0,2) === '6L') {
+					if (source.substr(0,2) === '7L') {
 						if (shownMoves[moveid]&2) continue;
 						moves.push('b'+sourcePad(source)+moveid);
 						shownMoves[moveid] = (shownMoves[moveid]|2);
-					} else if (source === '6E') {
+					} else if (source === '7E') {
 						if (shownMoves[moveid]&4) continue;
 						moves.push('g000 '+moveid);
 						shownMoves[moveid] = (shownMoves[moveid]|4);
@@ -344,11 +344,11 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 					if (typeof sources === 'string') sources = [sources];
 					for (var i=0, len=sources.length; i<len; i++) {
 						var source = sources[i];
-						if (source.substr(0,2) === '6L') {
+						if (source.substr(0,2) === '7L') {
 							if (shownMoves[moveid]&2) continue;
 							moves.push('c'+sourcePad(source)+moveid);
 							shownMoves[moveid] = (shownMoves[moveid]|2);
-						} else if (source === '6E') {
+						} else if (source === '7E') {
 							if (shownMoves[moveid]&4) continue;
 							moves.push('h000 '+moveid);
 							shownMoves[moveid] = (shownMoves[moveid]|4);
