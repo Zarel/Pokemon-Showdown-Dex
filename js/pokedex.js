@@ -807,7 +807,7 @@ var PokedexArticlePanel = PokedexResultPanel.extend({
 		$.get('/.articles-cached/' + id + '.html').done(function (html) {
 			var html = html.replace(/<h1[^>]*>([^<]+)<\/h1>/, function (match, innerMatch) {
 				self.shortTitle = innerMatch;
-				self.$('h1').first().html(innerMatch);
+				self.$('h1').first().html('<a href="/articles/' + id + '" class="subtle" data-target="push">' + innerMatch + '</a>');
 				return '';
 			});
 			self.$('.article-content').html(html);
