@@ -433,14 +433,16 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 		buf += '<li><dl><dt>Color:</dt><dd>'+pokemon.color+'</dd></dl></li>';
 
 		// animated gen 6
-		buf += '<li class="resultheader"><h3>Animated Gen 6 sprites</h3></li>';
+		if (pokemon.gen < 7 && this.id !== 'missingno') {
+			buf += '<li class="resultheader"><h3>Animated Gen 6 sprites</h3></li>';
 
-		buf += '<li class="content"><table class="sprites"><tr><td><img src="//play.pokemonshowdown.com/sprites/xyani/'+pokemon.spriteid+'.gif" /></td>';
-		buf += '<td><img src="//play.pokemonshowdown.com/sprites/xyani-shiny/'+pokemon.spriteid+'.gif" /></td></table>';
-		buf += '<table class="sprites"><tr><td><img src="//play.pokemonshowdown.com/sprites/xyani-back/'+pokemon.spriteid+'.gif" /></td>';
-		buf += '<td><img src="//play.pokemonshowdown.com/sprites/xyani-back-shiny/'+pokemon.spriteid+'.gif" /></td></table>';
+			buf += '<li class="content"><table class="sprites"><tr><td><img src="//play.pokemonshowdown.com/sprites/xyani/'+pokemon.spriteid+'.gif" /></td>';
+			buf += '<td><img src="//play.pokemonshowdown.com/sprites/xyani-shiny/'+pokemon.spriteid+'.gif" /></td></table>';
+			buf += '<table class="sprites"><tr><td><img src="//play.pokemonshowdown.com/sprites/xyani-back/'+pokemon.spriteid+'.gif" /></td>';
+			buf += '<td><img src="//play.pokemonshowdown.com/sprites/xyani-back-shiny/'+pokemon.spriteid+'.gif" /></td></table>';
 
-		buf += '<div style="clear:left"></div></li>';
+			buf += '<div style="clear:left"></div></li>';
+		}
 
 		// cry
 		buf += '<li class="resultheader"><h3>Cry</h3></li>';
@@ -459,7 +461,7 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 		buf += '<div style="clear:left"></div></li>';
 
 		// animated gen 5
-		if (pokemon.gen < 6) {
+		if (pokemon.gen < 6 && this.id !== 'missingno') {
 			buf += '<li class="resultheader"><h3>Animated Gen 5 sprites</h3></li>';
 
 			buf += '<li class="content"><table class="sprites"><tr><td><img src="//play.pokemonshowdown.com/sprites/bwani/'+pokemon.spriteid+'.gif" /></td>';
