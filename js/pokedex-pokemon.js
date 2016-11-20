@@ -193,6 +193,13 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 				changes += 'Type: ' + curGenType + ' <i class="fa fa-long-arrow-right"></i> ' + nextGenType + '<br />';
 			}
 
+			var nextGenAbility = pokemon.abilities['0'];
+			if (nextGenTable && id in nextGenTable.overrideAbility) nextGenAbility = nextGenTable.overrideAbility[id];
+			var curGenAbility = genTable.overrideAbility[id] || nextGenAbility;
+			if (curGenAbility !== nextGenAbility) {
+				changes += 'Ability: ' + curGenAbility + ' <i class="fa fa-long-arrow-right"></i> ' + nextGenAbility + '<br />';
+			}
+
 			for (var i in BattleStatNames) {
 				if (genNum === 1 && (i === 'spa' || i === 'spd')) continue;
 				var nextGenStat = pokemon.baseStats[i];
