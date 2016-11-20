@@ -25,6 +25,15 @@ var PokedexMovePanel = PokedexResultPanel.extend({
 		buf += '<dl class="ppentry"><dt>PP:</dt> <dd>'+(move.pp)+(move.pp>1 ? ' <small class="minor">(max: '+(8/5*move.pp)+')</small>' : '')+'</dd>';
 		buf += '</dl><div style="clear:left;padding-top:1px"></div>';
 
+		if (move.isZ) {
+			buf += '<p><strong><a href="/tags/zmove" data-target="push">[Z-move]</a></strong>';
+			if (move.isZ !== true) {
+				var zItem = Tools.getItem(move.isZ);
+				buf += ' requiring <a href="/items/' + zItem.id + '" data-target="push">' + zItem.name + '</a>';
+			}
+			buf += '</p>';
+		}
+
 		if (move.priority > 1) {
 			buf += '<p>Nearly always moves first <em>(priority +'+move.priority+')</em>.</p>';
 		} else if (move.priority <= -1) {
@@ -74,6 +83,93 @@ var PokedexMovePanel = PokedexResultPanel.extend({
 		}
 		if ('bullet' in move.flags) {
 			buf += '<p class="movetag"><a href="/tags/ballistic" data-target="push">&#x2713; Ballistic</a> <small>(doesn\'t affect <a class="subtle" href="/abilities/bulletproof" data-target="push">Bulletproof</a> pokemon)</small></p>';
+		}
+
+		// Z-move
+		var zMoveTable = {
+			Poison: "Acid Downpour",
+			Fighting: "All-Out Pummeling",
+			Dark: "Black Hole Eclipse",
+			Grass: "Bloom Doom",
+			Normal: "Breakneck Blitz",
+			Rock: "Continental Crush",
+			Steel: "Corkscrew Crash",
+			Dragon: "Devastating Drake",
+			Electric: "Gigavolt Havoc",
+			Water: "Hydro Vortex",
+			Fire: "Inferno Overdrive",
+			Ghost: "Never-Ending Nightmare",
+			Bug: "Savage Spin-Out",
+			Psychic: "Shattered Psyche",
+			Ice: "Subzero Slammer",
+			Flying: "Supersonic Skystrike",
+			Ground: "Tectonic Rage",
+			Fairy: "Twinkle Tackle",
+		};
+		var zMoveVersionTable = {
+			sparklingaria: "Oceanic Operetta",
+			volttackle: "Catastropika",
+			lastresort: "Extreme Evoboost",
+			psychic: "Genesis Supernova",
+			naturesmadness: "Guardian of Alola",
+			darkestlariat: "Malicious Moonsault",
+			sparklingaria: "Oceanic Operetta",
+			gigaimpact: "Pulverizing Pancake",
+			spectralthief: "Soul-Stealing 7-Star Strike",
+			thunderbolt: "Stoked Sparksurfer",
+			thunderbolt2: "10,000,000 Volt Thunderbolt",
+		};
+		if (move.zMovePower || move.zMoveEffect || move.zMoveBoost) {
+			buf += '<h3>Z-move(s)</h3>';
+			if (move.zMovePower) {
+				buf += '<p><strong><a href="/moves/' + toId(zMoveTable[move.type]) + '" data-target="push">';
+				buf += zMoveTable[move.type];
+				buf += '</a></strong>: ';
+				buf += '' + move.zMovePower + ' base power, ' + move.category + '</p>';
+			}
+			if (move.zMoveBoost) {
+				buf += '<p><strong>Z-' + move.name + '</strong>: ';
+				var isFirst = true;
+				for (var i in move.zMoveBoost) {
+					if (!isFirst) buf += ', ';
+					isFirst = false;
+					buf += '+' + move.zMoveBoost[i] + ' ' + (BattleStatNames[i] || i);
+				}
+				buf += ', then uses ' + move.name + '</p>';
+			}
+			if (move.zMoveEffect === 'heal') {
+				buf += '<p><strong>Z-' + move.name + '</strong>: fully heals the user, then uses ' + move.name + '</p>';
+			} else if (move.zMoveEffect === 'clearboost') {
+				buf += '<p><strong>Z-' + move.name + '</strong>: resets the user\'s stats, then uses ' + move.name + '</p>';
+			} else if (move.zMoveEffect === 'healreplacement') {
+				buf += '<p><strong>Z-' + move.name + '</strong>: uses ' + move.name + ', then heals the replacement' + '</p>';
+			} else if (move.zMoveEffect === 'crit1') {
+				buf += '<p><strong>Z-' + move.name + '</strong>: increases the user\'s crit rate by 1, then uses ' + move.name + '</p>';
+			} else if (move.zMoveEffect === 'redirect') {
+				buf += '<p><strong>Z-' + move.name + '</strong>: redirects opponent\'s moves to the user (like Follow Me) in doubles, then uses ' + move.name + '</p>';
+			} else if (move.zMoveEffect === 'curse') {
+				buf += '<p><strong>Z-' + move.name + '</strong>: +1 Atk if the user is a ghost, or fully heals the user otherwise, then uses ' + move.name + '</p>';
+			}
+			if (id in zMoveVersionTable) {
+				var zMove = Tools.getMove(zMoveVersionTable[id]);
+				buf += '<p><strong><a href="/moves/' + zMove.id + '" data-target="push">' + zMove.name + '</a></strong>: ';
+				if (zMove.basePower) {
+					buf += '' + zMove.basePower + ' base power, ' + zMove.category + '</p>';
+				} else {
+					buf += zMove.shortDesc;
+				}
+				buf += '</p>';
+			}
+			if ((id + '2') in zMoveVersionTable) {
+				var zMove = Tools.getMove(zMoveVersionTable[id + '2']);
+				buf += '<p><strong><a href="/moves/' + zMove.id + '" data-target="push">' + zMove.name + '</a></strong>: ';
+				if (zMove.basePower) {
+					buf += '' + zMove.basePower + ' base power, ' + zMove.category + '</p>';
+				} else {
+					buf += zMove.shortDesc;
+				}
+				buf += '</p>';
+			}
 		}
 
 		// getting it

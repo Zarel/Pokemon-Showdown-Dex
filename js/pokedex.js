@@ -321,6 +321,11 @@ var PokedexTagPanel = PokedexResultPanel.extend({
 			name: 'Bypass Substitute',
 			tag: 'authentic',
 			desc: 'Bypasses but does not break a <a class="subtle" href="/moves/substitute" data-target="push">Substitute</a>.'
+		},
+		zmove: {
+			name: 'Z-move',
+			tag: '',
+			desc: 'Is a <a class="subtle" href="/articles/zmoves" data-target="push">Z-move</a>.'
 		}
 	},
 	initialize: function(id) {
@@ -365,6 +370,12 @@ var PokedexTagPanel = PokedexResultPanel.extend({
 		} else if (this.id === 'nonreflectable') {
 			for (var moveid in BattleMovedex) {
 				if (BattleMovedex[moveid].target !== 'self' && BattleMovedex[moveid].category === 'Status' && BattleMovedex[moveid].flags && !('reflectable' in BattleMovedex[moveid].flags)) {
+					results.push(moveid);
+				}
+			}
+		} else if (this.id === 'zmove') {
+			for (var moveid in BattleMovedex) {
+				if (BattleMovedex[moveid].isZ) {
 					results.push(moveid);
 				}
 			}
