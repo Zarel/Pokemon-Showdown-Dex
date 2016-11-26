@@ -289,6 +289,9 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 		var pokemon = Tools.getTemplate(this.id);
 		var learnset = BattleLearnsets[this.id] && BattleLearnsets[this.id].learnset;
 		if (!learnset) learnset = BattleLearnsets[toId(pokemon.baseSpecies)].learnset;
+		if (pokemon.baseSpecies === 'Rotom' || pokemon.baseSpecies === 'Pumpkaboo') {
+			learnset = $.extend({}, learnset, BattleLearnsets[toId(pokemon.baseSpecies)].learnset);
+		}
 
 		// learnset
 		var buf = '';
