@@ -764,15 +764,24 @@ var PokedexTierPanel = PokedexResultPanel.extend({
 			bl: "BL",
 			bl2: "BL2",
 			bl3: "BL3",
-			bl4: "BL4"
+			bl4: "BL4",
+			illegal: "Illegal",
+			bank: "Bank",
+			bankuber: "Bank-Uber",
+			banklc: "Bank-LC",
+			banknfe: "Bank-NFE",
 		};
-		var name = tierTable[id];
+		var name = tierTable[id] || id;
 		this.id = id;
 		this.shortTitle = name;
 
 		var buf = '<div class="pfx-body dexentry">';
 		buf += '<a href="/" class="pfx-backbutton" data-target="back"><i class="fa fa-chevron-left"></i> Pok&eacute;dex</a>';
 		buf += '<h1><a href="/tiers/'+id+'" data-target="push" class="subtle">'+name+'</a></h1>';
+
+		if (id === 'nfe' || id === 'banknfe') {
+			buf += '<p>"NFE" (Not Fully Evolved) as a tier refers to NFE Pokémon that aren\'t legal in LC and don\'t make the usage cutoff for a tier such as PU.</p>';
+		}
 
 		if (id === 'cap') buf += '<div class="warning"><strong>Note:</strong> <a href="http://www.smogon.com/cap/" target="_blank">Smogon CAP</a> is a project to make up Pok&eacute;mon.</div>';
 
