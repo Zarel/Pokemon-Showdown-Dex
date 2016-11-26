@@ -107,7 +107,7 @@ var PokedexMovePanel = PokedexResultPanel.extend({
 			Fairy: "Twinkle Tackle",
 		};
 		var zMoveVersionTable = {
-			sparklingaria: "Oceanic Operetta",
+			spiritshackle: "Sinister Arrow Raid",
 			volttackle: "Catastropika",
 			lastresort: "Extreme Evoboost",
 			psychic: "Genesis Supernova",
