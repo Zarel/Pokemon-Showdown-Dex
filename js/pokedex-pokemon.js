@@ -56,6 +56,7 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 			if (i === 'H') ability = '<em>'+pokemon.abilities[i]+'</em>';
 			buf += '<a href="/abilities/'+toId(pokemon.abilities[i])+'" data-target="push">'+ability+'</a>';
 			if (i === 'H') buf += '<small> (H)</small>';
+			if (i === 'S') buf += '<small> (special)</small>';
 		}
 		buf += '</dd>';
 		buf += '</dl>';
