@@ -85,6 +85,14 @@ var PokedexMovePanel = PokedexResultPanel.extend({
 			buf += '<p class="movetag"><a href="/tags/ballistic" data-target="push">&#x2713; Ballistic</a> <small>(doesn\'t affect <a class="subtle" href="/abilities/bulletproof" data-target="push">Bulletproof</a> pokemon)</small></p>';
 		}
 
+		if (move.target === 'allAdjacent') {
+			buf += '<p class="movetag"><small>In Doubles, hits all adjacent Pokémon (including allies)</small></p>';
+		} else if (move.target === 'allAdjacentFoes') {
+			buf += '<p class="movetag"><small>In Doubles, hits all adjacent foes</small></p>';
+		} else if (move.target === 'adjacentAllyOrSelf') {
+			buf += '<p class="movetag"><small>In Doubles, can be used either on the user or an adjacent ally</small></p>';
+		}
+
 		// Z-move
 		var zMoveTable = {
 			Poison: "Acid Downpour",
