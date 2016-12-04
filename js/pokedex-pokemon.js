@@ -74,19 +74,19 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 		};
 		buf += '<tr><td></td><td></td><td style="width:200px"></td><th class="ministat"><abbr title="0 IVs, 0 EVs, negative nature">min&minus;</a></th><th class="ministat"><abbr title="31 IVs, 0 EVs, neutral nature">min</abbr></th><th class="ministat"><abbr title="31 IVs, 252 EVs, neutral nature">max</abbr></th><th class="ministat"><abbr title="31 IVs, 252 EVs, positive nature">max+</abbr></th>';
 		var bst = 0;
-		for (var i in BattleStatNames) {
-			var baseStat = pokemon.baseStats[i];
+		for (var stat in BattleStatNames) {
+			var baseStat = pokemon.baseStats[stat];
 			bst += baseStat;
 			var width = Math.floor(baseStat*200/200);
 			if (width > 200) width = 200;
 			var color = Math.floor(baseStat*180/255);
 			if (color > 360) color = 360;
-			buf += '<tr><th>'+StatTitles[i]+':</th><td class="stat">'+baseStat+'</td>';
+			buf += '<tr><th>'+StatTitles[stat]+':</th><td class="stat">'+baseStat+'</td>';
 			buf += '<td class="statbar"><span style="width:'+Math.floor(width)+'px;background:hsl('+color+',85%,45%);border-color:hsl('+color+',75%,35%)"></span></td>';
-			buf += '<td class="ministat"><small>'+(i==='hp'?'':this.getStat(baseStat, false, 100, 0, 0, 0.9))+'</small></td><td class="ministat"><small>'+this.getStat(baseStat, i==='hp', 100, 31, 0, 1.0)+'</small></td>';
-			buf += '<td class="ministat"><small>'+this.getStat(baseStat, i==='hp', 100, 31, 255, 1.0)+'</small></td><td class="ministat"><small>'+(i==='hp'?'':this.getStat(baseStat, false, 100, 31, 255, 1.1))+'</small></td></tr>';
+			buf += '<td class="ministat"><small>'+(stat==='hp'?'':this.getStat(baseStat, false, 100, 0, 0, 0.9))+'</small></td><td class="ministat"><small>'+this.getStat(baseStat, stat==='hp', 100, 31, 0, 1.0)+'</small></td>';
+			buf += '<td class="ministat"><small>'+this.getStat(baseStat, stat==='hp', 100, 31, 255, 1.0)+'</small></td><td class="ministat"><small>'+(stat==='hp'?'':this.getStat(baseStat, false, 100, 31, 255, 1.1))+'</small></td></tr>';
 		}
-		buf += '<tr><th class="bst">Total:</th><td class="bst">'+bst+'</td><td></td><td class="ministat"></td><td class="ministat"></td><td class="ministat"></td><td class="ministat"></td>';
+		buf += '<tr><th class="bst">Total:</th><td class="bst">'+bst+'</td><td></td><td class="ministat" colspan="4">at level <input type="text" class="textbox" name="level" placeholder="100" size="5" /></td>';
 
 		buf += '</table></dd>';
 
@@ -269,7 +269,32 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 		setTimeout(this.renderFullLearnset.bind(this));
 	},
 	events: {
-		'click .tabbar button': 'selectTab'
+		'click .tabbar button': 'selectTab',
+		'input input[name=level]': 'updateLevel',
+		'keyup input[name=level]': 'updateLevel',
+		'change input[name=level]': 'updateLevel',
+	},
+	updateLevel: function(e) {
+		var val = this.$('input[name=level]').val();
+		var level = val === '' ? 100 : parseInt(val, 10);
+		var lowIV = 31, highIV = 31;
+		var lowEV = 0, highEV = 255;
+		if (val.slice(-1) === ':') {
+			lowIV = 0;
+			highEV = 0;
+		}
+		var i = 0;
+		var $entries = this.$('table.stats td.ministat small');
+		var pokemon = Tools.getTemplate(this.id);
+		for (var stat in BattleStatNames) {
+			var baseStat = pokemon.baseStats[stat];
+
+			$entries.eq(4 * i + 0).text(stat==='hp'?'':this.getStat(baseStat, false, level, 0, 0, 0.9));
+			$entries.eq(4 * i + 1).text(this.getStat(baseStat, stat==='hp', level, lowIV, lowEV, 1.0));
+			$entries.eq(4 * i + 2).text(this.getStat(baseStat, stat==='hp', level, highIV, highEV, 1.0));
+			$entries.eq(4 * i + 3).text(stat==='hp'?'':this.getStat(baseStat, false, level, highIV, highEV, 1.1));
+			i++;
+		}
 	},
 	selectTab: function(e) {
 		this.$('.tabbar button').removeClass('cur');
@@ -444,8 +469,15 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 		buf += '<li><dl><dt>Color:</dt><dd>'+pokemon.color+'</dd></dl></li>';
 
 		// animated gen 6
-		if (pokemon.gen < 7 && this.id !== 'missingno') {
-			buf += '<li class="resultheader"><h3>Animated Gen 6 sprites</h3></li>';
+		if (pokemon.gen === 7) {
+			buf += '<li class="resultheader"><h3>Animated Gen 6-7 sprites</h3></li>';
+
+			buf += '<li class="content"><table class="sprites"><tr><td><img src="//play.pokemonshowdown.com/sprites/xyani/'+pokemon.spriteid+'.gif" /></td>';
+			buf += '<td><img src="//play.pokemonshowdown.com/sprites/xyani-shiny/'+pokemon.spriteid+'.gif" /></td></table>';
+
+			buf += '<div style="clear:left"></div></li>';
+		} else if (pokemon.gen < 7 && this.id !== 'missingno') {
+			buf += '<li class="resultheader"><h3>Animated Gen 6-7 sprites</h3></li>';
 
 			buf += '<li class="content"><table class="sprites"><tr><td><img src="//play.pokemonshowdown.com/sprites/xyani/'+pokemon.spriteid+'.gif" /></td>';
 			buf += '<td><img src="//play.pokemonshowdown.com/sprites/xyani-shiny/'+pokemon.spriteid+'.gif" /></td></table>';
