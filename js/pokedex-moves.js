@@ -147,8 +147,8 @@ var PokedexMovePanel = PokedexResultPanel.extend({
 			}
 			if (move.zMoveEffect === 'heal') {
 				buf += '<p><strong>Z-' + move.name + '</strong>: fully heals the user, then uses ' + move.name + '</p>';
-			} else if (move.zMoveEffect === 'clearboost') {
-				buf += '<p><strong>Z-' + move.name + '</strong>: resets the user\'s stats, then uses ' + move.name + '</p>';
+			} else if (move.zMoveEffect === 'clearnegativeboost') {
+				buf += '<p><strong>Z-' + move.name + '</strong>: clears the user\'s negative stat boosts, then uses ' + move.name + '</p>';
 			} else if (move.zMoveEffect === 'healreplacement') {
 				buf += '<p><strong>Z-' + move.name + '</strong>: uses ' + move.name + ', then heals the replacement' + '</p>';
 			} else if (move.zMoveEffect === 'crit1') {
