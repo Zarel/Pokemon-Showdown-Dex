@@ -265,7 +265,7 @@ var PokedexTagPanel = PokedexResultPanel.extend({
 		contact: {
 			name: 'Contact',
 			tag: 'contact',
-			desc: 'Affected by a variety of moves, abilities, and items.</p><p>Moves affected by contact moves include: Spiky Shield, King\'s Shield. Abilities affected by contact moves include: Iron Barbs, Rough Skin, Gooey, Flame Body, Static, Tough Claws. Items affected by contact moves include: Eject Button, Rocky Helmet.'
+			desc: 'Affected by a variety of moves, abilities, and items.</p><p>Moves affected by contact moves include: Spiky Shield, King\'s Shield. Abilities affected by contact moves include: Iron Barbs, Rough Skin, Gooey, Flame Body, Static, Tough Claws. Items affected by contact moves include: Rocky Helmet, Sticky Barb.'
 		},
 		sound: {
 			name: 'Sound',
