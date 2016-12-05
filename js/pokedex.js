@@ -323,9 +323,9 @@ var PokedexTagPanel = PokedexResultPanel.extend({
 			desc: 'Bypasses but does not break a <a class="subtle" href="/moves/substitute" data-target="push">Substitute</a>.'
 		},
 		zmove: {
-			name: 'Z-move',
+			name: 'Z-Move',
 			tag: '',
-			desc: 'Is a <a class="subtle" href="/articles/zmoves" data-target="push">Z-move</a>.'
+			desc: 'Is a <a class="subtle" href="/articles/zmoves" data-target="push">Z-Move</a>.'
 		}
 	},
 	initialize: function(id) {

@@ -26,7 +26,7 @@ var PokedexMovePanel = PokedexResultPanel.extend({
 		buf += '</dl><div style="clear:left;padding-top:1px"></div>';
 
 		if (move.isZ) {
-			buf += '<p><strong><a href="/tags/zmove" data-target="push">[Z-move]</a></strong>';
+			buf += '<p><strong><a href="/tags/zmove" data-target="push">[Z-Move]</a></strong>';
 			if (move.isZ !== true) {
 				var zItem = Tools.getItem(move.isZ);
 				buf += ' requiring <a href="/items/' + zItem.id + '" data-target="push">' + zItem.name + '</a>';
@@ -93,7 +93,7 @@ var PokedexMovePanel = PokedexResultPanel.extend({
 			buf += '<p class="movetag"><small>In Doubles, can be used either on the user or an adjacent ally</small></p>';
 		}
 
-		// Z-move
+		// Z-Move
 		var zMoveTable = {
 			Poison: "Acid Downpour",
 			Fighting: "All-Out Pummeling",
@@ -128,7 +128,7 @@ var PokedexMovePanel = PokedexResultPanel.extend({
 			thunderbolt2: "10,000,000 Volt Thunderbolt",
 		};
 		if (move.zMovePower || move.zMoveEffect || move.zMoveBoost) {
-			buf += '<h3>Z-move(s)</h3>';
+			buf += '<h3>Z-Move(s)</h3>';
 			if (move.zMovePower) {
 				buf += '<p><strong><a href="/moves/' + toId(zMoveTable[move.type]) + '" data-target="push">';
 				buf += zMoveTable[move.type];

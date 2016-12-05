@@ -1,3 +1,3 @@
-# Z-moves
+# Z-Moves
 
-Z-moves are special moves introduced in Gen 6 that can only be used once per battle, and require a held Z crystal.
+Z-Moves are special moves introduced in Gen 7 that can only be used once per battle, and require a held Z-Crystal.
