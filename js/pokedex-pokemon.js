@@ -537,7 +537,7 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 				buf += 'Ability: <a href="/abilities/' + toId(pokemon.abilities['H']) + '" class="subtle" data-target="push">' + pokemon.abilities['H'] + '</a><br />';
 			}
 			if (event.level) buf += 'Level: ' + event.level + '<br />';
-			if (event.shiny) buf += 'Shiny: Yes<br />';
+			if (event.shiny === true) buf += 'Shiny: Yes<br />';
 			if (event.nature) buf += event.nature + ' Nature<br />';
 			if (event.ivs) {
 				buf += 'IVs: ';
@@ -557,6 +557,9 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 			}
 			if (event.perfectIVs) {
 				buf += '(at least ' + event.perfectIVs + ' perfect IVs)<br />';
+			}
+			if (event.shiny === 1) {
+				buf += '(this event can be Shiny)<br />';
 			}
 			buf += '</small></dd></dl></li>';
 		}
