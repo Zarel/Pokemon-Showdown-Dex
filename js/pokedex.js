@@ -607,7 +607,8 @@ var PokedexEggGroupPanel = PokedexResultPanel.extend({
 		var results = [];
 		for (var pokemonid in BattlePokedex) {
 			var eggGroups = BattlePokedex[pokemonid].eggGroups;
-			if (!eggGroups || BattlePokedex[pokemonid].forme || BattlePokedex[pokemonid].prevo) continue;
+			var prevo = BattlePokedex[pokemonid].prevo;
+			if (!eggGroups || BattlePokedex[pokemonid].forme || (prevo && BattlePokedex[prevo].eggGroups[0] !== "Undiscovered")) continue;
 			if (BattlePokedex[pokemonid] && BattlePokedex[pokemonid].isNonstandard) continue;
 			if (eggGroups[0] === name || eggGroups[1] === name ||
 				eggGroups[0] === name2 || eggGroups[1] === name2) {
