@@ -151,8 +151,8 @@ var PokedexMovePanel = PokedexResultPanel.extend({
 				buf += '<p><strong>Z-' + move.name + '</strong>: clears the user\'s negative stat boosts, then uses ' + move.name + '</p>';
 			} else if (move.zMoveEffect === 'healreplacement') {
 				buf += '<p><strong>Z-' + move.name + '</strong>: uses ' + move.name + ', then heals the replacement' + '</p>';
-			} else if (move.zMoveEffect === 'crit1') {
-				buf += '<p><strong>Z-' + move.name + '</strong>: increases the user\'s crit rate by 1, then uses ' + move.name + '</p>';
+			} else if (move.zMoveEffect === 'crit2') {
+				buf += '<p><strong>Z-' + move.name + '</strong>: increases the user\'s crit rate by 2, then uses ' + move.name + '</p>';
 			} else if (move.zMoveEffect === 'redirect') {
 				buf += '<p><strong>Z-' + move.name + '</strong>: redirects opponent\'s moves to the user (like Follow Me) in doubles, then uses ' + move.name + '</p>';
 			} else if (move.zMoveEffect === 'curse') {
