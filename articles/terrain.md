@@ -1,0 +1,7 @@
+# Terrain
+
+Terrain is a set of field effects that benefit [[grounded]] Pokemon for 5 turns. Each of the four types of terrain has a move and Ability that start the effect. The moves are [[Electric Terrain]], [[Grassy Terrain]], [[Misty Terrain]], and [[Psychic Terrain]], and the corresponding Abilities are [[Electric Surge]], [[Grassy Surge]], [[Misty Surge]], and [[Psychic Surge]]. When a different terrain effect comes into play, it replaces the old one. If the Pokemon that started the effect is holding a [[Terrain Extender]], it lasts 8 turns instead.
+
+Some moves have altered behavior when used while any terrain is active, including [[Camouflage]], [[Nature Power]], and [[Secret Power]]. Certain Abilities are also activated while a specific terrain is in play, which include [[Grass Pelt]] during Grassy Terrain, and [[Surge Surfer]] during Electric Terrain. There are four items that activate as soon as the holder is on the field at the same time as the corresponding terrain effect, which are [[Electric Seed]], [[Grassy Seed]], [[Misty Seed]], and [[Psychic Seed]]. The effects of all of these moves, Abilities, and items happen even if the Pokemon is not grounded.
+
+Pokemon that are in the invulnerable turn of a two-turn move are not considered grounded by terrain effects.

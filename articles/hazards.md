@@ -1,0 +1,3 @@
+# Hazards
+
+Hazards are a set of moves that affect Pokemon as they switch into battle, including [[Spikes]], [[Stealth Rock]], [[Sticky Web]], and [[Toxic Spikes]]. They are set up on the opposing side of the field when used, and can be removed when a Pokemon on that side uses [[Defog]] or [[Rapid Spin]], or is hit by Defog. Toxic Spikes can also be removed when a [[grounded]] [[Poison]]-type Pokemon switches in on the affected side.
