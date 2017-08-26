@@ -22,6 +22,11 @@ for (const [id, type, more] of searchIndex) {
 		searchIndexTable[id].push(type);
 	}
 }
+function idCanBe(id, type) {
+	if (!id.endsWith(type)) return false;
+	const entry = searchIndexTable[id.slice(0, -type.length)];
+	return !!(entry && entry.includes(type));
+}
 function toId(text) {
 	// this is a duplicate of Dex.getId, for performance reasons
 	if (text && text.id) {
@@ -66,8 +71,16 @@ for (const file of files) {
 	buf = buf.replace(/é/g, '&eacute;');
 
 	buf = buf.replace(/\[\[([^\]]+)\]\]/g, (match, submatch) => {
-		const id = toId(submatch);
-		const types = searchIndexTable[id];
+		let id = toId(submatch);
+		let types = searchIndexTable[id];
+		if (idCanBe(id, 'type')) {
+			id = id.slice(0, -4);
+			types = ['type'];
+		}
+		if (idCanBe(id, 'egggroup')) {
+			id = id.slice(0, -4);
+			types = ['egggroup'];
+		}
 		if (!types) {
 			return `${submatch} (?)`;
 		} else if (types.length === 1) {
