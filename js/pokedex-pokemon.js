@@ -474,14 +474,7 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 		buf += '<li><dl><dt>Color:</dt><dd>'+pokemon.color+'</dd></dl></li>';
 
 		// animated gen 6
-		if (pokemon.gen === 7) {
-			buf += '<li class="resultheader"><h3>Animated Gen 6-7 sprites</h3></li>';
-
-			buf += '<li class="content"><table class="sprites"><tr><td><img src="//play.pokemonshowdown.com/sprites/xyani/'+pokemon.spriteid+'.gif" /></td>';
-			buf += '<td><img src="//play.pokemonshowdown.com/sprites/xyani-shiny/'+pokemon.spriteid+'.gif" /></td></table>';
-
-			buf += '<div style="clear:left"></div></li>';
-		} else if (pokemon.gen < 7 && this.id !== 'missingno') {
+		if (pokemon.num > 0 && this.id !== 'missingno') {
 			buf += '<li class="resultheader"><h3>Animated Gen 6-7 sprites</h3></li>';
 
 			buf += '<li class="content"><table class="sprites"><tr><td><img src="//play.pokemonshowdown.com/sprites/xyani/'+pokemon.spriteid+'.gif" /></td>';
@@ -495,9 +488,7 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 		// cry
 		buf += '<li class="resultheader"><h3>Cry</h3></li>';
 
-		var num = ''+pokemon.num;
-		num = (num.length<=2?'0':'')+(num.length<=1?'0':'')+num;
-		buf += '<li class="content"><audio src="//play.pokemonshowdown.com/audio/cries/'+num+'.wav" controls="controls"><a href="//play.pokemonshowdown.com/audio/cries/'+num+'.wav">Play</a></audio></li>';
+		buf += '<li class="content"><audio src="//play.pokemonshowdown.com/audio/cries/'+pokemon.spriteid+'.mp3" controls="controls"><a href="//play.pokemonshowdown.com/audio/cries/'+pokemon.spriteid+'.mp3">Play</a></audio></li>';
 
 		// still gen 5
 		buf += '<li class="resultheader"><h3>Gen 5 Sprites</h3></li>';
