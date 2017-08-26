@@ -299,6 +299,9 @@ table.evos .arrow {
 	padding: 0;
 	font-size: 21px;
 }
+table.evos .arrow abbr {
+	text-decoration: none;
+}
 
 .metricchart li {
 	height: 30px;
