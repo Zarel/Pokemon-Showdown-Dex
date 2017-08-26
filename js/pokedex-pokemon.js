@@ -18,8 +18,13 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 		buf += '</h1>';
 
 		if (pokemon.isNonstandard) {
-			if (id === 'missingno') buf += '<div class="warning"><strong>Note:</strong> This is a glitch Pok&eacute;mon.</div>';
-			else buf += '<div class="warning"><strong>Note:</strong> This is a made-up Pok&eacute;mon by <a href="http://www.smogon.com/cap/" target="_blank">Smogon CAP</a>.</div>';
+			if (id === 'missingno') {
+				buf += '<div class="warning"><strong>Note:</strong> This is a glitch Pok&eacute;mon.</div>';
+			} else if (id.substr(0, 8) === 'pokestar') {
+				buf += '<div class="warning"><strong>Note:</strong> This is a Pok&eacute;mon from Pok&eacute;star Studios.</div>';
+			} else {
+				buf += '<div class="warning"><strong>Note:</strong> This is a made-up Pok&eacute;mon by <a href="http://www.smogon.com/cap/" target="_blank">Smogon CAP</a>.</div>';
+			}
 		}
 
 		buf += '<img src="'+Tools.resourcePrefix+'sprites/bw/'+pokemon.spriteid+'.png'+'" alt="" width="96" height="96" class="sprite" />';
@@ -239,7 +244,7 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 		buf += '<li class="resultheader"><h3>Level-up</h3></li>';
 
 		var learnset = BattleLearnsets[id] && BattleLearnsets[id].learnset;
-		if (!learnset) learnset = BattleLearnsets[toId(pokemon.baseSpecies)].learnset;
+		if (!learnset && BattleLearnsets[toId(pokemon.baseSpecies)]) learnset = BattleLearnsets[toId(pokemon.baseSpecies)].learnset;
 
 		var moves = [];
 		for (var moveid in learnset) {
