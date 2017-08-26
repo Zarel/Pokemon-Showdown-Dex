@@ -245,6 +245,8 @@ var PokedexMovePanel = PokedexResultPanel.extend({
 						}
 						if (!hasBreeders) buf += 'itself';
 						buf += '</li>';
+					} else if (source === '7V') {
+						buf += '<li>Virtual Console transfer from Gen 1</li>';
 					} else if (source.charAt(1) === 'S') {
 						buf += '<li>Event move</li>';
 					}
