@@ -126,6 +126,12 @@ var PokedexMovePanel = PokedexResultPanel.extend({
 			spectralthief: "Soul-Stealing 7-Star Strike",
 			thunderbolt: "Stoked Sparksurfer",
 			thunderbolt2: "10,000,000 Volt Thunderbolt",
+			photongeyser: "Light That Burns the Sky",
+			sunsteelstrike: "Searing Sunraze Smash",
+			moongeistbeam: "Menacing Moonraze Maelstrom",
+			playrough: "Let's Snuggle Forever",
+			stoneedge: "Splintered Stormshards",
+			clangingscales: "Clangorous Soulblaze",
 		};
 		if (move.zMovePower || move.zMoveEffect || move.zMoveBoost) {
 			buf += '<h3>Z-Move(s)</h3>';
