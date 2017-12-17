@@ -263,6 +263,7 @@ var PokedexMovePanel = PokedexResultPanel.extend({
 
 		// past gens
 		var pastGenChanges = false;
+		var curGenDesc = move.shortDesc;
 		if (BattleTeambuilderTable) for (var genNum = 6; genNum >= 1; genNum--) {
 			var genTable = BattleTeambuilderTable['gen' + genNum];
 			var nextGenTable = BattleTeambuilderTable['gen' + (genNum + 1)];
@@ -298,9 +299,8 @@ var PokedexMovePanel = PokedexResultPanel.extend({
 				changes += 'Accuracy: ' + curGenAccText + ' <i class="fa fa-long-arrow-right"></i> ' + nextGenAccText + '<br />';
 			}
 
-			var nextGenDesc = move.shortDesc;
-			if (nextGenTable && nextGenTable.overrideMoveDesc[id]) nextGenDesc = nextGenTable.overrideMoveDesc[id];
-			var curGenDesc = genTable.overrideMoveDesc[id] || nextGenDesc;
+			var nextGenDesc = curGenDesc;
+			curGenDesc = genTable.overrideMoveDesc[id] || nextGenDesc;
 			if (curGenDesc !== nextGenDesc) {
 				changes += curGenDesc + ' <i class="fa fa-long-arrow-right"></i> ' + nextGenDesc + '<br />';
 			}
