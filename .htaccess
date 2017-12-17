@@ -16,11 +16,11 @@ deny from all
 
 RewriteEngine on
 
-RewriteCond %{HTTP:X-Forwarded-Proto} ^https$
-RewriteRule ^(.*) - [E=P_SUFFIX:s]
+RewriteCond %{HTTP:X-Forwarded-Proto} ^http$
+RewriteRule ^(.*)$ https://dex.pokemonshowdown.com/$1 [R=302,NE,L]
 
 RewriteCond %{HTTP_HOST} ^www\.dex\.pokemonshowdown\.com$
-RewriteRule ^(.*)$ http%{ENV:P_SUFFIX}://dex.pokemonshowdown.com/$1 [R=301,NE,L]
+RewriteRule ^(.*)$ https://dex.pokemonshowdown.com/$1 [R=301,NE,L]
 
 RewriteRule ^pokedex(\/.*)?$ / [R=302,L]
 RewriteRule ^pokemon(\/.*)?$ index.php [L,QSA]
