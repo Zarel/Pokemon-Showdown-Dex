@@ -61,6 +61,9 @@ if (!Function.prototype.bind) {
 		constructor: function(options) {
 			if (!options) options = {};
 			if (options.root) this.root = options.root;
+			if ((location.search || '').substr(0, 4) === '?_ga' && window.history) {
+				history.replaceState(null, null, '/');
+			}
 			for (var i in this.states) {
 				this.routePanel(i, this.states[i]);
 			}
@@ -719,6 +722,10 @@ if (!Function.prototype.bind) {
 		rightOffset: 0,
 		fragment: '',
 		hidden: false,
+		setFragment: function(fragment) {
+			this.fragment = fragment;
+			this.app.updateURL();
+		},
 		moveTo: function(loc, flags, instant) {
 			var left = loc[0];
 			var width = loc[1];
