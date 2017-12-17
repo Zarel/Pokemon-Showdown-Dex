@@ -75,7 +75,7 @@
 	float:left;
 	padding:10px 10px 10px 10px;
 }
-.dexentry p {
+.dexentry p, .dexentry h2 {
 	padding: 0 10px;
 }
 .dexentry dl {
