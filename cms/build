@@ -77,6 +77,10 @@ for (const file of files) {
 			id = id.slice(0, -4);
 			types = ['type'];
 		}
+		if (idCanBe(id, 'move')) {
+			id = id.slice(0, -4);
+			types = ['move'];
+		}
 		if (idCanBe(id, 'egggroup')) {
 			id = id.slice(0, -4);
 			types = ['egggroup'];
