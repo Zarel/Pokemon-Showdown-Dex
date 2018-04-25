@@ -19,9 +19,9 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 
 		if (pokemon.isNonstandard) {
 			if (id === 'missingno') {
-				buf += '<div class="warning"><strong>Note:</strong> This is a glitch Pok&eacute;mon.</div>';
+				buf += '<div class="warning"><strong>Note:</strong> This is a glitch Pok&eacute;mon from Red/Blue/Yellow.</div>';
 			} else if (id.substr(0, 8) === 'pokestar') {
-				buf += '<div class="warning"><strong>Note:</strong> This is a Pok&eacute;mon from Pok&eacute;star Studios.</div>';
+				buf += '<div class="warning"><strong>Note:</strong> This is a Pok&eacute;mon from <a href="https://bulbapedia.bulbagarden.net/wiki/Pok%C3%A9star_Studios" target="_blank">Pok&eacute;star Studios in Black 2 and White 2</a>.</div>';
 			} else {
 				buf += '<div class="warning"><strong>Note:</strong> This is a made-up Pok&eacute;mon by <a href="http://www.smogon.com/cap/" target="_blank">Smogon CAP</a>.</div>';
 			}
