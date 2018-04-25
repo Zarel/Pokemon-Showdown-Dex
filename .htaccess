@@ -30,6 +30,7 @@ RewriteRule ^tags(\/.*)?$ index.php [L,QSA]
 RewriteRule ^egggroups(\/.*)?$ index.php [L,QSA]
 RewriteRule ^moves(\/.*)?$ index.php [L,QSA]
 RewriteRule ^types(\/.*)?$ index.php [L,QSA]
+RewriteRule ^tiers(\/.*)?$ index.php [L,QSA]
 RewriteRule ^categories(\/.*)?$ index.php [L,QSA]
 RewriteRule ^articles\/([a-z0-9]+)\/?$ index.php [L,QSA]
 
