@@ -13,7 +13,7 @@ const child_process = require('child_process');
 process.chdir(__dirname);
 
 if (process.argv[2] === 'full') {
-	child_process.execSync('../play.pokemonshowdown.com/githooks/build-indexes', {stdio: 'inherit'});
+	child_process.execSync('../play.pokemonshowdown.com/build-tools/build-indexes', {stdio: 'inherit'});
 }
 
 function updateIndex() {
