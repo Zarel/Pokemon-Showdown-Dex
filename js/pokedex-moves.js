@@ -53,7 +53,7 @@ var PokedexMovePanel = PokedexResultPanel.extend({
 		if ('authentic' in move.flags) {
 			buf += '<p class="movetag"><a href="/tags/bypasssub" data-target="push">Bypasses Substitute</a> <small>(bypasses but does not break a <a class="subtle" href="/moves/substitute" data-target="push">Substitute</a>)</small></p>';
 		}
-		if (!('protect' in move.flags) && move.target !== 'self' && move.category === 'Status') {
+		if (!('reflectable' in move.flags) && move.target !== 'self' && move.category === 'Status') {
 			buf += '<p class="movetag"><a href="/tags/nonreflectable" data-target="push">&#x2713; Nonreflectable</a> <small>(can\'t be bounced by <a class="subtle" href="/moves/magiccoat" data-target="push">Magic Coat</a> or <a class="subtle" href="/abilities/magicbounce" data-target="push">Magic Bounce</a>)</small></p>';
 		}
 		if (!('mirror' in move.flags) && move.target !== 'self') {
