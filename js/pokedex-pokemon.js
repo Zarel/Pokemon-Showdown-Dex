@@ -216,7 +216,7 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 				}
 			}
 
-			if (genNum === 1 && pokemon.num <= 151 && !pokemon.forme) {
+			if (genNum === 1 && pokemon.num > 0 && pokemon.num <= 151 && !pokemon.forme) {
 				var nextGenSpA = pokemon.baseStats['spa'];
 				if (nextGenTable && nextGenTable.overrideStats[id] && nextGenTable.overrideStats[id]['spa']) nextGenSpA = nextGenTable.overrideStats[id]['spa'];
 				var nextGenSpD = pokemon.baseStats['spd'];
