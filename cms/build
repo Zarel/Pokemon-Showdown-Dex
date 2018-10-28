@@ -55,7 +55,7 @@ for (const file of files) {
 	let buf = '' + fs.readFileSync('../articles/' + file);
 	const name = file.slice(0, -3);
 	const nlIndex = buf.indexOf('\n');
-	const title = buf.slice(2, nlIndex);
+	// const title = buf.slice(2, nlIndex);
 	const secondHashIndex = buf.indexOf('\n# ');
 	if (secondHashIndex > 0 && buf.slice(nlIndex, secondHashIndex).trim() === '') {
 		buf = buf.slice(secondHashIndex + 1);
@@ -67,7 +67,7 @@ for (const file of files) {
 
 	// buf = template.replace('{title}', title).replace('{content}', buf);
 	buf = buf.replace(`<a href="/${name}">`, `<a href="/${name}" class="cur">`);
-	// showdown doesn't convert Unicode to entities automatically
+	// showdown (the Markdown parser) doesn't convert Unicode to entities automatically
 	buf = buf.replace(/é/g, '&eacute;');
 
 	buf = buf.replace(/\[\[([^\]]+)\]\]/g, (match, submatch) => {

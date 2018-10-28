@@ -174,7 +174,7 @@ var PokedexTypePanel = PokedexResultPanel.extend({
 		}
 		buf += '</dd>';
 
-		buf += '</dl>'
+		buf += '</dl>';
 
 		// move list
 		buf += '<ul class="tabbar"><li><button class="button nav-first cur" value="move">Moves</button></li><li><button class="button nav-last" value="pokemon">Pokemon</button></li></ul>';
@@ -350,7 +350,6 @@ var PokedexTagPanel = PokedexResultPanel.extend({
 
 		this.html(buf);
 
-		var self = this;
 		setTimeout(this.renderDistribution.bind(this));
 	},
 	getDistribution: function() {
@@ -398,9 +397,8 @@ var PokedexTagPanel = PokedexResultPanel.extend({
 		var results = this.getDistribution();
 		this.$chart = this.$('.utilichart');
 
-		var streamLoading = false;
 		if (results.length > 1600/33) {
-			this.streamLoading = streamLoading = true;
+			this.streamLoading = true;
 			this.$el.on('scroll', this.handleScroll.bind(this));
 
 			var panelTop = this.$el.children().offset().top;
@@ -466,7 +464,7 @@ var PokedexTagPanel = PokedexResultPanel.extend({
 
 		var $rows = this.$chart.children();
 
-		if (fullUpdate || start < this.start - rowFit-30 || end > this.end + rowFit+30) {
+		if (fullUpdate || start < this.start - rowFit - 30 || end > this.end + rowFit + 30) {
 			var buf = '';
 			for (var i=0, len=results.length; i<len; i++) {
 				buf += '<li class="result">'+this.renderRow(i, (i < start || i > end))+'</li>';
@@ -596,7 +594,6 @@ var PokedexEggGroupPanel = PokedexResultPanel.extend({
 
 		this.html(buf);
 
-		var self = this;
 		setTimeout(this.renderDistribution.bind(this));
 	},
 	getDistribution: function() {
@@ -622,9 +619,8 @@ var PokedexEggGroupPanel = PokedexResultPanel.extend({
 		var results = this.getDistribution();
 		this.$chart = this.$('.utilichart');
 
-		var streamLoading = false;
 		if (results.length > 1600/33) {
-			this.streamLoading = streamLoading = true;
+			this.streamLoading = true;
 			this.$el.on('scroll', this.handleScroll.bind(this));
 
 			var panelTop = this.$el.children().offset().top;
@@ -690,7 +686,7 @@ var PokedexEggGroupPanel = PokedexResultPanel.extend({
 
 		var $rows = this.$chart.children();
 
-		if (fullUpdate || start < this.start - rowFit-30 || end > this.end + rowFit+30) {
+		if (fullUpdate || start < this.start - rowFit - 30 || end > this.end + rowFit + 30) {
 			var buf = '';
 			for (var i=0, len=results.length; i<len; i++) {
 				buf += '<li class="result">'+this.renderRow(i, (i < start || i > end))+'</li>';

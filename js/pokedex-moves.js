@@ -322,7 +322,6 @@ var PokedexMovePanel = PokedexResultPanel.extend({
 
 		this.html(buf);
 
-		var self = this;
 		setTimeout(this.renderDistribution.bind(this));
 	},
 	getDistribution: function() {
@@ -359,7 +358,7 @@ var PokedexMovePanel = PokedexResultPanel.extend({
 			}
 		}
 		results.sort();
-		var last = '', lastChanged = false, streamLoading = false;
+		var last = '';
 		for (var i=0; i<results.length; i++) {
 			if (results[i].charAt(0) !== last) {
 				results.splice(i, 0, results[i].charAt(0).toUpperCase());
@@ -373,9 +372,8 @@ var PokedexMovePanel = PokedexResultPanel.extend({
 		var results = this.getDistribution();
 		this.$chart = this.$('.utilichart');
 
-		var streamLoading = false;
 		if (results.length > 1600/33) {
-			this.streamLoading = streamLoading = true;
+			this.streamLoading = true;
 			this.$el.on('scroll', this.handleScroll.bind(this));
 
 			var panelTop = this.$el.children().offset().top;
@@ -485,7 +483,7 @@ var PokedexMovePanel = PokedexResultPanel.extend({
 
 		var $rows = this.$chart.children();
 
-		if (fullUpdate || start < this.start - rowFit-30 || end > this.end + rowFit+30) {
+		if (fullUpdate || start < this.start - rowFit - 30 || end > this.end + rowFit + 30) {
 			var buf = '';
 			for (var i=0, len=results.length; i<len; i++) {
 				buf += '<li class="result">'+this.renderRow(i, (i < start || i > end))+'</li>';
