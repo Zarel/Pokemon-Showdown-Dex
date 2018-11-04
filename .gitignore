@@ -1,3 +1,4 @@
 /index.php
 /.articles-cached
 node_modules
+.DS_Store
