@@ -39,3 +39,19 @@ Temporary effects that increase critical hit ratio:
 Note that the Focus Energy effect doesn't stack with itself - you can only have one Focus Energy effect at a time.
 
 Critical hits are prevented from striking a Pokemon under the effect of [[Lucky Chant]], as well as Pokemon with the [[Battle Armor]] and [[Shell Armor]] Abilities.
+
+### Past gens
+
+Gen 6:
+
+At +0, critical hit rate was 1/16 instead of 1/24.
+
+Gen 1-5:
+
+| Ratio | Rate   | Percentage |
+|------:|:------:|-----------:|
+| +0    | 1/16   |       6.3% |
+| +1    | 1/8    |      12.5% |
+| +2    | 1/4    |      25.0% |
+| +3    | 1/3    |      33.3% |
+| +4    | 1/2    |      50.0% |

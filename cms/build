@@ -71,8 +71,6 @@ for (const file of files) {
 	buf = converter.makeHtml(buf);
 	// buf = buf.replace(/<a href="http/g, `<a target="_blank" href="http`);
 
-	buf = buf.replace(/\n/g, '\n\t\t').replace(/\n\t\t\n/g, '\n\n');
-
 	// buf = template.replace('{title}', title).replace('{content}', buf);
 	buf = buf.replace(`<a href="/${name}">`, `<a href="/${name}" class="cur">`);
 	// showdown (the Markdown parser) doesn't convert Unicode to entities automatically
@@ -101,6 +99,25 @@ for (const file of files) {
 			return `${submatch} (` + types.map(type => `<a href="/${pluralType(type)}/${id}" data-target="push">${type}</a>`).join(`, `) + `)`;
 		}
 	});
+
+	buf = buf.replace(/>Past gens<\/h3>([^]*)/, (match, submatch) => {
+		let subBuf = '>Past gens<\/h3>\n<dl>\n';
+		let isFirst = true;
+		for (const line of submatch.split('\n')) {
+			if (line.endsWith(':</p>')) {
+				if (!isFirst) subBuf += '</dd>';
+				isFirst = false;
+				subBuf += '<dt>' + line.slice(3, -4) + '</dt><dd>\n';
+			} else {
+				subBuf += line + '\n';
+			}
+		}
+		if (!isFirst) subBuf += '</dd>';
+		subBuf += '\n</dl>';
+		return subBuf;
+	});
+
+	buf = buf.replace(/\n/g, '\n\t\t').replace(/\n\t\t\n/g, '\n\n');
 
 	fs.writeFileSync('../.articles-cached/' + name + '.html', buf);
 }
