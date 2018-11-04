@@ -10,7 +10,6 @@ Most moves start at a critical hit ratio of +0, although high critical hit ratio
 | +1    | 1/8    |      12.5% |
 | +2    | 1/2    |      50.0% |
 | +3    | always |     100.0% |
-|------:|:------:|-----------:|
 
 Items that increase critical hit ratio:
 
@@ -59,7 +58,6 @@ The critical damage multiplier was 2 instead of 1.5, and the critical hit rates 
 | +2    | 1/4    |      25.0% |
 | +3    | 1/3    |      33.3% |
 | +4    | 1/2    |      50.0% |
-|------:|:------:|-----------:|
 
 Gen 2 only:
 
