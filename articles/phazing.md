@@ -4,4 +4,4 @@ Phazing moves are moves that make the opponent switch out, including [[Whirlwind
 
 The word "phaze" is short for "pseudo-Haze", since they're similar to [[Haze]] in that they reset stat boosts.
 
-Note that the Ability [[Suction Cups]] and the effect of [[Ingrain]] prevent phazing, though Pokemon with [[Mold Breaker]] can ignore the former.
+Note that the Ability [[Suction Cups]] and the effect of [[Ingrain]] prevent phazing, though Pokemon with [[Mold Breaker]], [[Turboblaze]], or [[Teravolt]] can ignore the former.
