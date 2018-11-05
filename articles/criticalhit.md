@@ -73,4 +73,5 @@ Critical hits always caused all stat stages on both sides to be treated as 0, re
 
 Critical rate was calculated by default as the attacker's base speed divided by 512.
 For high-critical-rate moves such as [[Slash]] or [[Razor Leaf]], the rate instead uses base speed divided by 64, with a maximum of 255/256.
+
 Focus Energy did not function properly at all, and after using it, the critical rate on all subsequent moves until switch-out was divided by 4.
