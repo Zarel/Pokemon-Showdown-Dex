@@ -1,6 +1,6 @@
 var PokedexMovePanel = PokedexResultPanel.extend({
 	initialize: function(id) {
-		var move = Tools.getMove(id);
+		var move = Dex.getMove(id);
 		this.id = id;
 		this.shortTitle = move.name;
 
@@ -28,7 +28,7 @@ var PokedexMovePanel = PokedexResultPanel.extend({
 		if (move.isZ) {
 			buf += '<p><strong><a href="/tags/zmove" data-target="push">[Z-Move]</a></strong>';
 			if (move.isZ !== true) {
-				var zItem = Tools.getItem(move.isZ);
+				var zItem = Dex.getItem(move.isZ);
 				buf += ' requiring <a href="/items/' + zItem.id + '" data-target="push">' + zItem.name + '</a>';
 			}
 			buf += '</p>';
@@ -42,7 +42,7 @@ var PokedexMovePanel = PokedexResultPanel.extend({
 			buf += '<p>Usually moves first <em>(priority +'+move.priority+')</em>.</p>';
 		}
 
-		buf += '<p>'+Tools.escapeHTML(move.desc||move.shortDesc)+'</p>';
+		buf += '<p>'+Dex.escapeHTML(move.desc||move.shortDesc)+'</p>';
 
 		if ('defrost' in move.flags) {
 			buf += '<p><a class="subtle" href="/tags/defrost" data-target="push">The user thaws out</a> if it is frozen.</p>';
@@ -165,7 +165,7 @@ var PokedexMovePanel = PokedexResultPanel.extend({
 				buf += '<p><strong>Z-' + move.name + '</strong>: +1 Atk if the user is a ghost, or fully heals the user otherwise, then uses ' + move.name + '</p>';
 			}
 			if (id in zMoveVersionTable) {
-				var zMove = Tools.getMove(zMoveVersionTable[id]);
+				var zMove = Dex.getMove(zMoveVersionTable[id]);
 				buf += '<p><strong><a href="/moves/' + zMove.id + '" data-target="push">' + zMove.name + '</a></strong>: ';
 				if (zMove.basePower) {
 					buf += '' + zMove.basePower + ' base power, ' + zMove.category + '</p>';
@@ -175,7 +175,7 @@ var PokedexMovePanel = PokedexResultPanel.extend({
 				buf += '</p>';
 			}
 			if ((id + '2') in zMoveVersionTable) {
-				var zMove = Tools.getMove(zMoveVersionTable[id + '2']);
+				var zMove = Dex.getMove(zMoveVersionTable[id + '2']);
 				buf += '<p><strong><a href="/moves/' + zMove.id + '" data-target="push">' + zMove.name + '</a></strong>: ';
 				if (zMove.basePower) {
 					buf += '' + zMove.basePower + ' base power, ' + zMove.category + '</p>';
@@ -190,7 +190,7 @@ var PokedexMovePanel = PokedexResultPanel.extend({
 		// warning: excessive trickiness
 		var leftPanel = this.app.panels[this.app.panels.length - 2];
 		if (leftPanel && leftPanel.fragment.slice(0, 8) === 'pokemon/') {
-			var pokemon = Tools.getTemplate(leftPanel.id);
+			var pokemon = Dex.getTemplate(leftPanel.id);
 			var learnset = BattleLearnsets[pokemon.id] && BattleLearnsets[pokemon.id].learnset;
 			if (!learnset) learnset = BattleLearnsets[toId(pokemon.baseSpecies)].learnset;
 			var eg1 = pokemon.eggGroups[0];
@@ -203,7 +203,7 @@ var PokedexMovePanel = PokedexResultPanel.extend({
 					template = pokemon;
 				} else {
 					if (!template.prevo) break;
-					template = Tools.getTemplate(template.prevo);
+					template = Dex.getTemplate(template.prevo);
 					sources = BattleLearnsets[template.speciesid].learnset[id];
 				}
 
@@ -436,13 +436,13 @@ var PokedexMovePanel = PokedexResultPanel.extend({
 				desc = results[i].substr(1,3) === '001' ? '&ndash;' : '<small>L</small>'+(Number(results[i].substr(1,3)) || '?');
 				break;
 			case 'b': // tm/hm
-				desc = '<span class="itemicon" style="margin-top:-3px;'+Tools.getItemIcon({spritenum:508})+'"></span>';
+				desc = '<span class="itemicon" style="margin-top:-3px;'+Dex.getItemIcon({spritenum:508})+'"></span>';
 				break;
 			case 'c': // tutor
 				desc = '<img src="//play.pokemonshowdown.com/sprites/tutor.png" style="margin-top:-4px;opacity:.7" width="27" height="26" alt="T" />';
 				break;
 			case 'd': // egg move
-				desc = '<span class="picon" style="margin-top:-12px;'+Tools.getPokemonIcon('egg')+'"></span>';
+				desc = '<span class="picon" style="margin-top:-12px;'+Dex.getPokemonIcon('egg')+'"></span>';
 				break;
 			case 'e': // event
 				desc = '!';

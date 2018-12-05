@@ -1,6 +1,6 @@
 var PokedexPokemonPanel = PokedexResultPanel.extend({
 	initialize: function(id) {
-		var pokemon = Tools.getTemplate(id);
+		var pokemon = Dex.getTemplate(id);
 		this.id = id;
 		this.shortTitle = pokemon.baseSpecies;
 
@@ -27,7 +27,7 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 			}
 		}
 
-		buf += '<img src="'+Tools.resourcePrefix+'sprites/bw/'+pokemon.spriteid+'.png'+'" alt="" width="96" height="96" class="sprite" />';
+		buf += '<img src="'+Dex.resourcePrefix+'sprites/bw/'+pokemon.spriteid+'.png'+'" alt="" width="96" height="96" class="sprite" />';
 
 		buf += '<dl class="typeentry">';
 		buf += '<dt>Types:</dt> <dd>';
@@ -97,14 +97,14 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 
 		buf += '<dt>Evolution:</dt> <dd>';
 		var template = pokemon;
-		while (template.prevo) template = Tools.getTemplate(template.prevo);
+		while (template.prevo) template = Dex.getTemplate(template.prevo);
 		if (template.evos) {
 			buf += '<table class="evos"><tr><td>';
 			var evos = [template];
 			while (evos) {
 				if (evos[0] === 'dustox') evos = ['beautifly','dustox'];
 				for (var i=0; i<evos.length; i++) {
-					template = Tools.getTemplate(evos[i]);
+					template = Dex.getTemplate(evos[i]);
 					if (i <= 0) {
 						if (!evos[0].exists) {
 							if (evos[1] === 'dustox') {
@@ -117,7 +117,7 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 						}
 					}
 					var name = (template.forme ? template.baseSpecies+'<small>-'+template.forme+'</small>' : template.name);
-					name = '<span class="picon" style="'+Tools.getPokemonIcon(template)+'"></span>'+name;
+					name = '<span class="picon" style="'+Dex.getPokemonIcon(template)+'"></span>'+name;
 					if (template === pokemon) {
 						buf += '<div><strong>'+name+'</strong></div>';
 					} else {
@@ -128,7 +128,7 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 			}
 			buf += '</td></tr></table>';
 			if (pokemon.evoLevel && pokemon.evoLevel >= 3) {
-				buf += '<div><small>Evolves from ' + Tools.getTemplate(pokemon.prevo).species + ' at level ' + pokemon.evoLevel + '</small></div>';
+				buf += '<div><small>Evolves from ' + Dex.getTemplate(pokemon.prevo).species + ' at level ' + pokemon.evoLevel + '</small></div>';
 			}
 		} else {
 			buf += '<em>Does not evolve</em>';
@@ -137,9 +137,9 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 
 		if (pokemon.otherFormes || pokemon.forme) {
 			buf += '<dt>Formes:</dt> <dd>';
-			template = (pokemon.forme ? Tools.getTemplate(pokemon.baseSpecies) : pokemon);
+			template = (pokemon.forme ? Dex.getTemplate(pokemon.baseSpecies) : pokemon);
 			var name = template.baseForme || 'Base';
-			name = '<span class="picon" style="'+Tools.getPokemonIcon(template)+'"></span>'+name;
+			name = '<span class="picon" style="'+Dex.getPokemonIcon(template)+'"></span>'+name;
 			if (template === pokemon) {
 				buf += '<strong>'+name+'</strong>';
 			} else {
@@ -147,9 +147,9 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 			}
 			var otherFormes = template.otherFormes;
 			if (otherFormes) for (var i=0; i<otherFormes.length; i++) {
-				template = Tools.getTemplate(otherFormes[i]);
+				template = Dex.getTemplate(otherFormes[i]);
 				var name = template.forme;
-				name = '<span class="picon" style="'+Tools.getPokemonIcon(template)+'"></span>'+name;
+				name = '<span class="picon" style="'+Dex.getPokemonIcon(template)+'"></span>'+name;
 				if (template === pokemon) {
 					buf += ', <strong>'+name+'</strong>';
 				} else {
@@ -163,7 +163,7 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 		buf += '</dd></dl>';
 
 		if (pokemon.eggGroups) {
-			buf += '<dl class="colentry"><dt>Egg groups:</dt><dd><span class="picon" style="margin-top:-12px;'+Tools.getPokemonIcon('egg')+'"></span><a href="/egggroups/'+pokemon.eggGroups.map(toId).join('+')+'" data-target="push">'+pokemon.eggGroups.join(', ')+'</a></dd></dl>';
+			buf += '<dl class="colentry"><dt>Egg groups:</dt><dd><span class="picon" style="margin-top:-12px;'+Dex.getPokemonIcon('egg')+'"></span><a href="/egggroups/'+pokemon.eggGroups.map(toId).join('+')+'" data-target="push">'+pokemon.eggGroups.join(', ')+'</a></dd></dl>';
 			buf += '<dl class="colentry"><dt>Gender ratio:</dt><dd>';
 			if (pokemon.gender) switch (pokemon.gender) {
 			case 'M':
@@ -290,7 +290,7 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 		}
 		var i = 0;
 		var $entries = this.$('table.stats td.ministat small');
-		var pokemon = Tools.getTemplate(this.id);
+		var pokemon = Dex.getTemplate(this.id);
 		for (var stat in BattleStatNames) {
 			var baseStat = pokemon.baseStats[stat];
 
@@ -317,7 +317,7 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 		}
 	},
 	renderFullLearnset: function() {
-		var pokemon = Tools.getTemplate(this.id);
+		var pokemon = Dex.getTemplate(this.id);
 		var learnset = BattleLearnsets[this.id] && BattleLearnsets[this.id].learnset;
 		if (!learnset) learnset = BattleLearnsets[toId(pokemon.baseSpecies)].learnset;
 		if (pokemon.baseSpecies === 'Rotom' || pokemon.baseSpecies === 'Pumpkaboo') {
@@ -433,7 +433,7 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 					break;
 				case 'd': // tm/hm
 					if (lastChanged) buf += '<li class="resultheader"><h3>TM/HM</h3></li>';
-					desc = '<span class="itemicon" style="margin-top:-3px;'+Tools.getItemIcon({spritenum:508})+'"></span>';
+					desc = '<span class="itemicon" style="margin-top:-3px;'+Dex.getItemIcon({spritenum:508})+'"></span>';
 					break;
 				case 'e': // tutor
 					if (lastChanged) buf += '<li class="resultheader"><h3>Tutor</h3></li>';
@@ -441,15 +441,15 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 					break;
 				case 'f': // egg move
 					if (lastChanged) buf += '<li class="resultheader"><h3>Egg</h3></li>';
-					desc = '<span class="picon" style="margin-top:-12px;'+Tools.getPokemonIcon('egg')+'"></span>';
+					desc = '<span class="picon" style="margin-top:-12px;'+Dex.getPokemonIcon('egg')+'"></span>';
 					break;
 				case 'g': // prevo1 egg move
 					if (lastChanged) buf += '<li class="resultheader"><h3>Egg from '+BattlePokedex[prevo1].species+'</h3></li>';
-					desc = '<span class="picon" style="margin-top:-12px;'+Tools.getPokemonIcon('egg')+'"></span>';
+					desc = '<span class="picon" style="margin-top:-12px;'+Dex.getPokemonIcon('egg')+'"></span>';
 					break;
 				case 'h': // prevo2 egg move
 					if (lastChanged) buf += '<li class="resultheader"><h3>Egg from '+BattlePokedex[prevo2].species+'</h3></li>';
-					desc = '<span class="picon" style="margin-top:-12px;'+Tools.getPokemonIcon('egg')+'"></span>';
+					desc = '<span class="picon" style="margin-top:-12px;'+Dex.getPokemonIcon('egg')+'"></span>';
 					break;
 				case 'i': // event
 					if (lastChanged) buf += '<li class="resultheader"><h3>Event</h3></li>';
@@ -466,7 +466,7 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 		this.$('.utilichart').html(buf);
 	},
 	renderDetails: function() {
-		var pokemon = Tools.getTemplate(this.id);
+		var pokemon = Dex.getTemplate(this.id);
 		var buf = '';
 
 		// flavor
@@ -514,7 +514,7 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 		this.$('.utilichart').html(buf);
 	},
 	renderEvents: function() {
-		var pokemon = Tools.getTemplate(this.id);
+		var pokemon = Dex.getTemplate(this.id);
 		var events = BattleFormatsData[this.id].eventPokemon;
 		var buf = '';
 
@@ -527,7 +527,7 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 			buf += '<br />';
 			if (event.abilities) {
 				buf += 'Ability: ' + event.abilities.map(function (ability) {
-					return '<a href="/abilities/' + ability + '" class="subtle" data-target="push">' + Tools.getAbility(ability).name + '</a>';
+					return '<a href="/abilities/' + ability + '" class="subtle" data-target="push">' + Dex.getAbility(ability).name + '</a>';
 				}).join(' or ') + '<br />';
 			} else if (event.isHidden && pokemon.abilities['H']) {
 				buf += 'Ability: <a href="/abilities/' + toId(pokemon.abilities['H']) + '" class="subtle" data-target="push">' + pokemon.abilities['H'] + '</a><br />';
@@ -547,7 +547,7 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 			}
 			if (event.moves) {
 				for (var j = 0; j < event.moves.length; j++) {
-					var move = Tools.getMove(event.moves[j]);
+					var move = Dex.getMove(event.moves[j]);
 					buf += '- <a href="/moves/' + move.id + '" class="subtle" data-target="push">' + move.name + '</a><br />';
 				}
 			}

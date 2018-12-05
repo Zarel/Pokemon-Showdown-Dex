@@ -1,6 +1,6 @@
 BattleSearch.urlRoot = '/';
 
-Tools.escapeHTML = function (str, jsEscapeToo) {
+Dex.escapeHTML = function (str, jsEscapeToo) {
 	str = getString(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 	if (jsEscapeToo) str = str.replace(/\\/g, '\\\\').replace(/'/g, '\\\'');
 	return str;
@@ -25,13 +25,13 @@ function sourcePad(source) {
 
 var PokedexItemPanel = PokedexResultPanel.extend({
 	initialize: function(id) {
-		var item = Tools.getItem(id);
+		var item = Dex.getItem(id);
 		this.shortTitle = item.name;
 
 		var buf = '<div class="pfx-body dexentry">';
 		buf += '<a href="/" class="pfx-backbutton" data-target="back"><i class="fa fa-chevron-left"></i> Pok&eacute;dex</a>';
-		buf += '<h1><span class="itemicon" style="'+Tools.getItemIcon(item)+'"></span> <a href="/items/'+id+'" data-target="push" class="subtle">'+item.name+'</a></h1>';
-		buf += '<p>'+Tools.escapeHTML(item.desc||item.shortDesc)+'</p>';
+		buf += '<h1><span class="itemicon" style="'+Dex.getItemIcon(item)+'"></span> <a href="/items/'+id+'" data-target="push" class="subtle">'+item.name+'</a></h1>';
+		buf += '<p>'+Dex.escapeHTML(item.desc||item.shortDesc)+'</p>';
 
 		// past gens
 		var pastGenChanges = false;
@@ -63,7 +63,7 @@ var PokedexItemPanel = PokedexResultPanel.extend({
 });
 var PokedexAbilityPanel = PokedexResultPanel.extend({
 	initialize: function(id) {
-		var ability = Tools.getAbility(id);
+		var ability = Dex.getAbility(id);
 		this.id = id;
 		this.shortTitle = ability.name;
 
@@ -73,7 +73,7 @@ var PokedexAbilityPanel = PokedexResultPanel.extend({
 
 		if (ability.isNonstandard) buf += '<div class="warning"><strong>Note:</strong> This is a made-up ability by <a href="http://www.smogon.com/cap/" target="_blank">Smogon CAP</a>.</div>';
 
-		buf += '<p>'+Tools.escapeHTML(ability.desc||ability.shortDesc)+'</p>';
+		buf += '<p>'+Dex.escapeHTML(ability.desc||ability.shortDesc)+'</p>';
 
 		// pokemon
 		buf += '<h3>Pok&eacute;mon with this ability</h3>';
@@ -87,7 +87,7 @@ var PokedexAbilityPanel = PokedexResultPanel.extend({
 		setTimeout(this.renderPokemonList.bind(this));
 	},
 	renderPokemonList: function(list) {
-		var ability = Tools.getAbility(this.id);
+		var ability = Dex.getAbility(this.id);
 		var buf = '';
 		for (var pokemonid in BattlePokedex) {
 			var template = BattlePokedex[pokemonid];
@@ -102,7 +102,7 @@ var PokedexAbilityPanel = PokedexResultPanel.extend({
 var PokedexTypePanel = PokedexResultPanel.extend({
 	initialize: function(id) {
 		this.type = id[0].toUpperCase()+id.substr(1);
-		var type = Tools.getType(this.type);
+		var type = Dex.getType(this.type);
 		this.shortTitle = this.type;
 
 		var buf = '<div class="pfx-body dexentry">';
@@ -114,7 +114,7 @@ var PokedexTypePanel = PokedexResultPanel.extend({
 		buf += '<dt>Weaknesses:</dt> <dd>';
 		for (var attackType in type.damageTaken) {
 			if (type.damageTaken[attackType] == 1) {
-				buf += '<a href="/types/'+toId(attackType)+'" data-target="push">'+Tools.getTypeIcon(attackType)+'</a> ';
+				buf += '<a href="/types/'+toId(attackType)+'" data-target="push">'+Dex.getTypeIcon(attackType)+'</a> ';
 				atLeastOne = true;
 			}
 		}
@@ -127,7 +127,7 @@ var PokedexTypePanel = PokedexResultPanel.extend({
 		atLeastOne = false;
 		for (var attackType in type.damageTaken) {
 			if (type.damageTaken[attackType] == 2) {
-				buf += '<a href="/types/'+toId(attackType)+'" data-target="push">'+Tools.getTypeIcon(attackType)+'</a> ';
+				buf += '<a href="/types/'+toId(attackType)+'" data-target="push">'+Dex.getTypeIcon(attackType)+'</a> ';
 				atLeastOne = true;
 			}
 		}
@@ -167,7 +167,7 @@ var PokedexTypePanel = PokedexResultPanel.extend({
 					if (!atLeastOne) atLeastOne = null;
 					continue;
 				}
-				buf += '<a href="/types/'+toId(attackType)+'" data-target="push">'+Tools.getTypeIcon(attackType)+'</a> ';
+				buf += '<a href="/types/'+toId(attackType)+'" data-target="push">'+Dex.getTypeIcon(attackType)+'</a> ';
 				atLeastOne = true;
 			}
 		}
@@ -660,7 +660,7 @@ var PokedexEggGroupPanel = PokedexResultPanel.extend({
 		if (offscreen) {
 			return ''+template.species+' '+template.abilities['0']+' '+(template.abilities['1']||'')+' '+(template.abilities['H']||'')+'';
 		} else {
-			return BattleSearch.renderTaggedPokemonRowInner(template, '<span class="picon" style="margin-top:-12px;'+Tools.getPokemonIcon('egg')+'"></span>');
+			return BattleSearch.renderTaggedPokemonRowInner(template, '<span class="picon" style="margin-top:-12px;'+Dex.getPokemonIcon('egg')+'"></span>');
 		}
 	},
 	handleScroll: function() {

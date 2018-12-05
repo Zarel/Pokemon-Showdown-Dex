@@ -27,7 +27,7 @@ var PokedexSearchPanel = Panels.Panel.extend({
 		buf += '<ul class="tabbar centered" style="margin-bottom: 18px"><li><button class="button nav-first' + (fragment === '' ? ' cur' : '') + '" value="">Search</button></li>';
 		buf += '<li><button class="button' + (fragment === 'pokemon/' ? ' cur' : '') + '" value="pokemon/">Pok&eacute;mon</button></li>';
 		buf += '<li><button class="button nav-last' + (fragment === 'moves/' ? ' cur' : '') + '" value="moves/">Moves</button></li></ul>';
-		buf += '<div class="searchboxwrapper"><input class="textbox searchbox" type="search" name="q" value="' + Tools.escapeHTML(this.$('.searchbox').val() || '') + '" autocomplete="off" autofocus placeholder="Search Pok&eacute;mon, moves, abilities, items, types, or more" /></div>';
+		buf += '<div class="searchboxwrapper"><input class="textbox searchbox" type="search" name="q" value="' + Dex.escapeHTML(this.$('.searchbox').val() || '') + '" autocomplete="off" autofocus placeholder="Search Pok&eacute;mon, moves, abilities, items, types, or more" /></div>';
 		if (fragment === '') {
 			buf += '<p class="buttonbar"><button class="button"><strong>Pok&eacute;dex Search</strong></button> <button name="lucky" class="button">I\'m Feeling Lucky</button></p>';
 		}
@@ -84,9 +84,9 @@ var PokedexSearchPanel = Panels.Panel.extend({
 			for (var i = 0; i < this.search.filters.length; i++) {
 				var filter = this.search.filters[i];
 				var text = filter[1];
-				if (filter[0] === 'move') text = Tools.getMove(text).name;
-				if (filter[0] === 'pokemon') text = Tools.getTemplate(text).name;
-				buf += '<button class="filter" value="' + Tools.escapeHTML(filter.join(':')) + '">' + text + ' <i class="fa fa-times-circle"></i></button> ';
+				if (filter[0] === 'move') text = Dex.getMove(text).name;
+				if (filter[0] === 'pokemon') text = Dex.getTemplate(text).name;
+				buf += '<button class="filter" value="' + Dex.escapeHTML(filter.join(':')) + '">' + text + ' <i class="fa fa-times-circle"></i></button> ';
 			}
 		}
 		if (!this.$searchfilters) {
