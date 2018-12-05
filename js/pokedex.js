@@ -1,5 +1,11 @@
 BattleSearch.urlRoot = '/';
 
+Tools.escapeHTML = function (str, jsEscapeToo) {
+	str = getString(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+	if (jsEscapeToo) str = str.replace(/\\/g, '\\\\').replace(/'/g, '\\\'');
+	return str;
+};
+
 var Topbar = Panels.Topbar.extend({
 	height: 51
 });
