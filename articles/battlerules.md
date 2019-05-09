@@ -1,4 +1,4 @@
-# Rules
+# Battle Rules
 
 ## Endless Battle Clause
 
