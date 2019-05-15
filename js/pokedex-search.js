@@ -106,7 +106,7 @@ var PokedexSearchPanel = Panels.Panel.extend({
 	},
 	keyup: function (e) {
 		var val = this.$searchbox.val();
-		var id = toId(val);
+		var id = toID(val);
 		if (!id) return;
 		var lastchar = val.charAt(val.length - 1);
 		if (lastchar === ',' || lastchar === ' ') {
@@ -158,7 +158,7 @@ var PokedexSearchPanel = Panels.Panel.extend({
 			}
 			break;
 		case 32: // space
-			var id = toId(this.$searchbox.val());
+			var id = toID(this.$searchbox.val());
 			if (id === 'ds' || id === 'pokemon') {
 				e.preventDefault();
 				e.stopPropagation();

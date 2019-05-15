@@ -43,4 +43,4 @@ function updateIndex() {
 
 updateIndex();
 
-child_process.execSync('./cms/build', {stdio: 'inherit'});
+child_process.execSync('node ./cms/build', {stdio: 'inherit'});
