@@ -7,7 +7,7 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 		var buf = '<div class="pfx-body dexentry">';
 
 		buf += '<a href="/" class="pfx-backbutton" data-target="back"><i class="fa fa-chevron-left"></i> Pok&eacute;dex</a>';
-		buf += '<a href="/tiers/'+toId(pokemon.tier)+'" data-target="push" class="tier">'+pokemon.tier+'</a>';
+		buf += '<a href="/tiers/'+toID(pokemon.tier)+'" data-target="push" class="tier">'+pokemon.tier+'</a>';
 		buf += '<h1>';
 		if (pokemon.forme) {
 			buf += '<a href="/pokemon/'+id+'" data-target="push" class="subtle">'+pokemon.baseSpecies+'<small>-'+pokemon.forme+'</small></a>';
@@ -34,7 +34,7 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 		buf += '<dl class="typeentry">';
 		buf += '<dt>Types:</dt> <dd>';
 		for (var i=0; i<pokemon.types.length; i++) {
-			buf += '<a class="type '+toId(pokemon.types[i])+'" href="/types/'+toId(pokemon.types[i])+'" data-target="push">'+pokemon.types[i]+'</a> ';
+			buf += '<a class="type '+toID(pokemon.types[i])+'" href="/types/'+toID(pokemon.types[i])+'" data-target="push">'+pokemon.types[i]+'</a> ';
 		}
 		buf += '</dd>';
 		buf += '</dl>';
@@ -61,7 +61,7 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 
 			if (i !== '0') buf += ' | ';
 			if (i === 'H') ability = '<em>'+pokemon.abilities[i]+'</em>';
-			buf += '<a href="/abilities/'+toId(pokemon.abilities[i])+'" data-target="push">'+ability+'</a>';
+			buf += '<a href="/abilities/'+toID(pokemon.abilities[i])+'" data-target="push">'+ability+'</a>';
 			if (i === 'H') buf += '<small> (H)</small>';
 			if (i === 'S') buf += '<small> (special)</small>';
 		}
@@ -159,13 +159,13 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 				}
 			}
 			if (pokemon.requiredItem) {
-				buf += '<div><small>Must hold <a href="/items/' + toId(pokemon.requiredItem) + '" data-target="push">' + pokemon.requiredItem + '</a></small></div>';
+				buf += '<div><small>Must hold <a href="/items/' + toID(pokemon.requiredItem) + '" data-target="push">' + pokemon.requiredItem + '</a></small></div>';
 			}
 		}
 		buf += '</dd></dl>';
 
 		if (pokemon.eggGroups) {
-			buf += '<dl class="colentry"><dt>Egg groups:</dt><dd><span class="picon" style="margin-top:-12px;'+Dex.getPokemonIcon('egg')+'"></span><a href="/egggroups/'+pokemon.eggGroups.map(toId).join('+')+'" data-target="push">'+pokemon.eggGroups.join(', ')+'</a></dd></dl>';
+			buf += '<dl class="colentry"><dt>Egg groups:</dt><dd><span class="picon" style="margin-top:-12px;'+Dex.getPokemonIcon('egg')+'"></span><a href="/egggroups/'+pokemon.eggGroups.map(toID).join('+')+'" data-target="push">'+pokemon.eggGroups.join(', ')+'</a></dd></dl>';
 			buf += '<dl class="colentry"><dt>Gender ratio:</dt><dd>';
 			if (pokemon.gender) switch (pokemon.gender) {
 			case 'M':
@@ -246,7 +246,7 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 		buf += '<li class="resultheader"><h3>Level-up</h3></li>';
 
 		var learnset = BattleLearnsets[id] && BattleLearnsets[id].learnset;
-		if (!learnset && BattleLearnsets[toId(pokemon.baseSpecies)]) learnset = BattleLearnsets[toId(pokemon.baseSpecies)].learnset;
+		if (!learnset && BattleLearnsets[toID(pokemon.baseSpecies)]) learnset = BattleLearnsets[toID(pokemon.baseSpecies)].learnset;
 
 		var moves = [];
 		for (var moveid in learnset) {
@@ -321,9 +321,9 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 	renderFullLearnset: function() {
 		var pokemon = Dex.getTemplate(this.id);
 		var learnset = BattleLearnsets[this.id] && BattleLearnsets[this.id].learnset;
-		if (!learnset) learnset = BattleLearnsets[toId(pokemon.baseSpecies)].learnset;
+		if (!learnset) learnset = BattleLearnsets[toID(pokemon.baseSpecies)].learnset;
 		if (pokemon.baseSpecies === 'Rotom' || pokemon.baseSpecies === 'Pumpkaboo') {
-			learnset = $.extend({}, learnset, BattleLearnsets[toId(pokemon.baseSpecies)].learnset);
+			learnset = $.extend({}, learnset, BattleLearnsets[toID(pokemon.baseSpecies)].learnset);
 		}
 
 		// learnset
@@ -532,7 +532,7 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 					return '<a href="/abilities/' + ability + '" class="subtle" data-target="push">' + Dex.getAbility(ability).name + '</a>';
 				}).join(' or ') + '<br />';
 			} else if (event.isHidden && pokemon.abilities['H']) {
-				buf += 'Ability: <a href="/abilities/' + toId(pokemon.abilities['H']) + '" class="subtle" data-target="push">' + pokemon.abilities['H'] + '</a><br />';
+				buf += 'Ability: <a href="/abilities/' + toID(pokemon.abilities['H']) + '" class="subtle" data-target="push">' + pokemon.abilities['H'] + '</a><br />';
 			}
 			if (event.level) buf += 'Level: ' + event.level + '<br />';
 			if (event.shiny === true) buf += 'Shiny: Yes<br />';

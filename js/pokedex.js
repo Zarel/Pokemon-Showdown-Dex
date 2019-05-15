@@ -114,7 +114,7 @@ var PokedexTypePanel = PokedexResultPanel.extend({
 		buf += '<dt>Weaknesses:</dt> <dd>';
 		for (var attackType in type.damageTaken) {
 			if (type.damageTaken[attackType] == 1) {
-				buf += '<a href="/types/'+toId(attackType)+'" data-target="push">'+Dex.getTypeIcon(attackType)+'</a> ';
+				buf += '<a href="/types/'+toID(attackType)+'" data-target="push">'+Dex.getTypeIcon(attackType)+'</a> ';
 				atLeastOne = true;
 			}
 		}
@@ -127,7 +127,7 @@ var PokedexTypePanel = PokedexResultPanel.extend({
 		atLeastOne = false;
 		for (var attackType in type.damageTaken) {
 			if (type.damageTaken[attackType] == 2) {
-				buf += '<a href="/types/'+toId(attackType)+'" data-target="push">'+Dex.getTypeIcon(attackType)+'</a> ';
+				buf += '<a href="/types/'+toID(attackType)+'" data-target="push">'+Dex.getTypeIcon(attackType)+'</a> ';
 				atLeastOne = true;
 			}
 		}
@@ -167,7 +167,7 @@ var PokedexTypePanel = PokedexResultPanel.extend({
 					if (!atLeastOne) atLeastOne = null;
 					continue;
 				}
-				buf += '<a href="/types/'+toId(attackType)+'" data-target="push">'+Dex.getTypeIcon(attackType)+'</a> ';
+				buf += '<a href="/types/'+toID(attackType)+'" data-target="push">'+Dex.getTypeIcon(attackType)+'</a> ';
 				atLeastOne = true;
 			}
 		}

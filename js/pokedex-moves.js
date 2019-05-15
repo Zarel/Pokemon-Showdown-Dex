@@ -14,8 +14,8 @@ var PokedexMovePanel = PokedexResultPanel.extend({
 
 		buf += '<dl class="movetypeentry">';
 		buf += '<dt>Type:</dt> <dd>';
-		buf += '<a class="type '+toId(move.type)+'" href="/types/'+toId(move.type)+'" data-target="push">'+move.type+'</a> ';
-		buf += '<a class="type '+toId(move.category)+'" href="/categories/'+toId(move.category)+'" data-target="push">'+move.category+'</a>';
+		buf += '<a class="type '+toID(move.type)+'" href="/types/'+toID(move.type)+'" data-target="push">'+move.type+'</a> ';
+		buf += '<a class="type '+toID(move.category)+'" href="/categories/'+toID(move.category)+'" data-target="push">'+move.category+'</a>';
 		buf += '</dd></dl>';
 
 		if (move.category !== 'Status') {
@@ -136,7 +136,7 @@ var PokedexMovePanel = PokedexResultPanel.extend({
 		if (move.zMovePower || move.zMoveEffect || move.zMoveBoost) {
 			buf += '<h3>Z-Move(s)</h3>';
 			if (move.zMovePower) {
-				buf += '<p><strong><a href="/moves/' + toId(zMoveTable[move.type]) + '" data-target="push">';
+				buf += '<p><strong><a href="/moves/' + toID(zMoveTable[move.type]) + '" data-target="push">';
 				buf += zMoveTable[move.type];
 				buf += '</a></strong>: ';
 				buf += '' + move.zMovePower + ' base power, ' + move.category + '</p>';
@@ -192,7 +192,7 @@ var PokedexMovePanel = PokedexResultPanel.extend({
 		if (leftPanel && leftPanel.fragment.slice(0, 8) === 'pokemon/') {
 			var pokemon = Dex.getTemplate(leftPanel.id);
 			var learnset = BattleLearnsets[pokemon.id] && BattleLearnsets[pokemon.id].learnset;
-			if (!learnset) learnset = BattleLearnsets[toId(pokemon.baseSpecies)].learnset;
+			if (!learnset) learnset = BattleLearnsets[toID(pokemon.baseSpecies)].learnset;
 			var eg1 = pokemon.eggGroups[0];
 			var eg2 = pokemon.eggGroups[2];
 			var sources = learnset[id];

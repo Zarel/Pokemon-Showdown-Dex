@@ -35,7 +35,7 @@ function idCanBe(id, type) {
 	const entry = searchIndexTable[id.slice(0, -type.length)];
 	return !!(entry && entry.includes(type));
 }
-function toId(text) {
+function toID(text) {
 	// this is a duplicate of Dex.getId, for performance reasons
 	if (text && text.id) {
 		text = text.id;
@@ -77,7 +77,7 @@ for (const file of files) {
 	buf = buf.replace(/é/g, '&eacute;');
 
 	buf = buf.replace(/\[\[([^\]]+)\]\]/g, (match, submatch) => {
-		let id = toId(submatch);
+		let id = toID(submatch);
 		let types = searchIndexTable[id];
 		if (idCanBe(id, 'type')) {
 			id = id.slice(0, -4);
