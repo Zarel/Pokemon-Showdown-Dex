@@ -89,6 +89,8 @@ var PokedexMovePanel = PokedexResultPanel.extend({
 			buf += '<p class="movetag"><small>In Doubles, hits all adjacent Pokémon (including allies)</small></p>';
 		} else if (move.target === 'allAdjacentFoes') {
 			buf += '<p class="movetag"><small>In Doubles, hits all adjacent foes</small></p>';
+		} else if (move.target === 'randomNormal') {
+			buf += '<p class="movetag"><small>In Doubles, hits a random foe (you can\'t choose its target)</small></p>';
 		} else if (move.target === 'adjacentAllyOrSelf') {
 			buf += '<p class="movetag"><small>In Doubles, can be used either on the user or an adjacent ally</small></p>';
 		}
