@@ -29,7 +29,7 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 			}
 		}
 
-		buf += '<img src="'+Dex.resourcePrefix+'sprites/bw/'+pokemon.spriteid+'.png'+'" alt="" width="96" height="96" class="sprite" />';
+		buf += '<img src="'+Dex.resourcePrefix+'sprites/gen5/'+pokemon.spriteid+'.png'+'" alt="" width="96" height="96" class="sprite" />';
 
 		buf += '<dl class="typeentry">';
 		buf += '<dt>Types:</dt> <dd>';
@@ -479,10 +479,10 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 		if (pokemon.num > 0 && this.id !== 'missingno') {
 			buf += '<li class="resultheader"><h3>Animated Gen 6-7 sprites</h3></li>';
 
-			buf += '<li class="content"><table class="sprites"><tr><td><img src="//play.pokemonshowdown.com/sprites/xyani/'+pokemon.spriteid+'.gif" /></td>';
-			buf += '<td><img src="//play.pokemonshowdown.com/sprites/xyani-shiny/'+pokemon.spriteid+'.gif" /></td></table>';
-			buf += '<table class="sprites"><tr><td><img src="//play.pokemonshowdown.com/sprites/xyani-back/'+pokemon.spriteid+'.gif" /></td>';
-			buf += '<td><img src="//play.pokemonshowdown.com/sprites/xyani-back-shiny/'+pokemon.spriteid+'.gif" /></td></table>';
+			buf += '<li class="content"><table class="sprites"><tr><td><img src="//play.pokemonshowdown.com/sprites/ani/'+pokemon.spriteid+'.gif" /></td>';
+			buf += '<td><img src="//play.pokemonshowdown.com/sprites/ani-shiny/'+pokemon.spriteid+'.gif" /></td></table>';
+			buf += '<table class="sprites"><tr><td><img src="//play.pokemonshowdown.com/sprites/ani-back/'+pokemon.spriteid+'.gif" /></td>';
+			buf += '<td><img src="//play.pokemonshowdown.com/sprites/ani-back-shiny/'+pokemon.spriteid+'.gif" /></td></table>';
 
 			buf += '<div style="clear:left"></div></li>';
 		}
@@ -494,10 +494,10 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 
 		// still gen 5
 		buf += '<li class="resultheader"><h3>Gen 5 Sprites</h3></li>';
-		buf += '<li class="content"><table class="sprites"><tr><td><img src="//play.pokemonshowdown.com/sprites/bw/'+pokemon.spriteid+'.png" /></td>';
-		buf += '<td><img src="//play.pokemonshowdown.com/sprites/bw-shiny/'+pokemon.spriteid+'.png" /></td></table>';
-		buf += '<table class="sprites"><tr><td><img src="//play.pokemonshowdown.com/sprites/bw-back/'+pokemon.spriteid+'.png" /></td>';
-		buf += '<td><img src="//play.pokemonshowdown.com/sprites/bw-back-shiny/'+pokemon.spriteid+'.png" /></td></table>';
+		buf += '<li class="content"><table class="sprites"><tr><td><img src="//play.pokemonshowdown.com/sprites/gen5/'+pokemon.spriteid+'.png" /></td>';
+		buf += '<td><img src="//play.pokemonshowdown.com/sprites/gen5-shiny/'+pokemon.spriteid+'.png" /></td></table>';
+		buf += '<table class="sprites"><tr><td><img src="//play.pokemonshowdown.com/sprites/gen5-back/'+pokemon.spriteid+'.png" /></td>';
+		buf += '<td><img src="//play.pokemonshowdown.com/sprites/gen5-back-shiny/'+pokemon.spriteid+'.png" /></td></table>';
 
 		buf += '<div style="clear:left"></div></li>';
 
@@ -505,10 +505,10 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 		if (pokemon.gen < 6 && this.id !== 'missingno') {
 			buf += '<li class="resultheader"><h3>Animated Gen 5 sprites</h3></li>';
 
-			buf += '<li class="content"><table class="sprites"><tr><td><img src="//play.pokemonshowdown.com/sprites/bwani/'+pokemon.spriteid+'.gif" /></td>';
-			buf += '<td><img src="//play.pokemonshowdown.com/sprites/bwani-shiny/'+pokemon.spriteid+'.gif" /></td></table>';
-			buf += '<table class="sprites"><tr><td><img src="//play.pokemonshowdown.com/sprites/bwani-back/'+pokemon.spriteid+'.gif" /></td>';
-			buf += '<td><img src="//play.pokemonshowdown.com/sprites/bwani-back-shiny/'+pokemon.spriteid+'.gif" /></td></table>';
+			buf += '<li class="content"><table class="sprites"><tr><td><img src="//play.pokemonshowdown.com/sprites/gen5ani/'+pokemon.spriteid+'.gif" /></td>';
+			buf += '<td><img src="//play.pokemonshowdown.com/sprites/gen5ani-shiny/'+pokemon.spriteid+'.gif" /></td></table>';
+			buf += '<table class="sprites"><tr><td><img src="//play.pokemonshowdown.com/sprites/gen5ani-back/'+pokemon.spriteid+'.gif" /></td>';
+			buf += '<td><img src="//play.pokemonshowdown.com/sprites/gen5ani-back-shiny/'+pokemon.spriteid+'.gif" /></td></table>';
 
 			buf += '<div style="clear:left"></div></li>';
 		}
