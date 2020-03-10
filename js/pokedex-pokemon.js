@@ -22,8 +22,10 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 				buf += '<div class="warning"><strong>Note:</strong> This is a glitch Pok&eacute;mon from Red/Blue/Yellow.</div>';
 			} else if (id.substr(0, 8) === 'pokestar') {
 				buf += '<div class="warning"><strong>Note:</strong> This is a Pok&eacute;mon from <a href="https://bulbapedia.bulbagarden.net/wiki/Pok%C3%A9star_Studios" target="_blank">Pok&eacute;star Studios in Black 2 and White 2</a>.</div>';
-			} else if (pokemon.num > 0) {
+			} else if (pokemon.isNonstandard === 'LGPE') {
 				buf += '<div class="warning"><strong>Note:</strong> Pok&eacute;mon Let\'s Go, Pikachu! and Let\'s Go, Eevee! only.</div>';
+			} else if (pokemon.num > 0) {
+				buf += '<div class="warning"><strong>Note:</strong> This Pok&eacute;mon is only usable in previous generations.</div>';
 			} else {
 				buf += '<div class="warning"><strong>Note:</strong> This is a made-up Pok&eacute;mon by <a href="http://www.smogon.com/cap/" target="_blank">Smogon CAP</a>.</div>';
 			}
@@ -256,6 +258,8 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 				var source = sources[i];
 				if (source.substr(0,2) === '8L') {
 					moves.push('a'+sourcePad(source)+moveid);
+				} else if (source.substr(0,2) === '7L' && pokemon.isNonstandard && pokemon.isNonstandard === 'Past') {
+					moves.push('a'+sourcePad(source)+moveid);
 				}
 			}
 		}
@@ -322,8 +326,8 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 		var pokemon = Dex.getTemplate(this.id);
 		var learnset = BattleLearnsets[this.id] && BattleLearnsets[this.id].learnset;
 		if (!learnset) learnset = BattleLearnsets[toID(pokemon.baseSpecies)].learnset;
-		if (pokemon.baseSpecies === 'Rotom' || pokemon.baseSpecies === 'Pumpkaboo') {
-			learnset = $.extend({}, learnset, BattleLearnsets[toID(pokemon.baseSpecies)].learnset);
+		if (pokemon.inheritsFrom) {
+			learnset = $.extend({}, learnset, BattleLearnsets[toID(pokemon.inheritsFrom)].learnset);
 		}
 
 		// learnset
@@ -335,22 +339,42 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 			if (typeof sources === 'string') sources = [sources];
 			for (var i=0, len=sources.length; i<len; i++) {
 				var source = sources[i];
-				if (source.substr(0,2) === '8L') {
-					moves.push('a'+sourcePad(source)+moveid);
-					shownMoves[moveid] = (shownMoves[moveid]|2);
-				} else if (source === '8M') {
-					moves.push('d000 '+moveid);
-					shownMoves[moveid] = (shownMoves[moveid]|1);
-				} else if (source === '8T') {
-					moves.push('e000 '+moveid);
-					shownMoves[moveid] = (shownMoves[moveid]|1);
-				} else if (source === '8E') {
-					moves.push('f000 '+moveid);
-					shownMoves[moveid] = (shownMoves[moveid]|4);
-				} else if (source.charAt(1) === 'S') {
-					if (shownMoves[moveid]&8) continue;
-					moves.push('i000 '+moveid);
-					shownMoves[moveid] = (shownMoves[moveid]|8);
+				if (!pokemon.isNonstandard || pokemon.isNonstandard !== 'Past') {
+					if (source.substr(0,2) === '8L') {
+						moves.push('a'+sourcePad(source)+moveid);
+						shownMoves[moveid] = (shownMoves[moveid]|2);
+					} else if (source === '8M') {
+						moves.push('d000 '+moveid);
+						shownMoves[moveid] = (shownMoves[moveid]|1);
+					} else if (source === '8T') {
+						moves.push('e000 '+moveid);
+						shownMoves[moveid] = (shownMoves[moveid]|1);
+					} else if (source === '8E') {
+						moves.push('f000 '+moveid);
+						shownMoves[moveid] = (shownMoves[moveid]|4);
+					} else if (source.charAt(1) === 'S') {
+						if (shownMoves[moveid]&8) continue;
+						moves.push('i000 '+moveid);
+						shownMoves[moveid] = (shownMoves[moveid]|8);
+					}
+				} else {
+					if (source.substr(0,2) === '7L') {
+						moves.push('a'+sourcePad(source)+moveid);
+						shownMoves[moveid] = (shownMoves[moveid]|2);
+					} else if (source === '7M') {
+						moves.push('d000 '+moveid);
+						shownMoves[moveid] = (shownMoves[moveid]|1);
+					} else if (source === '7T') {
+						moves.push('e000 '+moveid);
+						shownMoves[moveid] = (shownMoves[moveid]|1);
+					} else if (source === '7E') {
+						moves.push('f000 '+moveid);
+						shownMoves[moveid] = (shownMoves[moveid]|4);
+					} else if (source.charAt(1) === 'S') {
+						if (shownMoves[moveid]&8) continue;
+						moves.push('i000 '+moveid);
+						shownMoves[moveid] = (shownMoves[moveid]|8);
+					}
 				}
 			}
 		}
@@ -363,18 +387,35 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 				if (typeof sources === 'string') sources = [sources];
 				for (var i=0, len=sources.length; i<len; i++) {
 					var source = sources[i];
-					if (source.substr(0,2) === '8L') {
-						if (shownMoves[moveid]&2) continue;
-						moves.push('b'+sourcePad(source)+moveid);
-						shownMoves[moveid] = (shownMoves[moveid]|2);
-					} else if (source === '8E') {
-						if (shownMoves[moveid]&4) continue;
-						moves.push('g000 '+moveid);
-						shownMoves[moveid] = (shownMoves[moveid]|4);
-					} else if (source.charAt(1) === 'S') {
-						if (shownMoves[moveid]&8) continue;
-						moves.push('i000 '+moveid);
-						shownMoves[moveid] = (shownMoves[moveid]|8);
+					var prevoTemplate = Dex.getTemplate(prevo1);
+					if (!prevoTemplate.isNonstandard || prevoTemplate.isNonstandard !== 'Past') {
+						if (source.substr(0,2) === '8L') {
+							if (shownMoves[moveid]&2) continue;
+							moves.push('b'+sourcePad(source)+moveid);
+							shownMoves[moveid] = (shownMoves[moveid]|2);
+						} else if (source === '8E') {
+							if (shownMoves[moveid]&4) continue;
+							moves.push('g000 '+moveid);
+							shownMoves[moveid] = (shownMoves[moveid]|4);
+						} else if (source.charAt(1) === 'S') {
+							if (shownMoves[moveid]&8) continue;
+							moves.push('i000 '+moveid);
+							shownMoves[moveid] = (shownMoves[moveid]|8);
+						}
+					} else {
+						if (source.substr(0,2) === '7L') {
+							if (shownMoves[moveid]&2) continue;
+							moves.push('b'+sourcePad(source)+moveid);
+							shownMoves[moveid] = (shownMoves[moveid]|2);
+						} else if (source === '7E') {
+							if (shownMoves[moveid]&4) continue;
+							moves.push('g000 '+moveid);
+							shownMoves[moveid] = (shownMoves[moveid]|4);
+						} else if (source.charAt(1) === 'S') {
+							if (shownMoves[moveid]&8) continue;
+							moves.push('i000 '+moveid);
+							shownMoves[moveid] = (shownMoves[moveid]|8);
+						}
 					}
 				}
 			}
@@ -387,18 +428,35 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 					if (typeof sources === 'string') sources = [sources];
 					for (var i=0, len=sources.length; i<len; i++) {
 						var source = sources[i];
-						if (source.substr(0,2) === '8L') {
-							if (shownMoves[moveid]&2) continue;
-							moves.push('c'+sourcePad(source)+moveid);
-							shownMoves[moveid] = (shownMoves[moveid]|2);
-						} else if (source === '8E') {
-							if (shownMoves[moveid]&4) continue;
-							moves.push('h000 '+moveid);
-							shownMoves[moveid] = (shownMoves[moveid]|4);
-						} else if (source.charAt(1) === 'S') {
-							if (shownMoves[moveid]&8) continue;
-							moves.push('i000 '+moveid);
-							shownMoves[moveid] = (shownMoves[moveid]|8);
+						var prevoTemplate = Dex.getTemplate(prevo2);
+						if (!prevoTemplate.isNonstandard || prevoTemplate.isNonstandard !== 'Past') {
+							if (source.substr(0,2) === '8L') {
+								if (shownMoves[moveid]&2) continue;
+								moves.push('c'+sourcePad(source)+moveid);
+								shownMoves[moveid] = (shownMoves[moveid]|2);
+							} else if (source === '8E') {
+								if (shownMoves[moveid]&4) continue;
+								moves.push('h000 '+moveid);
+								shownMoves[moveid] = (shownMoves[moveid]|4);
+							} else if (source.charAt(1) === 'S') {
+								if (shownMoves[moveid]&8) continue;
+								moves.push('i000 '+moveid);
+								shownMoves[moveid] = (shownMoves[moveid]|8);
+							}
+						} else {
+							if (source.substr(0,2) === '7L') {
+								if (shownMoves[moveid]&2) continue;
+								moves.push('c'+sourcePad(source)+moveid);
+								shownMoves[moveid] = (shownMoves[moveid]|2);
+							} else if (source === '7E') {
+								if (shownMoves[moveid]&4) continue;
+								moves.push('h000 '+moveid);
+								shownMoves[moveid] = (shownMoves[moveid]|4);
+							} else if (source.charAt(1) === 'S') {
+								if (shownMoves[moveid]&8) continue;
+								moves.push('i000 '+moveid);
+								shownMoves[moveid] = (shownMoves[moveid]|8);
+							}
 						}
 					}
 				}
