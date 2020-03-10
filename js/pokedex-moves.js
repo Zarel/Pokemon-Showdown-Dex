@@ -24,7 +24,7 @@ var PokedexMovePanel = PokedexResultPanel.extend({
 				if (move.isMax) {
 					buf += 'This move can\'t be learned normally, it can only be used by ' + (move.isMax === true ? 'Dynamaxing' : 'Gigantamaxing') + '.';
 				} else if (move.isZ) {
-					buf += 'This move can\'t be learned normally, it can only be used with a Z-crystal.';
+					buf += 'This move can\'t be learned normally, it can only be used with a Z-Crystal.';
 				} else {
 					buf += 'This move can\'t be learned normally.';
 				}
