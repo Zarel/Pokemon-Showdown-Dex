@@ -21,8 +21,13 @@ var PokedexMovePanel = PokedexResultPanel.extend({
 				buf += 'This move is only available in future generations.';
 				break;
 			case 'Unobtainable':
-				buf += 'This move is not obtainable';
-				if (move.isMax) buf += ' by any means because it does not have an index number';
+				if (move.isMax) {
+					buf += 'This move can't be learned normally, it can only be used by ' + (move.isMax === true ? 'Dynamaxing' : 'Gigantamaxing') + '.';
+				} else if (move.isZ) {
+					buf += 'This move can't be learned normally, it can only be used with a Z-crystal.';
+				} else {
+					buf += 'This move can't be learned normally.';
+				}
 				buf += '.';
 				break;
 			case 'CAP':
