@@ -254,7 +254,7 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 			if (typeof sources === 'string') sources = [sources];
 			for (var i=0, len=sources.length; i<len; i++) {
 				var source = sources[i];
-				if (source.substr(0,2) === '7L') {
+				if (source.substr(0,2) === '8L') {
 					moves.push('a'+sourcePad(source)+moveid);
 				}
 			}
@@ -335,16 +335,16 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 			if (typeof sources === 'string') sources = [sources];
 			for (var i=0, len=sources.length; i<len; i++) {
 				var source = sources[i];
-				if (source.substr(0,2) === '7L') {
+				if (source.substr(0,2) === '8L') {
 					moves.push('a'+sourcePad(source)+moveid);
 					shownMoves[moveid] = (shownMoves[moveid]|2);
-				} else if (source === '7M') {
+				} else if (source === '8M') {
 					moves.push('d000 '+moveid);
 					shownMoves[moveid] = (shownMoves[moveid]|1);
-				} else if (source === '7T') {
+				} else if (source === '8T') {
 					moves.push('e000 '+moveid);
 					shownMoves[moveid] = (shownMoves[moveid]|1);
-				} else if (source === '7E') {
+				} else if (source === '8E') {
 					moves.push('f000 '+moveid);
 					shownMoves[moveid] = (shownMoves[moveid]|4);
 				} else if (source.charAt(1) === 'S') {
@@ -363,11 +363,11 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 				if (typeof sources === 'string') sources = [sources];
 				for (var i=0, len=sources.length; i<len; i++) {
 					var source = sources[i];
-					if (source.substr(0,2) === '7L') {
+					if (source.substr(0,2) === '8L') {
 						if (shownMoves[moveid]&2) continue;
 						moves.push('b'+sourcePad(source)+moveid);
 						shownMoves[moveid] = (shownMoves[moveid]|2);
-					} else if (source === '7E') {
+					} else if (source === '8E') {
 						if (shownMoves[moveid]&4) continue;
 						moves.push('g000 '+moveid);
 						shownMoves[moveid] = (shownMoves[moveid]|4);
@@ -387,11 +387,11 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 					if (typeof sources === 'string') sources = [sources];
 					for (var i=0, len=sources.length; i<len; i++) {
 						var source = sources[i];
-						if (source.substr(0,2) === '7L') {
+						if (source.substr(0,2) === '8L') {
 							if (shownMoves[moveid]&2) continue;
 							moves.push('c'+sourcePad(source)+moveid);
 							shownMoves[moveid] = (shownMoves[moveid]|2);
-						} else if (source === '7E') {
+						} else if (source === '8E') {
 							if (shownMoves[moveid]&4) continue;
 							moves.push('h000 '+moveid);
 							shownMoves[moveid] = (shownMoves[moveid]|4);

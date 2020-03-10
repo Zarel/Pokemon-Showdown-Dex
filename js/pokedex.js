@@ -332,6 +332,16 @@ var PokedexTagPanel = PokedexResultPanel.extend({
 			name: 'Z-Move',
 			tag: '',
 			desc: 'Is a <a class="subtle" href="/articles/zmoves" data-target="push">Z-Move</a>.'
+		},
+		maxmove: {
+			name: 'Max Move',
+			tag: '',
+			desc: 'Is a <a class="subtle" href="/articles/maxmoves" data-target="push">Max Move</a>.'
+		},
+		gmaxmove: {
+			name: 'G-Max Move',
+			tag: '',
+			desc: 'Is a <a class="subtle" href="/articles/gmaxmoves" data-target="push">G-Max Move</a>.'
 		}
 	},
 	initialize: function(id) {
@@ -786,7 +796,7 @@ var PokedexTierPanel = PokedexResultPanel.extend({
 			buf += '<p>"NFE" (Not Fully Evolved) as a tier refers to NFE Pokémon that aren\'t legal in LC and don\'t make the usage cutoff for a tier such as PU.</p>';
 		}
 
-		if (id === 'cap') buf += '<div class="warning"><strong>Note:</strong> <a href="http://www.smogon.com/cap/" target="_blank">Smogon CAP</a> is a project to make up Pok&eacute;mon.</div>';
+		if (id.startsWith('cap')) buf += '<div class="warning"><strong>Note:</strong> <a href="http://www.smogon.com/cap/" target="_blank">Smogon CAP</a> is a project to make up Pok&eacute;mon.</div>';
 
 		// buf += '<p></p>';
 
