@@ -62,7 +62,7 @@ var PokedexMovePanel = PokedexResultPanel.extend({
 			if (move.isMax !== true) {
 				buf += '<p><strong><a href="/tags/gmaxmove" data-target="push">[G-Max Move]</a></strong>';
 				var maxUser = Dex.getTemplate(move.isMax);
-				buf += ' if used by <a href="/pokemon/' + maxUser.speciesid + 'gmax" data-target="push">' + maxUser.species + '-Gmax</a>';
+				buf += ' used by <a href="/pokemon/' + maxUser.speciesid + 'gmax" data-target="push">' + maxUser.species + '-Gmax</a>';
 				if (maxUser.species === "Toxtricity") {
 					buf += ' or <a href="/pokemon/' + maxUser.speciesid + 'lowkeygmax" data-target="push">' + maxUser.species + '-Low-Key-Gmax</a>';
 				}
