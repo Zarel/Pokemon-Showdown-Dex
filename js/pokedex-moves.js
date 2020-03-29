@@ -37,7 +37,7 @@ var PokedexMovePanel = PokedexResultPanel.extend({
 				buf += 'This move is only available in Let\'s Go! Pikachu and Eevee.';
 				break;
 			case 'Custom':
-				buf += '';
+				buf += 'This is a custom move, not available during normal gameplay.';
 				break;
 			}
 			buf += '</div>';
@@ -66,10 +66,10 @@ var PokedexMovePanel = PokedexResultPanel.extend({
 		} else if (move.isMax) {
 			if (move.isMax !== true) {
 				buf += '<p><strong><a href="/tags/gmaxmove" data-target="push">[G-Max Move]</a></strong>';
-				var maxUser = Dex.getTemplate(move.isMax);
-				buf += ' used by <a href="/pokemon/' + maxUser.speciesid + 'gmax" data-target="push">' + maxUser.species + '-Gmax</a>';
-				if (maxUser.species === "Toxtricity") {
-					buf += ' or <a href="/pokemon/' + maxUser.speciesid + 'lowkeygmax" data-target="push">' + maxUser.species + '-Low-Key-Gmax</a>';
+				var maxUser = Dex.getSpecies(move.isMax);
+				buf += ' used by <a href="/pokemon/' + maxUser.id + 'gmax" data-target="push">' + maxUser.name + '-Gmax</a>';
+				if (maxUser.name === "Toxtricity") {
+					buf += ' or <a href="/pokemon/' + maxUser.id + 'lowkeygmax" data-target="push">' + maxUser.name + '-Low-Key-Gmax</a>';
 				}
 			} else {
 				buf += '<p><strong><a href="/tags/maxmove" data-target="push">[Max Move]</a></strong>';
@@ -302,7 +302,7 @@ var PokedexMovePanel = PokedexResultPanel.extend({
 		// warning: excessive trickiness
 		var leftPanel = this.app.panels[this.app.panels.length - 2];
 		if (leftPanel && leftPanel.fragment.slice(0, 8) === 'pokemon/') {
-			var pokemon = Dex.getTemplate(leftPanel.id);
+			var pokemon = Dex.getSpecies(leftPanel.id);
 			var learnset = BattleLearnsets[pokemon.id] && BattleLearnsets[pokemon.id].learnset;
 			if (!learnset) learnset = BattleLearnsets[toID(pokemon.baseSpecies)].learnset;
 			var eg1 = pokemon.eggGroups[0];
@@ -315,19 +315,19 @@ var PokedexMovePanel = PokedexResultPanel.extend({
 					template = pokemon;
 				} else {
 					if (!template.prevo) break;
-					template = Dex.getTemplate(template.prevo);
-					sources = BattleLearnsets[template.speciesid].learnset[id];
+					template = Dex.getSpecies(template.prevo);
+					sources = BattleLearnsets[template.id].learnset[id];
 				}
 
 				if (!sources) continue;
 
 				if (!atLeastOne) {
-					buf += '<h3>Getting it on ' + pokemon.species + '</h3><ul>';
+					buf += '<h3>Getting it on ' + pokemon.name + '</h3><ul>';
 					atLeastOne = true;
 				}
 
-				if (template.speciesid !== pokemon.speciesid) {
-					buf += '</ul><p>From ' + template.species + ':</p><ul>';
+				if (template.id !== pokemon.id) {
+					buf += '</ul><p>From ' + template.name + ':</p><ul>';
 				}
 
 				if (!sources.length) buf += '<li>(Past gen only)</li>';
@@ -349,15 +349,15 @@ var PokedexMovePanel = PokedexResultPanel.extend({
 							var breeder = BattlePokedex[breederid];
 							if (breeder.isNonstandard) continue;
 							if (breeder.gender && breeder.gender !== 'M') continue;
-							if (breederid === 'dragonite' && template.speciesid === 'dratini' && id === 'extremespeed') {
+							if (breederid === 'dragonite' && template.id === 'dratini' && id === 'extremespeed') {
 								buf += 'Event <a href="/pokemon/dragonite">Dragonite</a>';
 								hasBreeders = true;
 							}
-							if (breederid === pokemon.speciesid || breederid === template.speciesid || breederid === pokemon.prevo) continue;
+							if (breederid === pokemon.id || breederid === template.id || breederid === pokemon.prevo) continue;
 							if (eg1 === breeder.eggGroups[0] || eg1 === breeder.eggGroups[1] ||
 								(eg2 && (eg2 === breeder.eggGroups[0] || eg2 === breeder.eggGroups[1]))) {
 								if (hasBreeders) buf += ', ';
-								buf += '<a href="/pokemon/' + breederid + '" data-target="push">' + breeder.species + '</a>';
+								buf += '<a href="/pokemon/' + breederid + '" data-target="push">' + breeder.name + '</a>';
 								hasBreeders = true;
 							}
 						}
@@ -378,7 +378,7 @@ var PokedexMovePanel = PokedexResultPanel.extend({
 		// past gens
 		var pastGenChanges = false;
 		var curGenDesc = move.shortDesc;
-		if (BattleTeambuilderTable) for (var genNum = 6; genNum >= 1; genNum--) {
+		if (BattleTeambuilderTable) for (var genNum = 7; genNum >= 1; genNum--) {
 			var genTable = BattleTeambuilderTable['gen' + genNum];
 			var nextGenTable = BattleTeambuilderTable['gen' + (genNum + 1)];
 			var changes = '';
@@ -542,7 +542,7 @@ var PokedexMovePanel = PokedexResultPanel.extend({
 			}
 			return '<pre>error: "'+results[i]+'"</pre>';
 		} else if (offscreen) {
-			return ''+template.species+' '+template.abilities['0']+' '+(template.abilities['1']||'')+' '+(template.abilities['H']||'')+'';
+			return ''+template.name+' '+template.abilities['0']+' '+(template.abilities['1']||'')+' '+(template.abilities['H']||'')+'';
 		} else {
 			var desc = '';
 			switch (results[i].charAt(0)) {

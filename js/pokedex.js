@@ -1,7 +1,7 @@
 BattleSearch.urlRoot = '/';
 
 Dex.escapeHTML = function (str, jsEscapeToo) {
-	str = getString(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+	str = String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 	if (jsEscapeToo) str = str.replace(/\\/g, '\\\\').replace(/'/g, '\\\'');
 	return str;
 };
@@ -35,7 +35,7 @@ var PokedexItemPanel = PokedexResultPanel.extend({
 
 		// past gens
 		var pastGenChanges = false;
-		if (BattleTeambuilderTable) for (var genNum = 6; genNum >= 1; genNum--) {
+		if (BattleTeambuilderTable) for (var genNum = 7; genNum >= 1; genNum--) {
 			var genTable = BattleTeambuilderTable['gen' + genNum];
 			var nextGenTable = BattleTeambuilderTable['gen' + (genNum + 1)];
 			var changes = '';
@@ -74,6 +74,29 @@ var PokedexAbilityPanel = PokedexResultPanel.extend({
 		if (ability.isNonstandard) buf += '<div class="warning"><strong>Note:</strong> This is a made-up ability by <a href="http://www.smogon.com/cap/" target="_blank">Smogon CAP</a>.</div>';
 
 		buf += '<p>'+Dex.escapeHTML(ability.desc||ability.shortDesc)+'</p>';
+
+		// past gens
+		var pastGenChanges = false;
+		if (BattleTeambuilderTable) for (var genNum = 7; genNum >= 1; genNum--) {
+			var genTable = BattleTeambuilderTable['gen' + genNum];
+			var nextGenTable = BattleTeambuilderTable['gen' + (genNum + 1)];
+			var changes = '';
+
+			var nextGenDesc = (ability.shortDesc || ability.desc);
+			if (nextGenTable && nextGenTable.overrideAbilityDesc[id]) nextGenDesc = nextGenTable.overrideAbilityDesc[id];
+			var curGenDesc = genTable.overrideAbilityDesc[id] || nextGenDesc;
+			if (curGenDesc !== nextGenDesc) {
+				changes += curGenDesc + ' <i class="fa fa-long-arrow-right"></i> ' + nextGenDesc + '<br />';
+			}
+
+			if (changes) {
+				if (!pastGenChanges) buf += '<h3>Past gens</h3><dl>';
+				buf += '<dt>Gen ' + genNum + ' <i class="fa fa-arrow-right"></i> ' + (genNum + 1) + ':</dt>';
+				buf += '<dd>' + changes + '</dd>';
+				pastGenChanges = true;
+			}
+		}
+		if (pastGenChanges) buf += '</dl>';
 
 		// pokemon
 		buf += '<h3>Pok&eacute;mon with this ability</h3>';

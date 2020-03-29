@@ -238,7 +238,7 @@ table.sprites td {
 	vertical-align: middle;
 }
 
-@media (max-width:500px) {
+@media (max-width:520px) {
 	table.stats {
 		margin-top: 0;
 	}

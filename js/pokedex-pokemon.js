@@ -1,6 +1,6 @@
 var PokedexPokemonPanel = PokedexResultPanel.extend({
 	initialize: function(id) {
-		var pokemon = Dex.getTemplate(id);
+		var pokemon = Dex.getSpecies(id);
 		this.id = id;
 		this.shortTitle = pokemon.baseSpecies;
 
@@ -22,6 +22,8 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 				buf += '<div class="warning"><strong>Note:</strong> This is a glitch Pok&eacute;mon from Red/Blue/Yellow.</div>';
 			} else if (id.substr(0, 8) === 'pokestar') {
 				buf += '<div class="warning"><strong>Note:</strong> This is a Pok&eacute;mon from <a href="https://bulbapedia.bulbagarden.net/wiki/Pok%C3%A9star_Studios" target="_blank">Pok&eacute;star Studios in Black 2 and White 2</a>.</div>';
+			} else if (pokemon.isNonstandard === 'Past') {
+				buf += '<div class="warning"><strong>Note:</strong> This Pok&eacute;mon is only available in past generations.</div>';
 			} else if (pokemon.isNonstandard === 'LGPE') {
 				buf += '<div class="warning"><strong>Note:</strong> Pok&eacute;mon Let\'s Go, Pikachu! and Let\'s Go, Eevee! only.</div>';
 			} else if (pokemon.num > 0) {
@@ -101,20 +103,20 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 
 		buf += '<dt>Evolution:</dt> <dd>';
 		var template = pokemon;
-		while (template.prevo) template = Dex.getTemplate(template.prevo);
+		while (template.prevo) template = Dex.getSpecies(template.prevo);
 		if (template.evos) {
 			buf += '<table class="evos"><tr><td>';
 			var evos = [template];
 			while (evos) {
 				if (evos[0] === 'dustox') evos = ['beautifly','dustox'];
 				for (var i=0; i<evos.length; i++) {
-					template = Dex.getTemplate(evos[i]);
+					template = Dex.getSpecies(evos[i]);
 					if (i <= 0) {
 						if (!evos[0].exists) {
 							if (evos[1] === 'dustox') {
 								buf += '</td><td class="arrow"><span>&rarr;<br />&rarr;</span></td><td>';
-							} else if (template.evoLevel >= 3) {
-								buf += '</td><td class="arrow"><span><abbr title="level ' + template.evoLevel + '">&rarr;</abbr></span></td><td>';
+							} else if (template.prevo) {
+								buf += '</td><td class="arrow"><span><abbr title="' + this.getEvoMethod(template) + '">&rarr;</abbr></span></td><td>';
 							} else {
 								buf += '</td><td class="arrow"><span>&rarr;</span></td><td>';
 							}
@@ -131,8 +133,8 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 				evos = template.evos;
 			}
 			buf += '</td></tr></table>';
-			if (pokemon.evoLevel && pokemon.evoLevel >= 3) {
-				buf += '<div><small>Evolves from ' + Dex.getTemplate(pokemon.prevo).species + ' at level ' + pokemon.evoLevel + '</small></div>';
+			if (pokemon.prevo) {
+				buf += '<div><small>Evolves from ' + Dex.getSpecies(pokemon.prevo).name + ' (' + this.getEvoMethod(pokemon) + ')</small></div>';
 			}
 		} else {
 			buf += '<em>Does not evolve</em>';
@@ -141,7 +143,7 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 
 		if (pokemon.otherFormes || pokemon.forme) {
 			buf += '<dt>Formes:</dt> <dd>';
-			template = (pokemon.forme ? Dex.getTemplate(pokemon.baseSpecies) : pokemon);
+			template = (pokemon.forme ? Dex.getSpecies(pokemon.baseSpecies) : pokemon);
 			var name = template.baseForme || 'Base';
 			name = '<span class="picon" style="'+Dex.getPokemonIcon(template)+'"></span>'+name;
 			if (template === pokemon) {
@@ -151,7 +153,7 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 			}
 			var otherFormes = template.otherFormes;
 			if (otherFormes) for (var i=0; i<otherFormes.length; i++) {
-				template = Dex.getTemplate(otherFormes[i]);
+				template = Dex.getSpecies(otherFormes[i]);
 				var name = template.forme;
 				name = '<span class="picon" style="'+Dex.getPokemonIcon(template)+'"></span>'+name;
 				if (template === pokemon) {
@@ -191,7 +193,7 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 		// past gens
 		var pastGenChanges = false;
 		var latestGenType = pokemon.types.join('/');
-		if (BattleTeambuilderTable) for (var genNum = 6; genNum >= 1; genNum--) {
+		if (BattleTeambuilderTable) for (var genNum = 7; genNum >= 1; genNum--) {
 			var genTable = BattleTeambuilderTable['gen' + genNum];
 			var nextGenTable = BattleTeambuilderTable['gen' + (genNum + 1)];
 			var changes = '';
@@ -248,7 +250,9 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 		buf += '<li class="resultheader"><h3>Level-up</h3></li>';
 
 		var learnset = BattleLearnsets[id] && BattleLearnsets[id].learnset;
-		if (!learnset && BattleLearnsets[toID(pokemon.baseSpecies)]) learnset = BattleLearnsets[toID(pokemon.baseSpecies)].learnset;
+		if (!learnset && BattleLearnsets[toID(pokemon.baseSpecies)]) {
+			learnset = BattleLearnsets[toID(pokemon.baseSpecies)].learnset;
+		}
 
 		var moves = [];
 		for (var moveid in learnset) {
@@ -296,7 +300,7 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 		}
 		var i = 0;
 		var $entries = this.$('table.stats td.ministat small');
-		var pokemon = Dex.getTemplate(this.id);
+		var pokemon = Dex.getSpecies(this.id);
 		for (var stat in BattleStatNames) {
 			var baseStat = pokemon.baseStats[stat];
 
@@ -305,6 +309,27 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 			$entries.eq(4 * i + 2).text(this.getStat(baseStat, stat==='hp', level, highIV, highEV, 1.0));
 			$entries.eq(4 * i + 3).text(stat==='hp'?'':this.getStat(baseStat, false, level, highIV, highEV, 1.1));
 			i++;
+		}
+	},
+	getEvoMethod: function(evo) {
+		let condition = evo.evoCondition ? ` ${evo.evoCondition}` : ``;
+		switch (evo.evoType) {
+		case 'levelExtra':
+			return 'level-up' + condition;
+		case 'levelFriendship':
+			return 'level-up with high Friendship' + condition;
+		case 'levelHold':
+			return 'level-up holding ' + evo.evoItem + condition;
+		case 'useItem':
+			return evo.evoItem;
+		case 'levelMove':
+			return 'level-up with ' + evo.evoMove + condition;
+		case 'trade':
+			return 'trade';
+		case 'other':
+			return evo.evoCondition;
+		default:
+			return 'level ' + evo.evoLevel;
 		}
 	},
 	selectTab: function(e) {
@@ -323,7 +348,7 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 		}
 	},
 	renderFullLearnset: function() {
-		var pokemon = Dex.getTemplate(this.id);
+		var pokemon = Dex.getSpecies(this.id);
 		var learnset = BattleLearnsets[this.id] && BattleLearnsets[this.id].learnset;
 		if (!learnset) learnset = BattleLearnsets[toID(pokemon.baseSpecies)].learnset;
 		if (pokemon.inheritsFrom) {
@@ -387,7 +412,7 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 				if (typeof sources === 'string') sources = [sources];
 				for (var i=0, len=sources.length; i<len; i++) {
 					var source = sources[i];
-					var prevoTemplate = Dex.getTemplate(prevo1);
+					var prevoTemplate = Dex.getSpecies(prevo1);
 					if (!prevoTemplate.isNonstandard || prevoTemplate.isNonstandard !== 'Past') {
 						if (source.substr(0,2) === '8L') {
 							if (shownMoves[moveid]&2) continue;
@@ -428,7 +453,7 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 					if (typeof sources === 'string') sources = [sources];
 					for (var i=0, len=sources.length; i<len; i++) {
 						var source = sources[i];
-						var prevoTemplate = Dex.getTemplate(prevo2);
+						var prevoTemplate = Dex.getSpecies(prevo2);
 						if (!prevoTemplate.isNonstandard || prevoTemplate.isNonstandard !== 'Past') {
 							if (source.substr(0,2) === '8L') {
 								if (shownMoves[moveid]&2) continue;
@@ -484,11 +509,11 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 					desc = moves[i].substr(1,3) === '001' ? '&ndash;' : '<small>L</small>'+(Number(moves[i].substr(1,3))||'?');
 					break;
 				case 'b': // prevo1 level-up move
-					if (lastChanged) buf += '<li class="resultheader"><h3>Level-up from '+BattlePokedex[prevo1].species+'</h3></li>';
+					if (lastChanged) buf += '<li class="resultheader"><h3>Level-up from '+BattlePokedex[prevo1].name+'</h3></li>';
 					desc = moves[i].substr(1,3) === '001' ? '&ndash;' : '<small>L</small>'+(Number(moves[i].substr(1,3))||'?');
 					break;
 				case 'c': // prevo2 level-up move
-					if (lastChanged) buf += '<li class="resultheader"><h3>Level-up from '+BattlePokedex[prevo2].species+'</h3></li>';
+					if (lastChanged) buf += '<li class="resultheader"><h3>Level-up from '+BattlePokedex[prevo2].name+'</h3></li>';
 					desc = moves[i].substr(1,3) === '001' ? '&ndash;' : '<small>L</small>'+(Number(moves[i].substr(1,3))||'?');
 					break;
 				case 'd': // tm/hm
@@ -504,11 +529,11 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 					desc = '<span class="picon" style="margin-top:-12px;'+Dex.getPokemonIcon('egg')+'"></span>';
 					break;
 				case 'g': // prevo1 egg move
-					if (lastChanged) buf += '<li class="resultheader"><h3>Egg from '+BattlePokedex[prevo1].species+'</h3></li>';
+					if (lastChanged) buf += '<li class="resultheader"><h3>Egg from '+BattlePokedex[prevo1].name+'</h3></li>';
 					desc = '<span class="picon" style="margin-top:-12px;'+Dex.getPokemonIcon('egg')+'"></span>';
 					break;
 				case 'h': // prevo2 egg move
-					if (lastChanged) buf += '<li class="resultheader"><h3>Egg from '+BattlePokedex[prevo2].species+'</h3></li>';
+					if (lastChanged) buf += '<li class="resultheader"><h3>Egg from '+BattlePokedex[prevo2].name+'</h3></li>';
 					desc = '<span class="picon" style="margin-top:-12px;'+Dex.getPokemonIcon('egg')+'"></span>';
 					break;
 				case 'i': // event
@@ -526,7 +551,7 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 		this.$('.utilichart').html(buf);
 	},
 	renderDetails: function() {
-		var pokemon = Dex.getTemplate(this.id);
+		var pokemon = Dex.getSpecies(this.id);
 		var buf = '';
 
 		// flavor
@@ -534,8 +559,8 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 		buf += '<li><dl><dt>Color:</dt><dd>'+pokemon.color+'</dd></dl></li>';
 
 		// animated gen 6
-		if (pokemon.num > 0 && this.id !== 'missingno') {
-			buf += '<li class="resultheader"><h3>Animated Gen 6-7 sprites</h3></li>';
+		if (pokemon.num > 0 && pokemon.gen < 8 && this.id !== 'missingno') {
+			buf += '<li class="resultheader"><h3>Animated Gen 6-8 sprites</h3></li>';
 
 			buf += '<li class="content"><table class="sprites"><tr><td><img src="//play.pokemonshowdown.com/sprites/ani/'+pokemon.spriteid+'.gif" /></td>';
 			buf += '<td><img src="//play.pokemonshowdown.com/sprites/ani-shiny/'+pokemon.spriteid+'.gif" /></td></table>';
@@ -574,7 +599,7 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 		this.$('.utilichart').html(buf);
 	},
 	renderEvents: function() {
-		var pokemon = Dex.getTemplate(this.id);
+		var pokemon = Dex.getSpecies(this.id);
 		var events = BattleFormatsData[this.id].eventPokemon;
 		var buf = '';
 
@@ -582,7 +607,7 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 		for (var i = 0; i < events.length; i++) {
 			var event = events[i];
 			buf += '<li><dl><dt>Gen ' + event.generation + ' event:</dt><dd><small>';
-			buf += pokemon.species;
+			buf += pokemon.name;
 			if (event.gender) buf += ' (' + event.gender + ')';
 			buf += '<br />';
 			if (event.abilities) {
