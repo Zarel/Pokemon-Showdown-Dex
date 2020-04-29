@@ -139,10 +139,9 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 		} else {
 			buf += '<em>Does not evolve</em>';
 		}
-		buf += '</dd>';
 
 		if (pokemon.otherFormes || pokemon.forme) {
-			buf += '<dt>Formes:</dt> <dd>';
+			buf += '</dd><dt>Formes:</dt> <dd>';
 			template = (pokemon.forme ? Dex.getSpecies(pokemon.baseSpecies) : pokemon);
 			var name = template.baseForme || 'Base';
 			name = '<span class="picon" style="'+Dex.getPokemonIcon(template)+'"></span>'+name;
@@ -164,6 +163,19 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 			}
 			if (pokemon.requiredItem) {
 				buf += '<div><small>Must hold <a href="/items/' + toID(pokemon.requiredItem) + '" data-target="push">' + pokemon.requiredItem + '</a></small></div>';
+			}
+		}
+		if (pokemon.cosmeticFormes) {
+			buf += '</dd><dt>Cosmetic formes:</dt> <dd>';
+			var name = pokemon.baseForme || 'Base';
+			name = '<span class="picon" style="'+Dex.getPokemonIcon(pokemon)+'"></span>'+name;
+			buf += ''+name;
+
+			for (var i=0; i<pokemon.cosmeticFormes.length; i++) {
+				template = Dex.getSpecies(pokemon.cosmeticFormes[i]);
+				var name = template.forme;
+				name = '<span class="picon" style="'+Dex.getPokemonIcon(template)+'"></span>'+name;
+				buf += ', '+name;
 			}
 		}
 		buf += '</dd></dl>';
