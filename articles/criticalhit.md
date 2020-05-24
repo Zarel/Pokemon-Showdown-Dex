@@ -1,6 +1,6 @@
 # Critical hit
 
-All damaging moves with damage calculated through base power have a chance to critical hit, which multiplies the damage dealt by 1.5. If the move's user has the [[Sniper]] Ability, damage from a critical hit is again multiplied by 1.5. Additionally, if the user's attacking stat stage is less than 0, it will be treated as 0; the same is true if the target's defensive stat stage is greater than 0. If the target has Reflect or Light Screen active, those effects are ignored.
+All damaging moves with damage calculated through base power have a chance to critical hit, which multiplies the damage dealt by 1.5. If the move's user has the [[Sniper]] Ability, damage from a critical hit is again multiplied by 1.5. Additionally, if the user's attacking stat stage is less than 0, it will be treated as 0; the same is true if the target's defensive stat stage is greater than 0. If the target has Reflect, Light Screen, or Aurora Veil active, those effects are ignored.
 
 Most moves start at a critical hit ratio of +0, although high critical hit ratio moves (like [[Stone Edge]]) start at +1, [[10,000,000 Volt Thunderbolt]] starts at +2, and [[Frost Breath]] and [[Storm Throw]] always result in a critical hit.
 
