@@ -1,7 +1,5 @@
 /index.php
 /.articles-cached
 /config/config.js
-/js/pokedex-moves.js
-/js/pokedex-pokemon.js
 node_modules
 .DS_Store

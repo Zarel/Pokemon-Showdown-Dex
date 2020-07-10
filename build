@@ -18,8 +18,6 @@ if (process.argv[2] === 'full') {
 
 function updateFiles() {
 	let indexContents = fs.readFileSync('index.template.php', {encoding: 'utf8'});
-	let movesContents = fs.readFileSync('js/pokedex-moves.template.js', {encoding: 'utf8'});
-	let pokemonContents = fs.readFileSync('js/pokedex-pokemon.template.js', {encoding: 'utf8'});
 
 	// add hashes to js and css files
 	process.stdout.write("Updating hashes... ");
@@ -37,24 +35,18 @@ function updateFiles() {
 
 		return b + '="/' + c + '?' + hash + '"';
 	});
-	indexContents = indexContents.replace(/(src|href)="\/(.*?)[a-z0-9]*?"/g, (match) => replaceRoutes(match));
-	movesContents = movesContents.replace(/(src|href)="\/(.*?)[a-z0-9]*?"/g, (match) => replaceRoutes(match));
-	pokemonContents = pokemonContents.replace(/(src|href)="\/(.*?)[a-z0-9]*?"/g, (match) => replaceRoutes(match));
+	indexContents = indexContents.replace(/(src|href)="(.*?)\/(.*?)[a-z0-9]*?"/g, (match) => replaceRoutes(match));
 	console.log("DONE");
 
 	process.stdout.write("Writing new `index.php` file... ");
 	fs.writeFileSync('index.php', indexContents);
 	console.log("DONE");
-	process.stdout.write("Writing new JavaScript files... ");
-	fs.writeFileSync('js/pokedex-moves.js', movesContents);
-	fs.writeFileSync('js/pokedex-pokemon.js', pokemonContents);
-	console.log("DONE");
 }
 
 function replaceRoutes(url) {
 	return url.replace('/replay.pokemonshowdown.com/', '/' + Config.routes.replays + '/')
-	.replace('/play.pokemonshowdown.com/', '/' + Config.routes.client + '/')
-	.replace('/pokemonshowdown.com/', '/' + Config.routes.root + '/');
+		.replace('/play.pokemonshowdown.com/', '/' + Config.routes.client + '/')
+		.replace('/pokemonshowdown.com/', '/' + Config.routes.root + '/');
 }
 
 updateFiles();
