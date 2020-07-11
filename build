@@ -21,7 +21,7 @@ function updateFiles() {
 
 	// add hashes to js and css files
 	process.stdout.write("Updating hashes... ");
-	indexContents = indexContents.replace(/(src|href)="\/(.*?)\?[a-z0-9]*?"/, function (a, b, c) {
+	indexContents = indexContents.replace(/(src|href)="\/(.*?)\?[a-z0-9]*?"/g, function (a, b, c) {
 		let hash = Math.random(); // just in case creating the hash fails
 		try {
 			var filepath = c;
