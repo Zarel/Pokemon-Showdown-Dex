@@ -73,7 +73,7 @@ var PokedexAbilityPanel = PokedexResultPanel.extend({
 
 		if (ability.isNonstandard) buf += '<div class="warning"><strong>Note:</strong> This is a made-up ability by <a href="http://www.smogon.com/cap/" target="_blank">Smogon CAP</a>.</div>';
 
-		buf += '<p>'+Dex.escapeHTML(ability.desc||ability.shortDesc)+'</p>';
+		buf += '<p>'+Dex.escapeHTML(ability.desc)+'</p>';
 
 		// past gens
 		var pastGenChanges = false;

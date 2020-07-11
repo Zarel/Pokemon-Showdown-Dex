@@ -78,6 +78,7 @@
 	<script src="//play.pokemonshowdown.com/data/formats-data.js?"></script>
 	<script src="//play.pokemonshowdown.com/data/typechart.js?"></script>
 	<script src="//play.pokemonshowdown.com/data/aliases.js?"></script>
+	<script src="//play.pokemonshowdown.com/js/battle-dex-search.js?"></script>
 	<script src="//play.pokemonshowdown.com/js/search.js?"></script>
 	<script src="/js/pokedex.js?"></script>
 	<script src="/js/pokedex-pokemon.js?"></script>

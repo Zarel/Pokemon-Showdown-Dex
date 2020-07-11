@@ -417,7 +417,7 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 		}
 		var prevo1, prevo2;
 		if (pokemon.prevo) {
-			prevo1 = pokemon.prevo;
+			prevo1 = toID(pokemon.prevo);
 			var prevoLearnset = BattleLearnsets[prevo1].learnset;
 			for (var moveid in prevoLearnset) {
 				var sources = prevoLearnset[moveid];
@@ -458,7 +458,7 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 			}
 
 			if (BattlePokedex[prevo1].prevo) {
-				prevo2 = BattlePokedex[prevo1].prevo;
+				prevo2 = toID(BattlePokedex[prevo1].prevo);
 				prevoLearnset = BattleLearnsets[prevo2].learnset;
 				for (var moveid in prevoLearnset) {
 					var sources = prevoLearnset[moveid];

@@ -44,11 +44,11 @@ var PokedexSearchPanel = Panels.Panel.extend({
 				search.updateScroll();
 			});
 			if (fragment === 'pokemon/') {
-				search.qType = 'pokemon';
+				search.setType('pokemon');
 				$searchbox.attr('placeholder', 'Search pokemon OR filter by type, move, ability, egg group');
 				this.$('.buttonbar').remove();
 			} else if (fragment === 'moves/') {
-				search.qType = 'move';
+				search.setType('move');
 				$searchbox.attr('placeholder', 'Search moves OR filter by type, category, pokemon');
 				this.$('.buttonbar').remove();
 			}
