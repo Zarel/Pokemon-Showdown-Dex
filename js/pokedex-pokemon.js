@@ -26,14 +26,16 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 				buf += '<div class="warning"><strong>Note:</strong> This Pok&eacute;mon is only available in past generations.</div>';
 			} else if (pokemon.isNonstandard === 'LGPE') {
 				buf += '<div class="warning"><strong>Note:</strong> Pok&eacute;mon Let\'s Go, Pikachu! and Let\'s Go, Eevee! only.</div>';
+			} else if (pokemon.isNonstandard === 'Gigantamax') {
+				buf += '<div class="warning"><strong>Note:</strong> This Pok&eacute;mon is not obtainable in the games, even via hacking.</div>';
 			} else if (pokemon.num > 0) {
-				buf += '<div class="warning"><strong>Note:</strong> This Pok&eacute;mon is only usable in previous generations.</div>';
+				buf += '<div class="warning"><strong>Note:</strong> This Pok&eacute;mon is unreleased.</div>';
 			} else {
 				buf += '<div class="warning"><strong>Note:</strong> This is a made-up Pok&eacute;mon by <a href="http://www.smogon.com/cap/" target="_blank">Smogon CAP</a>.</div>';
 			}
 		}
 
-		buf += '<img src="'+Dex.resourcePrefix+'sprites/gen5/'+pokemon.spriteid+'.png'+'" alt="" width="96" height="96" class="sprite" />';
+		buf += '<img src="'+Dex.resourcePrefix+'sprites/gen5/' + pokemon.spriteid + '.png'+'" alt="" width="96" height="96" class="sprite" />';
 
 		buf += '<dl class="typeentry">';
 		buf += '<dt>Types:</dt> <dd>';
@@ -253,7 +255,7 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 		if (pastGenChanges) buf += '</dl>';
 
 		// learnset
-		if (window.BattleFormatsData && BattleFormatsData[id] && BattleFormatsData[id].eventPokemon) {
+		if (window.BattleLearnsets && BattleLearnsets[id] && BattleLearnsets[id].eventData) {
 			buf += '<ul class="tabbar"><li><button class="button nav-first cur" value="move">Moves</button></li><li><button class="button" value="details">Flavor</button></li><li><button class="button nav-last" value="events">Events</button></li></ul>';
 		} else {
 			buf += '<ul class="tabbar"><li><button class="button nav-first cur" value="move">Moves</button></li><li><button class="button nav-last" value="details">Flavor</button></li></ul>';
@@ -273,9 +275,9 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 			for (var i=0, len=sources.length; i<len; i++) {
 				var source = sources[i];
 				if (source.substr(0,2) === '8L') {
-					moves.push('a'+sourcePad(source)+moveid);
+					moves.push('a'+source.substr(2).padStart(3,'0')+' '+moveid);
 				} else if (source.substr(0,2) === '7L' && pokemon.isNonstandard && pokemon.isNonstandard === 'Past') {
-					moves.push('a'+sourcePad(source)+moveid);
+					moves.push('a'+source.substr(2).padStart(3,'0')+' '+moveid);
 				}
 			}
 		}
@@ -378,7 +380,7 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 				var source = sources[i];
 				if (!pokemon.isNonstandard || pokemon.isNonstandard !== 'Past') {
 					if (source.substr(0,2) === '8L') {
-						moves.push('a'+sourcePad(source)+moveid);
+						moves.push('a'+source.substr(2).padStart(3,'0')+' '+moveid);
 						shownMoves[moveid] = (shownMoves[moveid]|2);
 					} else if (source === '8M') {
 						moves.push('d000 '+moveid);
@@ -396,7 +398,7 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 					}
 				} else {
 					if (source.substr(0,2) === '7L') {
-						moves.push('a'+sourcePad(source)+moveid);
+						moves.push('a'+source.substr(2).padStart(3,'0')+' '+moveid);
 						shownMoves[moveid] = (shownMoves[moveid]|2);
 					} else if (source === '7M') {
 						moves.push('d000 '+moveid);
@@ -428,7 +430,7 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 					if (!prevoTemplate.isNonstandard || prevoTemplate.isNonstandard !== 'Past') {
 						if (source.substr(0,2) === '8L') {
 							if (shownMoves[moveid]&2) continue;
-							moves.push('b'+sourcePad(source)+moveid);
+							moves.push('b'+source.substr(2).padStart(3,'0')+' '+moveid);
 							shownMoves[moveid] = (shownMoves[moveid]|2);
 						} else if (source === '8E') {
 							if (shownMoves[moveid]&4) continue;
@@ -442,7 +444,7 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 					} else {
 						if (source.substr(0,2) === '7L') {
 							if (shownMoves[moveid]&2) continue;
-							moves.push('b'+sourcePad(source)+moveid);
+							moves.push('b'+source.substr(2).padStart(3,'0')+' '+moveid);
 							shownMoves[moveid] = (shownMoves[moveid]|2);
 						} else if (source === '7E') {
 							if (shownMoves[moveid]&4) continue;
@@ -469,7 +471,7 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 						if (!prevoTemplate.isNonstandard || prevoTemplate.isNonstandard !== 'Past') {
 							if (source.substr(0,2) === '8L') {
 								if (shownMoves[moveid]&2) continue;
-								moves.push('c'+sourcePad(source)+moveid);
+								moves.push('c'+source.substr(2).padStart(3,'0')+' '+moveid);
 								shownMoves[moveid] = (shownMoves[moveid]|2);
 							} else if (source === '8E') {
 								if (shownMoves[moveid]&4) continue;
@@ -483,7 +485,7 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 						} else {
 							if (source.substr(0,2) === '7L') {
 								if (shownMoves[moveid]&2) continue;
-								moves.push('c'+sourcePad(source)+moveid);
+								moves.push('c'+source.substr(2).padStart(3,'0')+' '+moveid);
 								shownMoves[moveid] = (shownMoves[moveid]|2);
 							} else if (source === '7E') {
 								if (shownMoves[moveid]&4) continue;
@@ -534,7 +536,7 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 					break;
 				case 'e': // tutor
 					if (lastChanged) buf += '<li class="resultheader"><h3>Tutor</h3></li>';
-					desc = '<img src="//' + Config.routes.client + '/sprites/tutor.png" style="margin-top:-4px;opacity:.7" width="27" height="26" alt="T" />';
+					desc = '<img src="' + Dex.resourcePrefix + 'sprites/tutor.png" style="margin-top:-4px;opacity:.7" width="27" height="26" alt="T" />';
 					break;
 				case 'f': // egg move
 					if (lastChanged) buf += '<li class="resultheader"><h3>Egg</h3></li>';
@@ -571,13 +573,13 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 		buf += '<li><dl><dt>Color:</dt><dd>'+pokemon.color+'</dd></dl></li>';
 
 		// animated gen 6
-		if (pokemon.num > 0 && pokemon.gen < 8 && this.id !== 'missingno') {
+		if (pokemon.num > 0 && pokemon.gen < 9 && this.id !== 'missingno' && this.id !== 'pichuspikyeared') {
 			buf += '<li class="resultheader"><h3>Animated Gen 6-8 sprites</h3></li>';
 
-			buf += '<li class="content"><table class="sprites"><tr><td><img src="//' + Config.routes.client + '/sprites/ani/'+pokemon.spriteid+'.gif" /></td>';
-			buf += '<td><img src="//' + Config.routes.client + '/sprites/ani-shiny/'+pokemon.spriteid+'.gif" /></td></table>';
-			buf += '<table class="sprites"><tr><td><img src="//' + Config.routes.client + '/sprites/ani-back/'+pokemon.spriteid+'.gif" /></td>';
-			buf += '<td><img src="//' + Config.routes.client + '/sprites/ani-back-shiny/'+pokemon.spriteid+'.gif" /></td></table>';
+			buf += '<li class="content"><table class="sprites"><tr><td><img src="' + Dex.resourcePrefix + 'sprites/ani/' + pokemon.spriteid + '.gif" /></td>';
+			buf += '<td><img src="' + Dex.resourcePrefix + 'sprites/ani-shiny/' + pokemon.spriteid + '.gif" /></td></table>';
+			buf += '<table class="sprites"><tr><td><img src="' + Dex.resourcePrefix + 'sprites/ani-back/' + pokemon.spriteid + '.gif" /></td>';
+			buf += '<td><img src="' + Dex.resourcePrefix + 'sprites/ani-back-shiny/' + pokemon.spriteid + '.gif" /></td></table>';
 
 			buf += '<div style="clear:left"></div></li>';
 		}
@@ -585,34 +587,66 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 		// cry
 		buf += '<li class="resultheader"><h3>Cry</h3></li>';
 
-		buf += '<li class="content"><audio src="//' + Config.routes.client + '/audio/cries/'+pokemon.spriteid+'.mp3" controls="controls"><a href="//' + Config.routes.client + '/audio/cries/'+pokemon.spriteid+'.mp3">Play</a></audio></li>';
+		buf += '<li class="content"><audio src="' + Dex.resourcePrefix + 'audio/cries/' + pokemon.spriteid + '.mp3" controls="controls"><a href="' + Dex.resourcePrefix + 'audio/cries/' + pokemon.spriteid + '.mp3">Play</a></audio></li>';
 
 		// still gen 5
-		buf += '<li class="resultheader"><h3>Gen 5 Sprites</h3></li>';
-		buf += '<li class="content"><table class="sprites"><tr><td><img src="//' + Config.routes.client + '/sprites/gen5/'+pokemon.spriteid+'.png" /></td>';
-		buf += '<td><img src="//' + Config.routes.client + '/sprites/gen5-shiny/'+pokemon.spriteid+'.png" /></td></table>';
-		buf += '<table class="sprites"><tr><td><img src="//' + Config.routes.client + '/sprites/gen5-back/'+pokemon.spriteid+'.png" /></td>';
-		buf += '<td><img src="//' + Config.routes.client + '/sprites/gen5-back-shiny/'+pokemon.spriteid+'.png" /></td></table>';
-
-		buf += '<div style="clear:left"></div></li>';
-
-		// animated gen 5
-		if (pokemon.gen < 6 && this.id !== 'missingno') {
-			buf += '<li class="resultheader"><h3>Animated Gen 5 sprites</h3></li>';
-
-			buf += '<li class="content"><table class="sprites"><tr><td><img src="//' + Config.routes.client + '/sprites/gen5ani/'+pokemon.spriteid+'.gif" /></td>';
-			buf += '<td><img src="//' + Config.routes.client + '/sprites/gen5ani-shiny/'+pokemon.spriteid+'.gif" /></td></table>';
-			buf += '<table class="sprites"><tr><td><img src="//' + Config.routes.client + '/sprites/gen5ani-back/'+pokemon.spriteid+'.gif" /></td>';
-			buf += '<td><img src="//' + Config.routes.client + '/sprites/gen5ani-back-shiny/'+pokemon.spriteid+'.gif" /></td></table>';
+		if (this.id !== 'pichuspikyeared') {
+			buf += '<li class="resultheader"><h3>Gen 5 Sprites</h3></li>';
+			buf += '<li class="content"><table class="sprites"><tr><td><img src="' + Dex.resourcePrefix + 'sprites/gen5/' + pokemon.spriteid + '.png" /></td>';
+			buf += '<td><img src="' + Dex.resourcePrefix + 'sprites/gen5-shiny/' + pokemon.spriteid + '.png" /></td></table>';
+			buf += '<table class="sprites"><tr><td><img src="' + Dex.resourcePrefix + 'sprites/gen5-back/' + pokemon.spriteid + '.png" /></td>';
+			buf += '<td><img src="' + Dex.resourcePrefix + 'sprites/gen5-back-shiny/' + pokemon.spriteid + '.png" /></td></table>';
 
 			buf += '<div style="clear:left"></div></li>';
+
+			// animated gen 5
+			if (pokemon.gen < 6 && this.id !== 'missingno') {
+				buf += '<li class="resultheader"><h3>Animated Gen 5 sprites</h3></li>';
+
+				buf += '<li class="content"><table class="sprites"><tr><td><img src="' + Dex.resourcePrefix + 'sprites/gen5ani/' + pokemon.spriteid + '.gif" /></td>';
+				buf += '<td><img src="' + Dex.resourcePrefix + 'sprites/gen5ani-shiny/' + pokemon.spriteid + '.gif" /></td></table>';
+				buf += '<table class="sprites"><tr><td><img src="' + Dex.resourcePrefix + 'sprites/gen5ani-back/' + pokemon.spriteid + '.gif" /></td>';
+				buf += '<td><img src="' + Dex.resourcePrefix + 'sprites/gen5ani-back-shiny/' + pokemon.spriteid + '.gif" /></td></table>';
+
+				buf += '<div style="clear:left"></div></li>';
+			}
+		}
+
+		if (pokemon.gen < 5) {
+			buf += '<li class="resultheader"><h3>Gen 4 Sprites</h3></li>';
+			buf += '<li class="content"><table class="sprites"><tr><td><img src="' + Dex.resourcePrefix + 'sprites/gen4/' + pokemon.spriteid + '.png" /></td>';
+			buf += '<td><img src="' + Dex.resourcePrefix + 'sprites/gen4-shiny/' + pokemon.spriteid + '.png" /></td></table>';
+			buf += '<table class="sprites"><tr><td><img src="' + Dex.resourcePrefix + 'sprites/gen4-back/' + pokemon.spriteid + '.png" /></td>';
+			buf += '<td><img src="' + Dex.resourcePrefix + 'sprites/gen4-back-shiny/' + pokemon.spriteid + '.png" /></td></table>';
+		}
+
+		if (pokemon.gen < 4) {
+			buf += '<li class="resultheader"><h3>Gen 3 Sprites</h3></li>';
+			buf += '<li class="content"><table class="sprites"><tr><td><img src="' + Dex.resourcePrefix + 'sprites/gen3/' + pokemon.spriteid + '.png" /></td>';
+			buf += '<td><img src="' + Dex.resourcePrefix + 'sprites/gen3-shiny/' + pokemon.spriteid + '.png" /></td></table>';
+			buf += '<table class="sprites"><tr><td><img src="' + Dex.resourcePrefix + 'sprites/gen3-back/' + pokemon.spriteid + '.png" /></td>';
+			buf += '<td><img src="' + Dex.resourcePrefix + 'sprites/gen3-back-shiny/' + pokemon.spriteid + '.png" /></td></table>';
+		}
+
+		if (pokemon.gen < 3) {
+			buf += '<li class="resultheader"><h3>Gen 2 Sprites</h3></li>';
+			buf += '<li class="content"><table class="sprites"><tr><td><img src="' + Dex.resourcePrefix + 'sprites/gen2/' + pokemon.spriteid + '.png" /></td>';
+			buf += '<td><img src="' + Dex.resourcePrefix + 'sprites/gen2-shiny/' + pokemon.spriteid + '.png" /></td></table>';
+			buf += '<table class="sprites"><tr><td><img src="' + Dex.resourcePrefix + 'sprites/gen2-back/' + pokemon.spriteid + '.png" /></td>';
+			buf += '<td><img src="' + Dex.resourcePrefix + 'sprites/gen2-back-shiny/' + pokemon.spriteid + '.png" /></td></table>';
+		}
+
+		if (pokemon.gen < 2) {
+			buf += '<li class="resultheader"><h3>Gen 1 Sprites</h3></li>';
+			buf += '<li class="content"><table class="sprites"><tr><td><img src="' + Dex.resourcePrefix + 'sprites/gen1/' + pokemon.spriteid + '.png" /></td>';
+			buf += '<table class="sprites"><tr><td><img src="' + Dex.resourcePrefix + 'sprites/gen1-back/' + pokemon.spriteid + '.png" /></td>';
 		}
 
 		this.$('.utilichart').html(buf);
 	},
 	renderEvents: function() {
 		var pokemon = Dex.getSpecies(this.id);
-		var events = BattleFormatsData[this.id].eventPokemon;
+		var events = BattleLearnsets[this.id].eventData;
 		var buf = '';
 
 		buf += '<li class="resultheader"><h3>Events</h3></li>';
@@ -653,6 +687,9 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 			}
 			if (event.shiny === 1) {
 				buf += '(this event can be Shiny)<br />';
+			}
+			if (!event.shiny) {
+				buf += '(this event cannot be Shiny)<br />';
 			}
 			buf += '</small></dd></dl></li>';
 		}
