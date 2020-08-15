@@ -72,7 +72,7 @@
 	<script src="//play.pokemonshowdown.com/data/search-index.js?"></script>
 	<script src="//play.pokemonshowdown.com/data/pokedex.js?"></script>
 	<script src="//play.pokemonshowdown.com/data/teambuilder-tables.js?"></script>
-	<script src="//play.pokemonshowdown.com/data/learnsets-g6.js?"></script>
+	<script src="//play.pokemonshowdown.com/data/learnsets.js?"></script>
 	<script src="//play.pokemonshowdown.com/data/moves.js?"></script>
 	<script src="//play.pokemonshowdown.com/data/abilities.js?"></script>
 	<script src="//play.pokemonshowdown.com/data/items.js?"></script>
