@@ -845,7 +845,7 @@ if (!Function.prototype.bind) {
 		updateBackButton: function() {
 			if (this.sourcePanel) {
 				if (this.sourcePanel.shortTitle) {
-					this.$('.pfx-backbutton').html(this.app.backButtonPrefix+this.sourcePanel.shortTitle);
+					this.$('.pfx-backbutton').html(this.app.backButtonPrefix+this.sourcePanel.shortTitle.replace(/</g, '&lt;'));
 				}
 				this.$('.pfx-backbutton').attr('href', this.app.root+this.sourcePanel.fragment);
 			}

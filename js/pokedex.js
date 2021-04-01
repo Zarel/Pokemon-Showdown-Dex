@@ -25,6 +25,7 @@ function sourcePad(source) {
 
 var PokedexItemPanel = PokedexResultPanel.extend({
 	initialize: function(id) {
+		id = toID(id);
 		var item = Dex.getItem(id);
 		this.shortTitle = item.name;
 
@@ -63,6 +64,7 @@ var PokedexItemPanel = PokedexResultPanel.extend({
 });
 var PokedexAbilityPanel = PokedexResultPanel.extend({
 	initialize: function(id) {
+		id = toID(id);
 		var ability = Dex.getAbility(id);
 		this.id = id;
 		this.shortTitle = ability.name;
@@ -124,6 +126,7 @@ var PokedexAbilityPanel = PokedexResultPanel.extend({
 });
 var PokedexTypePanel = PokedexResultPanel.extend({
 	initialize: function(id) {
+		id = toID(id);
 		this.type = id[0].toUpperCase()+id.substr(1);
 		var type = Dex.getType(this.type);
 		this.shortTitle = this.type;
@@ -604,6 +607,7 @@ var PokedexEggGroupPanel = PokedexResultPanel.extend({
 	},
 	initialize: function(id) {
 		var ids = id.split('+');
+		for (var i = 0; i < ids.length; i++) ids[i] = toID(ids[i]);
 		this.id = ids[0];
 		var names = this.table[ids[0]].name;
 		this.shortTitle = names;
@@ -759,6 +763,7 @@ var PokedexEggGroupPanel = PokedexResultPanel.extend({
 });
 var PokedexCategoryPanel = PokedexResultPanel.extend({
 	initialize: function(id) {
+		id = toID(id);
 		var category = {
 			id: id,
 			name: id[0].toUpperCase()+id.substr(1)
@@ -849,6 +854,7 @@ var PokedexTierPanel = PokedexResultPanel.extend({
 });
 var PokedexArticlePanel = PokedexResultPanel.extend({
 	initialize: function(id) {
+		id = toID(id);
 		this.shortTitle = id;
 
 		var buf = '<div class="pfx-body dexentry">';

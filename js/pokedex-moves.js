@@ -1,5 +1,6 @@
 var PokedexMovePanel = PokedexResultPanel.extend({
 	initialize: function(id) {
+		id = toID(id);
 		var move = Dex.getMove(id);
 		this.id = id;
 		this.shortTitle = move.name;
