@@ -1,7 +1,7 @@
 var PokedexMovePanel = PokedexResultPanel.extend({
 	initialize: function(id) {
 		id = toID(id);
-		var move = Dex.getMove(id);
+		var move = Dex.moves.get(id);
 		this.id = id;
 		this.shortTitle = move.name;
 
@@ -60,14 +60,14 @@ var PokedexMovePanel = PokedexResultPanel.extend({
 		if (move.isZ) {
 			buf += '<p><strong><a href="/tags/zmove" data-target="push">[Z-Move]</a></strong>';
 			if (move.isZ !== true) {
-				var zItem = Dex.getItem(move.isZ);
+				var zItem = Dex.items.get(move.isZ);
 				buf += ' requiring <a href="/items/' + zItem.id + '" data-target="push">' + zItem.name + '</a>';
 			}
 			buf += '</p>';
 		} else if (move.isMax) {
 			if (move.isMax !== true) {
 				buf += '<p><strong><a href="/tags/gmaxmove" data-target="push">[G-Max Move]</a></strong>';
-				var maxUser = Dex.getSpecies(move.isMax);
+				var maxUser = Dex.species.get(move.isMax);
 				buf += ' used by <a href="/pokemon/' + maxUser.id + 'gmax" data-target="push">' + maxUser.name + '-Gmax</a>';
 				if (maxUser.name === "Toxtricity") {
 					buf += ' or <a href="/pokemon/' + maxUser.id + 'lowkeygmax" data-target="push">' + maxUser.name + '-Low-Key-Gmax</a>';
@@ -210,7 +210,7 @@ var PokedexMovePanel = PokedexResultPanel.extend({
 				buf += '<p><strong>Z-' + move.name + '</strong>: +1 Atk if the user is a ghost, or fully heals the user otherwise, then uses ' + move.name + '</p>';
 			}
 			if (id in zMoveVersionTable) {
-				var zMove = Dex.getMove(zMoveVersionTable[id]);
+				var zMove = Dex.moves.get(zMoveVersionTable[id]);
 				buf += '<p><strong><a href="/moves/' + zMove.id + '" data-target="push">' + zMove.name + '</a></strong>: ';
 				if (zMove.basePower) {
 					buf += '' + zMove.basePower + ' base power, ' + zMove.category + '</p>';
@@ -220,7 +220,7 @@ var PokedexMovePanel = PokedexResultPanel.extend({
 				buf += '</p>';
 			}
 			if ((id + '2') in zMoveVersionTable) {
-				var zMove = Dex.getMove(zMoveVersionTable[id + '2']);
+				var zMove = Dex.moves.get(zMoveVersionTable[id + '2']);
 				buf += '<p><strong><a href="/moves/' + zMove.id + '" data-target="push">' + zMove.name + '</a></strong>: ';
 				if (zMove.basePower) {
 					buf += '' + zMove.basePower + ' base power, ' + zMove.category + '</p>';
@@ -288,7 +288,7 @@ var PokedexMovePanel = PokedexResultPanel.extend({
 			}
 			if (move.type in gmaxMoveTable && move.category !== 'Status') {
 				for (let i = 0; i < gmaxMoveTable[move.type].length; i++) {
-					var gmaxMove = Dex.getMove('gmax' + gmaxMoveTable[move.type][i]);
+					var gmaxMove = Dex.moves.get('gmax' + gmaxMoveTable[move.type][i]);
 					buf += '<p>Becomes <strong><a href="/moves/' + gmaxMove.id + '" data-target="push">' + gmaxMove.name + '</a></strong> ';
 					buf += 'if used by <strong><a href="/pokemon/' + gmaxMove.isMax + 'gmax" data-target="push">' + gmaxMove.isMax + '-Gmax</a></strong>';
 					if (gmaxMove.isMax === 'Toxtricity') {
@@ -303,7 +303,7 @@ var PokedexMovePanel = PokedexResultPanel.extend({
 		// warning: excessive trickiness
 		var leftPanel = this.app.panels[this.app.panels.length - 2];
 		if (leftPanel && leftPanel.fragment.slice(0, 8) === 'pokemon/') {
-			var pokemon = Dex.getSpecies(leftPanel.id);
+			var pokemon = Dex.species.get(leftPanel.id);
 			var learnset = BattleLearnsets[pokemon.id] && BattleLearnsets[pokemon.id].learnset;
 			if (!learnset) learnset = BattleLearnsets[toID(pokemon.baseSpecies)].learnset;
 			var eg1 = pokemon.eggGroups[0];
@@ -316,7 +316,7 @@ var PokedexMovePanel = PokedexResultPanel.extend({
 					template = pokemon;
 				} else {
 					if (!template.prevo) break;
-					template = Dex.getSpecies(template.prevo);
+					template = Dex.species.get(template.prevo);
 					sources = BattleLearnsets[template.id].learnset[id];
 				}
 

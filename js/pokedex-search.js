@@ -84,8 +84,8 @@ var PokedexSearchPanel = Panels.Panel.extend({
 			for (var i = 0; i < this.search.filters.length; i++) {
 				var filter = this.search.filters[i];
 				var text = filter[1];
-				if (filter[0] === 'move') text = Dex.getMove(text).name;
-				if (filter[0] === 'pokemon') text = Dex.getSpecies(text).name;
+				if (filter[0] === 'move') text = Dex.moves.get(text).name;
+				if (filter[0] === 'pokemon') text = Dex.species.get(text).name;
 				buf += '<button class="filter" value="' + Dex.escapeHTML(filter.join(':')) + '">' + text + ' <i class="fa fa-times-circle"></i></button> ';
 			}
 		}

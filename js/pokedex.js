@@ -26,7 +26,7 @@ function sourcePad(source) {
 var PokedexItemPanel = PokedexResultPanel.extend({
 	initialize: function(id) {
 		id = toID(id);
-		var item = Dex.getItem(id);
+		var item = Dex.items.get(id);
 		this.shortTitle = item.name;
 
 		var buf = '<div class="pfx-body dexentry">';
@@ -65,7 +65,7 @@ var PokedexItemPanel = PokedexResultPanel.extend({
 var PokedexAbilityPanel = PokedexResultPanel.extend({
 	initialize: function(id) {
 		id = toID(id);
-		var ability = Dex.getAbility(id);
+		var ability = Dex.abilities.get(id);
 		this.id = id;
 		this.shortTitle = ability.name;
 
@@ -112,7 +112,7 @@ var PokedexAbilityPanel = PokedexResultPanel.extend({
 		setTimeout(this.renderPokemonList.bind(this));
 	},
 	renderPokemonList: function(list) {
-		var ability = Dex.getAbility(this.id);
+		var ability = Dex.abilities.get(this.id);
 		var buf = '';
 		for (var pokemonid in BattlePokedex) {
 			var template = BattlePokedex[pokemonid];
@@ -128,7 +128,7 @@ var PokedexTypePanel = PokedexResultPanel.extend({
 	initialize: function(id) {
 		id = toID(id);
 		this.type = id[0].toUpperCase()+id.substr(1);
-		var type = Dex.getType(this.type);
+		var type = Dex.types.get(this.type);
 		this.shortTitle = this.type;
 
 		var buf = '<div class="pfx-body dexentry">';

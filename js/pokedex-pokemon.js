@@ -1,7 +1,7 @@
 var PokedexPokemonPanel = PokedexResultPanel.extend({
 	initialize: function(id) {
 		id = toID(id);
-		var pokemon = Dex.getSpecies(id);
+		var pokemon = Dex.species.get(id);
 		this.id = id;
 		this.shortTitle = pokemon.baseSpecies;
 
@@ -106,14 +106,14 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 
 		buf += '<dt>Evolution:</dt> <dd>';
 		var template = pokemon;
-		while (template.prevo) template = Dex.getSpecies(template.prevo);
+		while (template.prevo) template = Dex.species.get(template.prevo);
 		if (template.evos) {
 			buf += '<table class="evos"><tr><td>';
 			var evos = [template];
 			while (evos) {
 				if (evos[0] === 'dustox') evos = ['beautifly','dustox'];
 				for (var i=0; i<evos.length; i++) {
-					template = Dex.getSpecies(evos[i]);
+					template = Dex.species.get(evos[i]);
 					if (i <= 0) {
 						if (!evos[0].exists) {
 							if (evos[1] === 'dustox') {
@@ -137,7 +137,7 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 			}
 			buf += '</td></tr></table>';
 			if (pokemon.prevo) {
-				buf += '<div><small>Evolves from ' + Dex.getSpecies(pokemon.prevo).name + ' (' + this.getEvoMethod(pokemon) + ')</small></div>';
+				buf += '<div><small>Evolves from ' + Dex.species.get(pokemon.prevo).name + ' (' + this.getEvoMethod(pokemon) + ')</small></div>';
 			}
 		} else {
 			buf += '<em>Does not evolve</em>';
@@ -145,7 +145,7 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 
 		if (pokemon.otherFormes || pokemon.forme) {
 			buf += '</dd><dt>Formes:</dt> <dd>';
-			template = (pokemon.forme ? Dex.getSpecies(pokemon.baseSpecies) : pokemon);
+			template = (pokemon.forme ? Dex.species.get(pokemon.baseSpecies) : pokemon);
 			var name = template.baseForme || 'Base';
 			name = '<span class="picon" style="'+Dex.getPokemonIcon(template)+'"></span>'+name;
 			if (template === pokemon) {
@@ -155,7 +155,7 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 			}
 			var otherFormes = template.otherFormes;
 			if (otherFormes) for (var i=0; i<otherFormes.length; i++) {
-				template = Dex.getSpecies(otherFormes[i]);
+				template = Dex.species.get(otherFormes[i]);
 				var name = template.forme;
 				name = '<span class="picon" style="'+Dex.getPokemonIcon(template)+'"></span>'+name;
 				if (template === pokemon) {
@@ -175,7 +175,7 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 			buf += ''+name;
 
 			for (var i=0; i<pokemon.cosmeticFormes.length; i++) {
-				template = Dex.getSpecies(pokemon.cosmeticFormes[i]);
+				template = Dex.species.get(pokemon.cosmeticFormes[i]);
 				var name = template.forme;
 				name = '<span class="picon" style="'+Dex.getPokemonIcon(template)+'"></span>'+name;
 				buf += ', '+name;
@@ -315,7 +315,7 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 		}
 		var i = 0;
 		var $entries = this.$('table.stats td.ministat small');
-		var pokemon = Dex.getSpecies(this.id);
+		var pokemon = Dex.species.get(this.id);
 		for (var stat in BattleStatNames) {
 			var baseStat = pokemon.baseStats[stat];
 
@@ -363,7 +363,7 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 		}
 	},
 	renderFullLearnset: function() {
-		var pokemon = Dex.getSpecies(this.id);
+		var pokemon = Dex.species.get(this.id);
 		var learnset = BattleLearnsets[this.id] && BattleLearnsets[this.id].learnset;
 		if (!learnset) learnset = BattleLearnsets[toID(pokemon.baseSpecies)].learnset;
 		if (pokemon.inheritsFrom) {
@@ -427,7 +427,7 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 				if (typeof sources === 'string') sources = [sources];
 				for (var i=0, len=sources.length; i<len; i++) {
 					var source = sources[i];
-					var prevoTemplate = Dex.getSpecies(prevo1);
+					var prevoTemplate = Dex.species.get(prevo1);
 					if (!prevoTemplate.isNonstandard || prevoTemplate.isNonstandard !== 'Past') {
 						if (source.substr(0,2) === '8L') {
 							if (shownMoves[moveid]&2) continue;
@@ -468,7 +468,7 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 					if (typeof sources === 'string') sources = [sources];
 					for (var i=0, len=sources.length; i<len; i++) {
 						var source = sources[i];
-						var prevoTemplate = Dex.getSpecies(prevo2);
+						var prevoTemplate = Dex.species.get(prevo2);
 						if (!prevoTemplate.isNonstandard || prevoTemplate.isNonstandard !== 'Past') {
 							if (source.substr(0,2) === '8L') {
 								if (shownMoves[moveid]&2) continue;
@@ -566,7 +566,7 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 		this.$('.utilichart').html(buf);
 	},
 	renderDetails: function() {
-		var pokemon = Dex.getSpecies(this.id);
+		var pokemon = Dex.species.get(this.id);
 		var buf = '';
 
 		// flavor
@@ -646,7 +646,7 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 		this.$('.utilichart').html(buf);
 	},
 	renderEvents: function() {
-		var pokemon = Dex.getSpecies(this.id);
+		var pokemon = Dex.species.get(this.id);
 		var events = BattleLearnsets[this.id].eventData;
 		var buf = '';
 
@@ -659,7 +659,7 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 			buf += '<br />';
 			if (event.abilities) {
 				buf += 'Ability: ' + event.abilities.map(function (ability) {
-					return '<a href="/abilities/' + ability + '" class="subtle" data-target="push">' + Dex.getAbility(ability).name + '</a>';
+					return '<a href="/abilities/' + ability + '" class="subtle" data-target="push">' + Dex.abilities.get(ability).name + '</a>';
 				}).join(' or ') + '<br />';
 			} else if (event.isHidden && pokemon.abilities['H']) {
 				buf += 'Ability: <a href="/abilities/' + toID(pokemon.abilities['H']) + '" class="subtle" data-target="push">' + pokemon.abilities['H'] + '</a><br />';
@@ -679,7 +679,7 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 			}
 			if (event.moves) {
 				for (var j = 0; j < event.moves.length; j++) {
-					var move = Dex.getMove(event.moves[j]);
+					var move = Dex.moves.get(event.moves[j]);
 					buf += '- <a href="/moves/' + move.id + '" class="subtle" data-target="push">' + move.name + '</a><br />';
 				}
 			}
