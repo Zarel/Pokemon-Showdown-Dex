@@ -378,48 +378,48 @@ var PokedexMovePanel = PokedexResultPanel.extend({
 
 		// past gens
 		var pastGenChanges = false;
-		var genDesc = move.shortDesc;
+		var curGenDesc = move.shortDesc;
 		if (BattleTeambuilderTable) for (var genNum = 7; genNum >= 1; genNum--) {
 			var genTable = BattleTeambuilderTable['gen' + genNum];
 			var nextGenTable = BattleTeambuilderTable['gen' + (genNum + 1)];
 			var changes = '';
 
 			var nextGenType = nextGenTable?.overrideMoveData[id]?.type || move.type;
-			var genType = genTable?.overrideMoveData[id]?.type || nextGenType;
-			if (genType !== nextGenType) {
-				changes += 'Type: ' + genType + ' <i class="fa fa-long-arrow-right"></i> ' + nextGenType + '<br />';
+			var curGenType = genTable?.overrideMoveData[id]?.type || nextGenType;
+			if (curGenType !== nextGenType) {
+				changes += 'Type: ' + curGenType + ' <i class="fa fa-long-arrow-right"></i> ' + nextGenType + '<br />';
 			}
 
 			var nextGenBP = nextGenTable?.overrideMoveData[id]?.basePower || move.basePower;
-			var genBP = genTable?.overrideMoveData[id]?.basePower || nextGenBP;
-			if (genBP !== nextGenBP) {
-				changes += 'Base power: ' + genBP + ' <i class="fa fa-long-arrow-right"></i> ' + nextGenBP + '<br />';
+			var curGenBP = genTable?.overrideMoveData[id]?.basePower || nextGenBP;
+			if (curGenBP !== nextGenBP) {
+				changes += 'Base power: ' + curGenBP + ' <i class="fa fa-long-arrow-right"></i> ' + nextGenBP + '<br />';
 			}
 
 			var nextGenPP = nextGenTable?.overrideMoveData[id]?.pp || move.pp;
-			var genPP = genTable?.overrideMoveData[id]?.pp || nextGenPP;
-			if (genPP !== nextGenPP) {
-				changes += 'PP: ' + genPP + ' <i class="fa fa-long-arrow-right"></i> ' + nextGenPP + '<br />';
+			var curGenPP = genTable?.overrideMoveData[id]?.pp || nextGenPP;
+			if (curGenPP !== nextGenPP) {
+				changes += 'PP: ' + curGenPP + ' <i class="fa fa-long-arrow-right"></i> ' + nextGenPP + '<br />';
 			}
 
 			var nextGenAcc = nextGenTable?.overrideMoveData[id]?.accuracy || move.accuracy;
-			var genAcc = genTable?.overrideMoveData[id]?.accuracy || nextGenAcc;
-			if (genAcc !== nextGenAcc) {
-				var genAccText = (genAcc === true ? 'nevermiss' : genAcc + '%');
+			var curGenAcc = genTable?.overrideMoveData[id]?.accuracy || nextGenAcc;
+			if (curGenAcc !== nextGenAcc) {
+				var curGenAccText = (curGenAcc === true ? 'nevermiss' : curGenAcc + '%');
 				var nextGenAccText = (nextGenAcc === true ? 'nevermiss' : nextGenAcc + '%');
-				changes += 'Accuracy: ' + genAccText + ' <i class="fa fa-long-arrow-right"></i> ' + nextGenAccText + '<br />';
+				changes += 'Accuracy: ' + curGenAccText + ' <i class="fa fa-long-arrow-right"></i> ' + nextGenAccText + '<br />';
 			}
 
 			var nextGenCat = nextGenTable?.overrideMoveData[id]?.category || move.category;
-			var genCat = genTable?.overrideMoveData[id]?.category || nextGenCat;
-			if (genCat !== nextGenCat) {
-				changes += genCat + ' <i class="fa fa-long-arrow-right"></i> ' + nextGenCat + '<br />';
+			var curGenCat = genTable?.overrideMoveData[id]?.category || nextGenCat;
+			if (curGenCat !== nextGenCat) {
+				changes += curGenCat + ' <i class="fa fa-long-arrow-right"></i> ' + nextGenCat + '<br />';
 			}
 
-			var nextGenDesc = genDesc;
-			genDesc = genTable?.overrideMoveData[id]?.shortDesc || nextGenDesc;
-			if (genDesc !== nextGenDesc) {
-				changes += genDesc + ' <i class="fa fa-long-arrow-right"></i> ' + nextGenDesc + '<br />';
+			var nextGenDesc = curGenDesc;
+			curGenDesc = genTable?.overrideMoveData[id]?.shortDesc || nextGenDesc;
+			if (curGenDesc !== nextGenDesc) {
+				changes += curGenDesc + ' <i class="fa fa-long-arrow-right"></i> ' + nextGenDesc + '<br />';
 			}
 
 			if (changes) {
