@@ -213,36 +213,31 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 			var nextGenTable = BattleTeambuilderTable['gen' + (genNum + 1)];
 			var changes = '';
 
-			var nextGenType = latestGenType;
-			if (nextGenTable && id in nextGenTable.overrideType) nextGenType = nextGenTable.overrideType[id];
-			var curGenType = genTable.overrideType[id] || nextGenType;
+			var nextGenType = nextGenTable?.overrideSpeciesData[id]?.types?.join('/') || latestGenType;
+			var curGenType = genTable?.overrideSpeciesData[id]?.types?.join('/') || nextGenType;
 			if (curGenType !== nextGenType) {
 				changes += 'Type: ' + curGenType + ' <i class="fa fa-long-arrow-right"></i> ' + nextGenType + '<br />';
 			}
 
-			var nextGenAbility = pokemon.abilities['0'];
-			if (nextGenTable && id in nextGenTable.overrideAbility) nextGenAbility = nextGenTable.overrideAbility[id];
-			var curGenAbility = genTable.overrideAbility[id] || nextGenAbility;
+			var nextGenAbility = nextGenTable?.overrideSpeciesData[id]?.abilities?.['0'] || pokemon.abilities['0'];
+			var curGenAbility = genTable?.overrideSpeciesData[id]?.abilities?.['0'] || nextGenAbility;
 			if (curGenAbility !== nextGenAbility) {
 				changes += 'Ability: ' + curGenAbility + ' <i class="fa fa-long-arrow-right"></i> ' + nextGenAbility + '<br />';
 			}
 
 			for (var i in BattleStatNames) {
 				if (genNum === 1 && (i === 'spa' || i === 'spd')) continue;
-				var nextGenStat = pokemon.baseStats[i];
-				if (nextGenTable && nextGenTable.overrideStats[id] && nextGenTable.overrideStats[id][i]) nextGenStat = nextGenTable.overrideStats[id][i];
-				var curGenStat = (genTable.overrideStats[id] && genTable.overrideStats[id][i]) || nextGenStat;
+				var nextGenStat = nextGenTable?.overrideSpeciesData[id]?.baseStats?.[i] || pokemon.baseStats[i];
+				var curGenStat = genTable?.overrideSpeciesData[id]?.baseStats?.[i] || nextGenStat;
 				if (curGenStat !== nextGenStat) {
 					changes += BattleStatNames[i] + ': ' + curGenStat + ' <i class="fa fa-long-arrow-right"></i> ' + nextGenStat + '<br />';
 				}
 			}
 
 			if (genNum === 1 && pokemon.num > 0 && pokemon.num <= 151 && !pokemon.forme) {
-				var nextGenSpA = pokemon.baseStats['spa'];
-				if (nextGenTable && nextGenTable.overrideStats[id] && nextGenTable.overrideStats[id]['spa']) nextGenSpA = nextGenTable.overrideStats[id]['spa'];
-				var nextGenSpD = pokemon.baseStats['spd'];
-				if (nextGenTable && nextGenTable.overrideStats[id] && nextGenTable.overrideStats[id]['spd']) nextGenSpD = nextGenTable.overrideStats[id]['spd'];
-				var curGenSpc = (genTable.overrideStats[id] && genTable.overrideStats[id]['spa']) || nextGenSpA;
+				var nextGenSpA = nextGenTable?.overrideSpeciesData[id]?.baseStats?.['spa'] || pokemon.baseStats['spa'];
+				var nextGenSpD = nextGenTable?.overrideSpeciesData[id]?.baseStats?.['spd'] || pokemon.baseStats['spd'];
+				var curGenSpc = genTable?.overrideSpeciesData[id]?.baseStats?.['spa'] || nextGenSpA;
 				changes += '' + curGenSpc + ' Spc <i class="fa fa-long-arrow-right"></i> ' + nextGenSpA + ' SpA, ' + nextGenSpD + ' SpD<br />';
 			}
 
