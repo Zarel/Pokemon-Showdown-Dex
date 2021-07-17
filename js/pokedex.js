@@ -18,11 +18,6 @@ var PokedexResultPanel = Panels.Panel.extend({
 	}
 });
 
-function sourcePad(source) {
-	// return (source.length<=4||source.charCodeAt(3)>=97?'0':'')+(source.length<=3||source.charCodeAt(3)>=97?'0':'')+source.substr(2).replace('.','');
-	return source.length>5 ? source.substr(2) : source.substr(2)+' ';
-}
-
 var PokedexItemPanel = PokedexResultPanel.extend({
 	initialize: function(id) {
 		id = toID(id);
