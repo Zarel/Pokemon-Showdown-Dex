@@ -6,6 +6,11 @@ Dex.escapeHTML = function (str, jsEscapeToo) {
 	return str;
 };
 
+Dex.getOverrideAbilityDesc = function (id, table) {
+	if (!table.overrideAbilityData[id] || !table.overrideAbilityData[id].desc) return null;
+	return table.overrideAbilityData[id].desc;
+}
+
 var Topbar = Panels.Topbar.extend({
 	height: 51
 });
@@ -80,8 +85,10 @@ var PokedexAbilityPanel = PokedexResultPanel.extend({
 			var changes = '';
 
 			var nextGenDesc = (ability.shortDesc || ability.desc);
-			if (nextGenTable && nextGenTable.overrideAbilityDesc[id]) nextGenDesc = nextGenTable.overrideAbilityDesc[id];
-			var curGenDesc = genTable.overrideAbilityDesc[id] || nextGenDesc;
+			if (nextGenTable && Dex.getOverrideAbilityDesc(id, nextGenTable)) {
+				nextGenDesc = Dex.getOverrideAbilityDesc(id, nextGenTable);
+			}
+			var curGenDesc = Dex.getOverrideAbilityDesc(id, genTable) || nextGenDesc;
 			if (curGenDesc !== nextGenDesc) {
 				changes += curGenDesc + ' <i class="fa fa-long-arrow-right"></i> ' + nextGenDesc + '<br />';
 			}
