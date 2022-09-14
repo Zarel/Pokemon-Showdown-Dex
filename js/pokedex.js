@@ -6,11 +6,6 @@ Dex.escapeHTML = function (str, jsEscapeToo) {
 	return str;
 };
 
-Dex.getOverrideAbilityDesc = function (id, table) {
-	if (!table.overrideAbilityData[id] || !table.overrideAbilityData[id].desc) return null;
-	return table.overrideAbilityData[id].desc;
-}
-
 var Topbar = Panels.Topbar.extend({
 	height: 51
 });
@@ -36,16 +31,13 @@ var PokedexItemPanel = PokedexResultPanel.extend({
 
 		// past gens
 		var pastGenChanges = false;
-		if (BattleTeambuilderTable) for (var genNum = Dex.gen - 1; genNum >= 1; genNum--) {
-			var genTable = BattleTeambuilderTable['gen' + genNum];
-			var nextGenTable = BattleTeambuilderTable['gen' + (genNum + 1)];
+		for (var genNum = Dex.gen - 1; genNum >= item.gen; genNum--) {
+			var nextGenItem = Dex.forGen(genNum + 1).items.get(id);
+			var curGenItem = Dex.forGen(genNum).items.get(id);
 			var changes = '';
 
-			var nextGenDesc = (item.shortDesc || item.desc);
-			if (nextGenTable && nextGenTable.overrideItemDesc[id]) nextGenDesc = nextGenTable.overrideItemDesc[id];
-			var curGenDesc = genTable.overrideItemDesc[id] || nextGenDesc;
-			if (curGenDesc !== nextGenDesc) {
-				changes += curGenDesc + ' <i class="fa fa-long-arrow-right"></i> ' + nextGenDesc + '<br />';
+			if (curGenItem.shortDesc !== nextGenItem.shortDesc) {
+				changes += curGenItem.shortDesc + ' <i class="fa fa-long-arrow-right"></i> ' + nextGenItem.shortDesc + '<br />';
 			}
 
 			if (changes) {
@@ -79,18 +71,13 @@ var PokedexAbilityPanel = PokedexResultPanel.extend({
 
 		// past gens
 		var pastGenChanges = false;
-		if (BattleTeambuilderTable) for (var genNum = Dex.gen - 1; genNum >= 1; genNum--) {
-			var genTable = BattleTeambuilderTable['gen' + genNum];
-			var nextGenTable = BattleTeambuilderTable['gen' + (genNum + 1)];
+		for (var genNum = Dex.gen - 1; genNum >= ability.gen; genNum--) {
+			var nextGenAbility = Dex.forGen(genNum + 1).abilities.get(id);
+			var curGenAbility = Dex.forGen(genNum).abilities.get(id);
 			var changes = '';
 
-			var nextGenDesc = (ability.shortDesc || ability.desc);
-			if (nextGenTable && Dex.getOverrideAbilityDesc(id, nextGenTable)) {
-				nextGenDesc = Dex.getOverrideAbilityDesc(id, nextGenTable);
-			}
-			var curGenDesc = Dex.getOverrideAbilityDesc(id, genTable) || nextGenDesc;
-			if (curGenDesc !== nextGenDesc) {
-				changes += curGenDesc + ' <i class="fa fa-long-arrow-right"></i> ' + nextGenDesc + '<br />';
+			if (curGenAbility.shortDesc !== nextGenAbility.shortDesc) {
+				changes += curGenAbility.shortDesc + ' <i class="fa fa-long-arrow-right"></i> ' + nextGenAbility.shortDesc + '<br />';
 			}
 
 			if (changes) {
