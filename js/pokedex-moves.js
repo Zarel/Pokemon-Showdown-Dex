@@ -341,41 +341,46 @@ var PokedexMovePanel = PokedexResultPanel.extend({
 				if (!sources.length) buf += '<li>(Past gen only)</li>';
 
 				if (typeof sources === 'string') sources = [sources];
-				for (var i=0, len=sources.length; i<len; i++) {
+				for (var i=0, len=sources.length, gen=''+Dex.gen; i<len; i++) {
 					var source = sources[i];
-					if (source.substr(0,2) === '8L') {
-						buf += '<li>Level ' + parseInt(source.slice(2, 5), 10) + '</li>';
-					} else if (source === '8M') {
-						buf += '<li>TM/HM</li>';
-					} else if (source === '8T') {
-						buf += '<li>Tutor</li>';
-					} else if (source === '8E') {
-						buf += '<li>Egg move: breed with ';
-						var hasBreeders = false;
-						for (var breederid in BattleLearnsets) {
-							if (!(id in BattleLearnsets[breederid].learnset)) continue;
-							var breeder = BattlePokedex[breederid];
-							if (breeder.isNonstandard) continue;
-							if (breeder.gender && breeder.gender !== 'M') continue;
-							if (breederid === 'dragonite' && template.id === 'dratini' && id === 'extremespeed') {
-								buf += 'Event <a href="/pokemon/dragonite">Dragonite</a>';
-								hasBreeders = true;
-							}
-							if (breederid === pokemon.id || breederid === template.id || breederid === pokemon.prevo) continue;
-							if (eg1 === breeder.eggGroups[0] || eg1 === breeder.eggGroups[1] ||
-								(eg2 && (eg2 === breeder.eggGroups[0] || eg2 === breeder.eggGroups[1]))) {
-								if (hasBreeders) buf += ', ';
-								buf += '<a href="/pokemon/' + breederid + '" data-target="push">' + breeder.name + '</a>';
-								hasBreeders = true;
-							}
+					var sourceType = source.charAt(1);
+					if (source.charAt(0) === gen) {
+						switch (sourceType) {
+							case 'L':
+								buf += '<li>Level ' + parseInt(source.slice(2, 5), 10) + '</li>';
+								break;
+							case 'M':
+								buf += '<li>TM/HM</li>';
+								break;
+							case 'T':
+								buf += '<li>Tutor</li>';
+								break;
+							case 'E':
+								buf += '<li>Egg move: breed with ';
+								var hasBreeders = false;
+								for (var breederid in BattleLearnsets) {
+									if (!(id in BattleLearnsets[breederid].learnset)) continue;
+									var breeder = BattlePokedex[breederid];
+									if (breeder.isNonstandard) continue;
+									if (breeder.gender && breeder.gender !== 'M') continue;
+									if (breederid === pokemon.id || breederid === template.id || breederid === pokemon.prevo) continue;
+									if (eg1 === breeder.eggGroups[0] || eg1 === breeder.eggGroups[1] ||
+										(eg2 && (eg2 === breeder.eggGroups[0] || eg2 === breeder.eggGroups[1]))) {
+										if (hasBreeders) buf += ', ';
+										buf += '<a href="/pokemon/' + breederid + '" data-target="push">' + breeder.name + '</a>';
+										hasBreeders = true;
+									}
+								}
+								if (!hasBreeders) buf += 'itself';
+								buf += '</li>';
+								break;
 						}
-						if (!hasBreeders) buf += 'itself';
-						buf += '</li>';
 					} else if (source === '7V') {
 						buf += '<li>Virtual Console transfer from Gen 1</li>';
 					} else if (source === '8V') {
 						buf += '<li>Pok&eacute;mon HOME transfer from Let\'s Go! Pikachu and Eevee</li>';
-					} else if (source.charAt(1) === 'S') {
+					}
+					if (sourceType === 'S') {
 						buf += '<li>Event move</li>';
 					}
 				}
@@ -386,7 +391,7 @@ var PokedexMovePanel = PokedexResultPanel.extend({
 		// past gens
 		var pastGenChanges = false;
 		var curGenDesc = move.shortDesc;
-		if (BattleTeambuilderTable) for (var genNum = 7; genNum >= 1; genNum--) {
+		if (BattleTeambuilderTable) for (var genNum = Dex.gen - 1; genNum >= 1; genNum--) {
 			var genTable = BattleTeambuilderTable['gen' + genNum];
 			var nextGenTable = BattleTeambuilderTable['gen' + (genNum + 1)];
 			var changes = '';
@@ -459,21 +464,30 @@ var PokedexMovePanel = PokedexResultPanel.extend({
 			if (!sources) continue;
 			if (typeof sources === 'string') sources = [sources];
 			var atLeastOne = false;
-			for (var i=0, len=sources.length; i<len; i++) {
+			for (var i=0, len=sources.length, gen=''+Dex.gen; i<len; i++) {
 				var source = sources[i];
-				if (source.substr(0,2) === '8L') {
-					results.push('a'+sourcePad(source)+pokemonid);
-					atLeastOne = true;
-				} else if (source === '8M') {
-					results.push('b000 '+pokemonid);
-					atLeastOne = true;
-				} else if (source === '8T') {
-					results.push('c000 '+pokemonid);
-					atLeastOne = true;
-				} else if (source === '8E') {
-					results.push('d000 '+pokemonid);
-					atLeastOne = true;
-				} else if (source.charAt(1) === 'S' && atLeastOne !== 'S') {
+				var sourceType = source.charAt(1);
+				if (source.charAt(0) === gen) {
+					switch (sourceType) {
+						case 'L':
+							results.push('a'+sourcePad(source)+pokemonid);
+							atLeastOne = true;
+							break;
+						case 'M':
+							results.push('b000 '+pokemonid);
+							atLeastOne = true;
+							break;
+						case 'T':
+							results.push('c000 '+pokemonid);
+							atLeastOne = true;
+							break;
+						case 'E':
+							results.push('d000 '+pokemonid);
+							atLeastOne = true;
+							break;
+					}
+				}
+				if (sourceType === 'S' && atLeastOne !== 'S') {
 					results.push('e000 '+pokemonid);
 					atLeastOne = 'S';
 				}
