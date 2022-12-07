@@ -346,34 +346,34 @@ var PokedexMovePanel = PokedexResultPanel.extend({
 					var sourceType = source.charAt(1);
 					if (source.charAt(0) === gen) {
 						switch (sourceType) {
-							case 'L':
-								buf += '<li>Level ' + parseInt(source.slice(2, 5), 10) + '</li>';
-								break;
-							case 'M':
-								buf += '<li>TM/HM</li>';
-								break;
-							case 'T':
-								buf += '<li>Tutor</li>';
-								break;
-							case 'E':
-								buf += '<li>Egg move: breed with ';
-								var hasBreeders = false;
-								for (var breederid in BattleLearnsets) {
-									if (!(id in BattleLearnsets[breederid].learnset)) continue;
-									var breeder = BattlePokedex[breederid];
-									if (breeder.isNonstandard) continue;
-									if (breeder.gender && breeder.gender !== 'M') continue;
-									if (breederid === pokemon.id || breederid === template.id || breederid === pokemon.prevo) continue;
-									if (eg1 === breeder.eggGroups[0] || eg1 === breeder.eggGroups[1] ||
-										(eg2 && (eg2 === breeder.eggGroups[0] || eg2 === breeder.eggGroups[1]))) {
-										if (hasBreeders) buf += ', ';
-										buf += '<a href="/pokemon/' + breederid + '" data-target="push">' + breeder.name + '</a>';
-										hasBreeders = true;
-									}
+						case 'L':
+							buf += '<li>Level ' + parseInt(source.slice(2, 5), 10) + '</li>';
+							break;
+						case 'M':
+							buf += '<li>TM/HM</li>';
+							break;
+						case 'T':
+							buf += '<li>Tutor</li>';
+							break;
+						case 'E':
+							buf += '<li>Egg move: breed with ';
+							var hasBreeders = false;
+							for (var breederid in BattleLearnsets) {
+								if (!(id in BattleLearnsets[breederid].learnset)) continue;
+								var breeder = BattlePokedex[breederid];
+								if (breeder.isNonstandard) continue;
+								if (breeder.gender && breeder.gender !== 'M') continue;
+								if (breederid === pokemon.id || breederid === template.id || breederid === pokemon.prevo) continue;
+								if (eg1 === breeder.eggGroups[0] || eg1 === breeder.eggGroups[1] ||
+									(eg2 && (eg2 === breeder.eggGroups[0] || eg2 === breeder.eggGroups[1]))) {
+									if (hasBreeders) buf += ', ';
+									buf += '<a href="/pokemon/' + breederid + '" data-target="push">' + breeder.name + '</a>';
+									hasBreeders = true;
 								}
-								if (!hasBreeders) buf += 'itself';
-								buf += '</li>';
-								break;
+							}
+							if (!hasBreeders) buf += 'itself';
+							buf += '</li>';
+							break;
 						}
 					} else if (source === '7V') {
 						buf += '<li>Virtual Console transfer from Gen 1</li>';
@@ -469,22 +469,22 @@ var PokedexMovePanel = PokedexResultPanel.extend({
 				var sourceType = source.charAt(1);
 				if (source.charAt(0) === gen) {
 					switch (sourceType) {
-						case 'L':
-							results.push('a'+sourcePad(source)+pokemonid);
-							atLeastOne = true;
-							break;
-						case 'M':
-							results.push('b000 '+pokemonid);
-							atLeastOne = true;
-							break;
-						case 'T':
-							results.push('c000 '+pokemonid);
-							atLeastOne = true;
-							break;
-						case 'E':
-							results.push('d000 '+pokemonid);
-							atLeastOne = true;
-							break;
+					case 'L':
+						results.push('a'+sourcePad(source)+pokemonid);
+						atLeastOne = true;
+						break;
+					case 'M':
+						results.push('b000 '+pokemonid);
+						atLeastOne = true;
+						break;
+					case 'T':
+						results.push('c000 '+pokemonid);
+						atLeastOne = true;
+						break;
+					case 'E':
+						results.push('d000 '+pokemonid);
+						atLeastOne = true;
+						break;
 					}
 				}
 				if (sourceType === 'S' && atLeastOne !== 'S') {

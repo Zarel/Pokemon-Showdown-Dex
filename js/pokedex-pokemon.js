@@ -390,22 +390,22 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 				var sourceType = source.charAt(1);
 				if (source.charAt(0) === mostRecentGen) {
 					switch (sourceType) {
-						case 'L':
-							moves.push('a'+source.substr(2).padStart(3,'0')+' '+moveid);
-							shownMoves[moveid] = (shownMoves[moveid]|2);
-							break;
-						case 'M':
-							moves.push('d000 '+moveid);
-							shownMoves[moveid] = (shownMoves[moveid]|1);
-							break;
-						case 'T':
-							moves.push('e000 '+moveid);
-							shownMoves[moveid] = (shownMoves[moveid]|1);
-							break;
-						case 'E':
-							moves.push('f000 '+moveid);
-							shownMoves[moveid] = (shownMoves[moveid]|4);
-							break;
+					case 'L':
+						moves.push('a'+source.substr(2).padStart(3,'0')+' '+moveid);
+						shownMoves[moveid] = (shownMoves[moveid]|2);
+						break;
+					case 'M':
+						moves.push('d000 '+moveid);
+						shownMoves[moveid] = (shownMoves[moveid]|1);
+						break;
+					case 'T':
+						moves.push('e000 '+moveid);
+						shownMoves[moveid] = (shownMoves[moveid]|1);
+						break;
+					case 'E':
+						moves.push('f000 '+moveid);
+						shownMoves[moveid] = (shownMoves[moveid]|4);
+						break;
 					}
 				}
 				if (sourceType === 'S') {
