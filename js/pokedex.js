@@ -65,7 +65,7 @@ var PokedexAbilityPanel = PokedexResultPanel.extend({
 		buf += '<a href="/" class="pfx-backbutton" data-target="back"><i class="fa fa-chevron-left"></i> Pok&eacute;dex</a>';
 		buf += '<h1><a href="/abilities/'+id+'" data-target="push" class="subtle">'+ability.name+'</a></h1>';
 
-		if (ability.isNonstandard) buf += '<div class="warning"><strong>Note:</strong> This is a made-up ability by <a href="http://www.smogon.com/cap/" target="_blank">Smogon CAP</a>.</div>';
+		if (ability.isNonstandard && ability.id !== 'noability') buf += '<div class="warning"><strong>Note:</strong> This is a made-up ability by <a href="http://www.smogon.com/cap/" target="_blank">Smogon CAP</a>.</div>';
 
 		buf += '<p>'+Dex.escapeHTML(ability.desc)+'</p>';
 
@@ -317,6 +317,16 @@ var PokedexTagPanel = PokedexResultPanel.extend({
 			name: 'Ballistic',
 			tag: 'bullet',
 			desc: 'Doesn\'t affect <a href="/abilities/bulletproof" data-target="push">Bulletproof</a> Pok&eacute;mon.'
+		},
+		slicing: {
+			name: 'Slicing',
+			tag: 'slicing',
+			desc: 'Boosted 1.5x by <a href="/abilities/sharpness" data-target="push">Sharpness</a>.'
+		},
+		wind: {
+			name: 'Wind',
+			tag: 'wind',
+			desc: 'Pok&eacute;mon with <a href="/abilities/windpower" data-target="push">Wind Power</a> gain the charge effect after being hit. Pok&eacute;mon with <a href="/abilities/windrider" data-target="push">Wind Rider</a> have their Attack raised by 1 stage and are immune.'
 		},
 		bypassprotect: {
 			name: 'Bypass Protect',
@@ -635,10 +645,12 @@ var PokedexEggGroupPanel = PokedexResultPanel.extend({
 		if (this.results) return this.results;
 		var results = [];
 		for (var pokemonid in BattlePokedex) {
-			var eggGroups = BattlePokedex[pokemonid].eggGroups;
-			var prevo = toID(BattlePokedex[pokemonid].prevo);
-			if (!eggGroups || BattlePokedex[pokemonid].forme || (prevo && BattlePokedex[prevo].eggGroups[0] !== "Undiscovered")) continue;
-			if (BattlePokedex[pokemonid] && BattlePokedex[pokemonid].isNonstandard) continue;
+			var pokemon = BattlePokedex[pokemonid];
+			var eggGroups = pokemon.eggGroups;
+			// var prevo = toID(pokemon.prevo);
+			if (!eggGroups || pokemon.forme) continue;
+			// || (prevo && BattlePokedex[prevo].eggGroups[0] !== "Undiscovered") - irrelevant in gen 9
+			if (pokemon && pokemon.isNonstandard) continue;
 			if (eggGroups[0] === name || eggGroups[1] === name ||
 				eggGroups[0] === name2 || eggGroups[1] === name2) {
 				results.push(pokemonid);
@@ -781,6 +793,7 @@ var PokedexCategoryPanel = PokedexResultPanel.extend({
 var PokedexTierPanel = PokedexResultPanel.extend({
 	initialize: function(id) {
 		var tierTable = {
+			ag: "AG",
 			uber: "Uber",
 			ou: "OU",
 			uu: "UU",
@@ -791,15 +804,14 @@ var PokedexTierPanel = PokedexResultPanel.extend({
 			lcuber: "LC Uber",
 			lc: "LC",
 			cap: "CAP",
+			capnfe: "CAP NFE",
+			caplc: "CAP LC",
 			uubl: "UUBL",
 			rubl: "RUBL",
 			nubl: "NUBL",
 			publ: "PUBL",
+			unreleased: "Unreleased",
 			illegal: "Illegal",
-			bank: "Bank",
-			bankuber: "Bank-Uber",
-			banklc: "Bank-LC",
-			banknfe: "Bank-NFE",
 		};
 		var name = tierTable[id] || id;
 		this.id = id;
@@ -809,7 +821,7 @@ var PokedexTierPanel = PokedexResultPanel.extend({
 		buf += '<a href="/" class="pfx-backbutton" data-target="back"><i class="fa fa-chevron-left"></i> Pok&eacute;dex</a>';
 		buf += '<h1><a href="/tiers/'+id+'" data-target="push" class="subtle">'+name+'</a></h1>';
 
-		if (id === 'nfe' || id === 'banknfe') {
+		if (id === 'nfe') {
 			buf += '<p>"NFE" (Not Fully Evolved) as a tier refers to NFE Pokémon that aren\'t legal in LC and don\'t make the usage cutoff for a tier such as PU.</p>';
 		}
 
