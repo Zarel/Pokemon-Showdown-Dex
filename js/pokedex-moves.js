@@ -390,46 +390,45 @@ var PokedexMovePanel = PokedexResultPanel.extend({
 
 		// past gens
 		var pastGenChanges = false;
-		var curGenDesc = move.shortDesc;
-		if (BattleTeambuilderTable) for (var genNum = Dex.gen - 1; genNum >= 1; genNum--) {
-			var genTable = BattleTeambuilderTable['gen' + genNum];
-			var nextGenTable = BattleTeambuilderTable['gen' + (genNum + 1)];
+		for (var genNum = Dex.gen - 1; genNum >= move.gen; genNum--) {
+			var nextGenMove = Dex.forGen(genNum + 1).moves.get(id);
+			var curGenMove = Dex.forGen(genNum).moves.get(id);
 			var changes = '';
 
-			var nextGenType = nextGenTable?.overrideMoveData[id]?.type || move.type;
-			var curGenType = genTable?.overrideMoveData[id]?.type || nextGenType;
+			var nextGenType = nextGenMove.type;
+			var curGenType = curGenMove.type;
 			if (curGenType !== nextGenType) {
 				changes += 'Type: ' + curGenType + ' <i class="fa fa-long-arrow-right"></i> ' + nextGenType + '<br />';
 			}
 
-			var nextGenBP = nextGenTable?.overrideMoveData[id]?.basePower || move.basePower;
-			var curGenBP = genTable?.overrideMoveData[id]?.basePower || nextGenBP;
+			var nextGenBP = nextGenMove.basePower;
+			var curGenBP = curGenMove.basePower;
 			if (curGenBP !== nextGenBP) {
 				changes += 'Base power: ' + curGenBP + ' <i class="fa fa-long-arrow-right"></i> ' + nextGenBP + '<br />';
 			}
 
-			var nextGenPP = nextGenTable?.overrideMoveData[id]?.pp || move.pp;
-			var curGenPP = genTable?.overrideMoveData[id]?.pp || nextGenPP;
+			var nextGenPP = nextGenMove.pp;
+			var curGenPP = curGenMove.pp;
 			if (curGenPP !== nextGenPP) {
 				changes += 'PP: ' + curGenPP + ' <i class="fa fa-long-arrow-right"></i> ' + nextGenPP + '<br />';
 			}
 
-			var nextGenAcc = nextGenTable?.overrideMoveData[id]?.accuracy || move.accuracy;
-			var curGenAcc = genTable?.overrideMoveData[id]?.accuracy || nextGenAcc;
+			var nextGenAcc = nextGenMove.accuracy;
+			var curGenAcc = curGenMove.accuracy;
 			if (curGenAcc !== nextGenAcc) {
 				var curGenAccText = (curGenAcc === true ? 'nevermiss' : curGenAcc + '%');
 				var nextGenAccText = (nextGenAcc === true ? 'nevermiss' : nextGenAcc + '%');
 				changes += 'Accuracy: ' + curGenAccText + ' <i class="fa fa-long-arrow-right"></i> ' + nextGenAccText + '<br />';
 			}
 
-			var nextGenCat = nextGenTable?.overrideMoveData[id]?.category || move.category;
-			var curGenCat = genTable?.overrideMoveData[id]?.category || nextGenCat;
+			var nextGenCat = nextGenMove.category;
+			var curGenCat = curGenMove.category;
 			if (curGenCat !== nextGenCat) {
-				changes += curGenCat + ' <i class="fa fa-long-arrow-right"></i> ' + nextGenCat + '<br />';
+				changes += 'Category: ' + curGenCat + ' <i class="fa fa-long-arrow-right"></i> ' + nextGenCat + '<br />';
 			}
 
-			var nextGenDesc = curGenDesc;
-			curGenDesc = genTable?.overrideMoveData[id]?.shortDesc || nextGenDesc;
+			var nextGenDesc = nextGenMove.shortDesc;
+			var curGenDesc = curGenMove.shortDesc;
 			if (curGenDesc !== nextGenDesc) {
 				changes += curGenDesc + ' <i class="fa fa-long-arrow-right"></i> ' + nextGenDesc + '<br />';
 			}
