@@ -100,7 +100,7 @@ var PokedexMovePanel = PokedexResultPanel.extend({
 		if (!('protect' in move.flags) && move.target !== 'self') {
 			buf += '<p class="movetag"><a href="/tags/bypassprotect" data-target="push">Bypasses Protect</a> <small>(bypasses <a class="subtle" href="/moves/protect" data-target="push">Protect</a>, <a class="subtle" href="/moves/detect" data-target="push">Detect</a>, <a class="subtle" href="/moves/kingsshield" data-target="push">King\'s Shield</a>, and <a class="subtle" href="/moves/spikyshield" data-target="push">Spiky Shield</a>)</small></p>';
 		}
-		if ('authentic' in move.flags) {
+		if ('bypasssub' in move.flags) {
 			buf += '<p class="movetag"><a href="/tags/bypasssub" data-target="push">Bypasses Substitute</a> <small>(bypasses but does not break a <a class="subtle" href="/moves/substitute" data-target="push">Substitute</a>)</small></p>';
 		}
 		if (!('reflectable' in move.flags) && move.target !== 'self' && move.category === 'Status') {

@@ -340,7 +340,7 @@ var PokedexTagPanel = PokedexResultPanel.extend({
 		},
 		bypasssub: {
 			name: 'Bypass Substitute',
-			tag: 'authentic',
+			tag: 'bypasssub',
 			desc: 'Bypasses but does not break a <a class="subtle" href="/moves/substitute" data-target="push">Substitute</a>.'
 		},
 		zmove: {
