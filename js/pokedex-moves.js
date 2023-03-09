@@ -359,7 +359,7 @@ var PokedexMovePanel = PokedexResultPanel.extend({
 							buf += '<li>Egg move: breed with ';
 							var hasBreeders = false;
 							for (var breederid in BattleLearnsets) {
-								if (!(id in BattleLearnsets[breederid].learnset)) continue;
+								if (!BattleLearnsets[breederid].learnset || !BattleLearnsets[breederid].learnset[id]) continue;
 								var breeder = BattlePokedex[breederid];
 								if (breeder.isNonstandard) continue;
 								if (breeder.gender && breeder.gender !== 'M') continue;
