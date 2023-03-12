@@ -24,7 +24,7 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 			} else if (id.substr(0, 8) === 'pokestar') {
 				buf += '<div class="warning"><strong>Note:</strong> This is a Pok&eacute;mon from <a href="https://bulbapedia.bulbagarden.net/wiki/Pok%C3%A9star_Studios" target="_blank">Pok&eacute;star Studios in Black 2 and White 2</a>.</div>';
 			} else if (pokemon.isNonstandard === 'Past') {
-				buf += '<div class="warning"><strong>Note:</strong> This Pok&eacute;mon is only available in past generations.</div>';
+				buf += '<div class="warning"><strong>Note:</strong> This Pok&eacute;mon is only usable in past generations and National Dex formats.</div>';
 			} else if (pokemon.isNonstandard === 'LGPE') {
 				buf += '<div class="warning"><strong>Note:</strong> Pok&eacute;mon Let\'s Go, Pikachu! and Let\'s Go, Eevee! only.</div>';
 			} else if (pokemon.isNonstandard === 'Gigantamax') {
@@ -164,8 +164,8 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 					buf += ', <a href="/pokemon/'+template.id+'" data-target="replace">'+name+'</a>';
 				}
 			}
-			if (pokemon.requiredItem) {
-				buf += '<div><small>Must hold <a href="/items/' + toID(pokemon.requiredItem) + '" data-target="push">' + pokemon.requiredItem + '</a></small></div>';
+			if (template.requiredItem) {
+				buf += '<div><small>Must hold <a href="/items/' + toID(template.requiredItem) + '" data-target="push">' + template.requiredItem + '</a></small></div>';
 			}
 		}
 		if (pokemon.cosmeticFormes) {
@@ -285,7 +285,7 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 		for (var i=0, len=moves.length; i<len; i++) {
 			var move = BattleMovedex[moves[i].substr(5)];
 			if (move) {
-				var desc = moves[i].substr(1,3) === '001' ? '&ndash;' : '<small>L</small>'+(parseInt(moves[i].substr(1,3),10)||'?');
+				var desc = moves[i].substr(1,3) === '001' || moves[i].substr(1,3) === '000' ? '&ndash;' : '<small>L</small>'+(parseInt(moves[i].substr(1,3),10)||'?');
 				buf += BattleSearch.renderTaggedMoveRow(move, desc);
 			}
 		}
@@ -365,8 +365,8 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 		var pokemon = Dex.species.get(this.id);
 		var learnset = BattleLearnsets[this.id] && BattleLearnsets[this.id].learnset;
 		if (!learnset) learnset = BattleLearnsets[toID(pokemon.baseSpecies)].learnset;
-		if (pokemon.inheritsFrom) {
-			learnset = $.extend({}, learnset, BattleLearnsets[toID(pokemon.inheritsFrom)].learnset);
+		if (pokemon.changesFrom) {
+			learnset = $.extend({}, learnset, BattleLearnsets[toID(pokemon.changesFrom)].learnset);
 		}
 
 		// learnset
@@ -483,15 +483,15 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 				switch (last) {
 				case 'a': // level-up move
 					if (lastChanged) buf += '<li class="resultheader"><h3>Level-up</h3></li>';
-					desc = moves[i].substr(1,3) === '001' ? '&ndash;' : '<small>L</small>'+(Number(moves[i].substr(1,3))||'?');
+					desc = moves[i].substr(1,3) === '001' || moves[i].substr(1,3) === '000' ? '&ndash;' : '<small>L</small>'+(Number(moves[i].substr(1,3))||'?');
 					break;
 				case 'b': // prevo1 level-up move
 					if (lastChanged) buf += '<li class="resultheader"><h3>Level-up from '+BattlePokedex[prevo1].name+'</h3></li>';
-					desc = moves[i].substr(1,3) === '001' ? '&ndash;' : '<small>L</small>'+(Number(moves[i].substr(1,3))||'?');
+					desc = moves[i].substr(1,3) === '001' || moves[i].substr(1,3) === '000' ? '&ndash;' : '<small>L</small>'+(Number(moves[i].substr(1,3))||'?');
 					break;
 				case 'c': // prevo2 level-up move
 					if (lastChanged) buf += '<li class="resultheader"><h3>Level-up from '+BattlePokedex[prevo2].name+'</h3></li>';
-					desc = moves[i].substr(1,3) === '001' ? '&ndash;' : '<small>L</small>'+(Number(moves[i].substr(1,3))||'?');
+					desc = moves[i].substr(1,3) === '001' || moves[i].substr(1,3) === '000' ? '&ndash;' : '<small>L</small>'+(Number(moves[i].substr(1,3))||'?');
 					break;
 				case 'd': // tm/hm
 					if (lastChanged) buf += '<li class="resultheader"><h3>TM/HM</h3></li>';
@@ -536,8 +536,8 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 		buf += '<li><dl><dt>Color:</dt><dd>'+pokemon.color+'</dd></dl></li>';
 
 		// animated gen 6
-		if (pokemon.num > 0 && pokemon.gen < 9 && this.id !== 'missingno' && this.id !== 'pichuspikyeared') {
-			buf += '<li class="resultheader"><h3>Animated Gen 6-8 sprites</h3></li>';
+		if (pokemon.num > 0 && pokemon.gen < 10 && this.id !== 'missingno' && this.id !== 'pichuspikyeared') {
+			buf += '<li class="resultheader"><h3>Animated Gen 6-9 sprites</h3></li>';
 
 			buf += '<li class="content"><table class="sprites"><tr><td><img src="' + Dex.resourcePrefix + 'sprites/ani/' + pokemon.spriteid + '.gif" /></td>';
 			buf += '<td><img src="' + Dex.resourcePrefix + 'sprites/ani-shiny/' + pokemon.spriteid + '.gif" /></td></table>';

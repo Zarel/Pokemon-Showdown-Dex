@@ -36,7 +36,6 @@ var PokedexMovePanel = PokedexResultPanel.extend({
 				} else {
 					buf += 'This move can\'t be learned normally.';
 				}
-				buf += '.';
 				break;
 			case 'CAP':
 				buf += 'This is a made-up move by <a href="http://www.smogon.com/cap/" target="_blank">Smogon CAP</a>.';
@@ -133,6 +132,12 @@ var PokedexMovePanel = PokedexResultPanel.extend({
 		}
 		if ('bullet' in move.flags) {
 			buf += '<p class="movetag"><a href="/tags/ballistic" data-target="push">&#x2713; Ballistic</a> <small>(doesn\'t affect <a class="subtle" href="/abilities/bulletproof" data-target="push">Bulletproof</a> pokemon)</small></p>';
+		}
+		if ('slicing' in move.flags) {
+			buf += '<p class="movetag"><a href="/tags/slicing" data-target="push">&#x2713; Slicing</a> <small>(boosted by <a class="subtle" href="/abilities/sharpness" data-target="push">Sharpness</a>)</small></p>';
+		}
+		if ('wind' in move.flags) {
+			buf += '<p class="movetag"><a href="/tags/wind" data-target="push">&#x2713; Wind</a> <small>(interacts with <a class="subtle" href="/abilities/windpower" data-target="push">Wind Power</a> and <a class="subtle" href="/abilities/windrider" data-target="push">Wind Rider</a>)</small></p>';
 		}
 
 		if (move.target === 'allAdjacent') {
@@ -565,7 +570,7 @@ var PokedexMovePanel = PokedexResultPanel.extend({
 			var desc = '';
 			switch (results[i].charAt(0)) {
 			case 'a': // level-up move
-				desc = results[i].substr(1,3) === '001' ? '&ndash;' : '<small>L</small>'+(parseInt(results[i].substr(1,3), 10) || '?');
+				desc = results[i].substr(1,3) === '001' || results[i].substr(1,3) === '000' ? '&ndash;' : '<small>L</small>'+(parseInt(results[i].substr(1,3), 10) || '?');
 				break;
 			case 'b': // tm/hm
 				desc = '<img src="//' + Config.routes.client + '/sprites/itemicons/tm-normal.png" style="margin-top:-3px;opacity:.7" width="24" height="24" alt="M" />';
