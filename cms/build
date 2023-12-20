@@ -20,7 +20,7 @@ process.stdout.write("Generating articles... ");
 const files = fs.readdirSync('../articles/');
 // const template = '' + fs.readFileSync('template.html');
 
-const searchIndex = require('../../play.pokemonshowdown.com/data/search-index.js').BattleSearchIndex;
+const searchIndex = require('../../client/play.pokemonshowdown.com/data/search-index.js').BattleSearchIndex;
 const searchIndexTable = {};
 for (const [id, type, more] of searchIndex) {
 	if (more) continue;
