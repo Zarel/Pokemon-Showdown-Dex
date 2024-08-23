@@ -43,8 +43,6 @@ You can make and test changes simply by opening `testclient.html`.
 License
 ------------------------------------------------------------------------
 
-This dex is distributed under the terms of the [AGPLv3][5].
+This dex is distributed under the terms of the [MIT license][5].
 
-  [5]: http://www.gnu.org/licenses/agpl-3.0.html
-
-WARNING: This is NOT the same license as Pokémon Showdown's server.
+  [5]: https://github.com/smogon/pokemon-showdown/blob/master/LICENSE
