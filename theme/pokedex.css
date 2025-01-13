@@ -409,6 +409,40 @@ a.subtle:hover {
 .type.special{background-color:#ADB1BD;background:linear-gradient(#ADB1BD,#7D828D);border-color:#A1A5AD;color:#E0E2E4;}
 .type.status{background-color:#CBC9CB;background:linear-gradient(#CBC9CB,#AAA6AA);border-color:#A99890;color:#F5F4F5;}
 
+.typeeff {
+	width: 100%;
+	table-layout: fixed;
+	border-collapse: collapse;
+	font-size: 9pt;
+}
+.typeeff tr {
+	line-height: 1.25;
+}
+.typeeff th {
+	font-size: 7pt;
+	font-weight: bold;
+}
+.typeeff td {
+	padding: 2px 6px 0;
+	border: 1px solid #AAAAAA;
+}
+.typeeff.defense td.eff4, .typeeff.offense td.eff0 {
+	background-color: rgba(255,128,128,.2);
+}
+.typeeff.defense td.eff3, .typeeff.offense td.eff1 {
+	background-color: rgba(255,128,128,.1);
+}
+.typeeff.defense td.eff1, .typeeff.offense td.eff3 {
+	background-color: rgba(128,255,128,.1);
+}
+.typeeff.defense td.eff0, .typeeff.offense td.eff4 {
+	background-color: rgba(128,255,128,.2);
+}
+.typeeff td.immune {
+	padding-bottom: 2px;
+	background-color: rgba(128,128,128,.1);
+}
+
 .pokemonicon, .picon {
 	display: inline-block;
 	vertical-align: -6px;
