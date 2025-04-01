@@ -13,7 +13,7 @@ const Config = require('./config/config');
 process.chdir(__dirname);
 
 if (process.argv[2] === 'full') {
-	child_process.execSync('../play.pokemonshowdown.com/build-tools/build-indexes', {stdio: 'inherit'});
+	child_process.execSync('../client/build-tools/build-indexes', {stdio: 'inherit'});
 }
 
 function updateFiles() {
