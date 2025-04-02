@@ -29,7 +29,7 @@ var PokedexSearchPanel = Panels.Panel.extend({
 		buf += '<li><button class="button nav-last' + (fragment === 'moves/' ? ' cur' : '') + '" value="moves/">Moves</button></li></ul>';
 		buf += '<div class="searchboxwrapper"><input class="textbox searchbox" type="search" name="q" value="' + Dex.escapeHTML(this.$('.searchbox').val() || '') + '" autocomplete="off" autofocus placeholder="Search Pok&eacute;mon, moves, abilities, items, types, or more" /></div>';
 		if (fragment === '') {
-			buf += '<p class="buttonbar"><button class="button"><strong>Pok&eacute;dex Search</strong></button> <button name="lucky" class="button">I\'m Feeling Lucky</button></p>';
+			buf += '<p class="buttonbar"><button class="button"><i class="fa fa-search" aria-hidden="true"></i> <strong>Pok&eacute;dex Search</strong></button> <button name="lucky" class="button">I\'m Feeling Lucky</button></p>';
 		}
 		buf += '</form>';
 		buf += '<div class="results"></div></div>';
