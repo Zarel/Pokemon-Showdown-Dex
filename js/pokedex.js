@@ -123,40 +123,135 @@ var PokedexTypePanel = PokedexResultPanel.extend({
 		var buf = '<div class="pfx-body dexentry">';
 		buf += '<a href="/" class="pfx-backbutton" data-target="back"><i class="fa fa-chevron-left"></i> Pok&eacute;dex</a>';
 		buf += '<h1><a href="/types/'+id+'" data-target="push" class="subtle">'+this.type+'</a></h1>';
+		
 		buf += '<dl>';
-		var atLeastOne = false;
+		buf += '<dt>Defensive effectiveness:</dt><dd>'+this.renderDefensiveEffectiveness(type)+'</dd>';
+		buf += '<dt>Offensive effectiveness:</dt><dd>'+this.renderOffensiveEffectiveness(type)+'</dd>';
+		buf += '</dl>';
 
-		buf += '<dt>Weaknesses:</dt> <dd>';
-		for (var attackType in type.damageTaken) {
-			if (type.damageTaken[attackType] == 1) {
-				buf += '<a href="/types/'+toID(attackType)+'" data-target="push">'+Dex.getTypeIcon(attackType)+'</a> ';
-				atLeastOne = true;
+		// move list
+		buf += '<ul class="tabbar"><li><button class="button nav-first cur" value="move">Moves</button></li><li><button class="button nav-last" value="pokemon">Pokemon</button></li></ul>';
+		buf += '<ul class="utilichart nokbd">';
+		buf += '</ul>';
+
+		buf += '</div>';
+
+		this.html(buf);
+
+		setTimeout(this.renderMoveList.bind(this));
+	},
+	getTypeEffectiveness: function(attacking, defending) {
+		var attackingName = typeof attacking === 'string' ? attacking : attacking.name;
+		if (Array.isArray(defending)) {
+			var total = 0;
+			for (var i = 0; i < defending.length; i++) {
+				var defendingType = typeof defending[i] === 'string' ? Dex.types.get(defending[i]) : defending[i];
+				switch (defendingType.damageTaken[attackingName]) {
+					case 1: // super effective
+						++total;
+						break;
+					case 2: // not very effective
+						--total;
+						break;
+					case 3: // immune
+						return null;
+				}
+			}
+			return total;
+		}
+		var defendingType = typeof defending === 'string' ? Dex.types.get(defending) : defending;
+		switch (defendingType.damageTaken[attackingName]) {
+			case 1: // super effective
+				return 1;
+			case 2: // not very effective
+				return -1;
+			case 3: // immune
+				return null;
+			default:
+				return 0;
+		}
+	},
+	effectTypes: ['hail', 'sandstorm', 'powder', 'frz', 'brn', 'psn', 'par'],
+	renderDefensiveEffectiveness: function(defending) {
+		var imms = [];
+		if (Array.isArray(defending)) {
+			for (var i = 0; i < defending.length; i++) {
+				var defendingType = typeof defending[i] === 'string' ? Dex.types.get(defending[i]) : defending[i];
+				for (var j = 0; j < this.effectTypes.length; j++) {
+					if (defendingType.damageTaken[this.effectTypes[j]] === 3) {
+						imms.push(this.effectTypes[j]);
+					}
+				}
+			}
+		} else {
+			var defendingType = typeof defending === 'string' ? Dex.types.get(defending) : defending;
+			for (var j = 0; j < this.effectTypes.length; j++) {
+				if (defendingType.damageTaken[this.effectTypes[j]] === 3) {
+					imms.push(this.effectTypes[j]);
+				}
 			}
 		}
-		if (!atLeastOne) {
-			buf += '<em>No weaknesses</em>';
-		}
-		buf += '</dd>';
 
-		buf += '<dt>Resistances:</dt> <dd>';
-		atLeastOne = false;
-		for (var attackType in type.damageTaken) {
-			if (type.damageTaken[attackType] == 2) {
-				buf += '<a href="/types/'+toID(attackType)+'" data-target="push">'+Dex.getTypeIcon(attackType)+'</a> ';
-				atLeastOne = true;
+		var effs = [[], [], [], [], []];
+		for (var types = Dex.types.all(), i = 0; i < types.length; i++) {
+			var eff = this.getTypeEffectiveness(types[i], defending);
+			if (eff === null) {
+				imms.push(types[i].name);
+			} else {
+				effs[eff + 2].push(types[i].name);
 			}
 		}
-		if (!atLeastOne) {
-			buf += '<em>No resistances</em>';
-		}
-		buf += '</dd>';
 
-		buf += '<dt>Immunities:</dt> <dd>';
-		atLeastOne = false;
-		for (var attackType in type.damageTaken) {
-			if (type.damageTaken[attackType] == 3) {
-				if (attackType === attackType.toLowerCase()) {
-					switch (attackType) {
+		return this.renderEffectivenessTable(effs, imms, 'defense');
+	},
+	renderOffensiveEffectiveness: function(attacking) {
+		var effs = [[], [], [], [], []];
+		var imms = [];
+		for (var types = Dex.types.all(), i = 0; i < types.length; i++) {
+			var eff = this.getTypeEffectiveness(attacking, types[i]);
+			if (eff === null) {
+				imms.push(types[i].name);
+			} else {
+				effs[eff + 2].push(types[i].name);
+			}
+		}
+		return this.renderEffectivenessTable(effs, imms, 'offense');
+	},
+	renderEffectivenessTable: function(effs, imms, cls) {
+		var hasDoubles = effs[0].length > 0 || effs[4].length > 0; // any .25x or 4x?
+		var buf = '<table class="typeeff '+cls+'">';
+		
+		var i, max;
+		if (hasDoubles) {
+			buf += '<tr><th>.25x</th><th>.5x</th><th>2x</th><th>4x</th></tr>';
+			i = 0;
+			max = 4;
+		} else {
+			buf += '<tr><th>.5x</th><th>2x</th></tr>';
+			i = 1;
+			max = 3;
+		}
+		
+		buf += '<tr>';
+		for (; i <= max; i++) {
+			if (i === 2) continue; // don't show neutral effectiveness
+			buf += '<td class="eff'+i+'">';
+			var atLeastOne = false;
+			for (let j = 0; j < effs[i].length; j++) {
+				buf += '<a href="/types/'+toID(effs[i][j])+'" data-target="push">'+Dex.getTypeIcon(effs[i][j])+'</a> ';
+				atLeastOne = true;
+			}
+			if (!atLeastOne) buf += '-';
+			buf += '</td>';
+		}
+		buf += '</tr>';
+
+		if (imms.length > 0) {
+			buf += '<tr><td class="immune" colspan="'+(hasDoubles?'4':'2')+'">';
+			buf += '<div><strong>Immune:</strong></div>';
+			for (var i = 0; i < imms.length; i++) {
+				if (imms[i] === imms[i].toLowerCase()) {
+					switch (imms[i]) {
 					case 'hail':
 						buf += '<div><small><a href="/moves/hail" data-target="push">Hail</a> damage</small></div>';
 						break;
@@ -179,34 +274,15 @@ var PokedexTypePanel = PokedexResultPanel.extend({
 						buf += '<div><small>PAR status</small></div>';
 						break;
 					}
-					if (!atLeastOne) atLeastOne = null;
 					continue;
 				}
-				buf += '<a href="/types/'+toID(attackType)+'" data-target="push">'+Dex.getTypeIcon(attackType)+'</a> ';
-				atLeastOne = true;
+				buf += '<a href="/types/'+toID(imms[i])+'" data-target="push">'+Dex.getTypeIcon(imms[i])+'</a> ';
 			}
+			buf += '</td></tr>';
 		}
-		if (!atLeastOne) {
-			if (atLeastOne === null) {
-				buf += '<div><em>No type immunities</em></div>';
-			} else {
-				buf += '<em>No immunities</em>';
-			}
-		}
-		buf += '</dd>';
 
-		buf += '</dl>';
-
-		// move list
-		buf += '<ul class="tabbar"><li><button class="button nav-first cur" value="move">Moves</button></li><li><button class="button nav-last" value="pokemon">Pokemon</button></li></ul>';
-		buf += '<ul class="utilichart nokbd">';
-		buf += '</ul>';
-
-		buf += '</div>';
-
-		this.html(buf);
-
-		setTimeout(this.renderMoveList.bind(this));
+		buf += '</table>';
+		return buf;
 	},
 	events: {
 		'click .tabbar button': 'selectTab'

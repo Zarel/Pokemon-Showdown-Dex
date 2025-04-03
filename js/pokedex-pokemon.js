@@ -76,7 +76,10 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 		buf += '</dl>';
 
 		buf += '<dl>';
-		buf += '<dt style="clear:left">Base stats:</dt><dd><table class="stats">';
+		buf += '<dt style="clear:left">Defensive effectiveness:</dt>';
+		buf += '<dd>'+PokedexTypePanel.prototype.renderDefensiveEffectiveness(pokemon.types)+'</dd>';
+
+		buf += '<dt>Base stats:</dt><dd><table class="stats">';
 
 		var StatTitles = {
 			hp: "HP",
