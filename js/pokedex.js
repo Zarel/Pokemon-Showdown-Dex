@@ -106,7 +106,12 @@ var PokedexAbilityPanel = PokedexResultPanel.extend({
 		for (var pokemonid in BattlePokedex) {
 			var template = BattlePokedex[pokemonid];
 			if (template.isNonstandard && !ability.isNonstandard) continue;
-			if (template.abilities['0'] === ability.name || template.abilities['1'] === ability.name || template.abilities['H'] === ability.name) {
+			if (
+				template.abilities &&
+				(template.abilities['0'] === ability.name ||
+				template.abilities['1'] === ability.name ||
+				template.abilities['H'] === ability.name)
+			) {
 				buf += BattleSearch.renderPokemonRow(template);
 			}
 		}
