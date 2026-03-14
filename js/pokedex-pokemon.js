@@ -76,8 +76,8 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 		buf += '</dl>';
 
 		buf += '<dl>';
-		buf += '<dt style="clear:left">Defensive effectiveness:</dt>';
-		buf += '<dd>'+PokedexTypePanel.prototype.renderDefensiveEffectiveness(pokemon.types)+'</dd>';
+		buf += '<dt style="clear:left">Defensive effectiveness: <button class="button toggle-eff" data-target-eff="def-eff">Show</button></dt>';
+		buf += '<dd class="eff-content" id="def-eff" style="display:none">'+PokedexTypePanel.prototype.renderDefensiveEffectivenessWithAbilities(pokemon.types, pokemon.abilities)+'</dd>';
 
 		buf += '<dt>Base stats:</dt><dd><table class="stats">';
 
@@ -302,9 +302,22 @@ var PokedexPokemonPanel = PokedexResultPanel.extend({
 	},
 	events: {
 		'click .tabbar button': 'selectTab',
+		'click .toggle-eff': 'toggleEffectiveness',
 		'input input[name=level]': 'updateLevel',
 		'keyup input[name=level]': 'updateLevel',
 		'change input[name=level]': 'updateLevel',
+	},
+	toggleEffectiveness: function(e) {
+		var btn = $(e.currentTarget);
+		var targetId = btn.data('target-eff');
+		var content = this.$('#' + targetId);
+		if (content.is(':visible')) {
+			content.hide();
+			btn.text('Show');
+		} else {
+			content.show();
+			btn.text('Hide');
+		}
 	},
 	updateLevel: function(e) {
 		var val = this.$('input[name=level]').val();

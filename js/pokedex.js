@@ -125,8 +125,8 @@ var PokedexTypePanel = PokedexResultPanel.extend({
 		buf += '<h1><a href="/types/'+id+'" data-target="push" class="subtle">'+this.type+'</a></h1>';
 		
 		buf += '<dl>';
-		buf += '<dt>Defensive effectiveness:</dt><dd>'+this.renderDefensiveEffectiveness(type)+'</dd>';
-		buf += '<dt>Offensive effectiveness:</dt><dd>'+this.renderOffensiveEffectiveness(type)+'</dd>';
+		buf += '<dt>Defensive effectiveness: <button class="button toggle-eff" data-target-eff="def-eff">Show</button></dt><dd class="eff-content" id="def-eff" style="display:none">'+this.renderDefensiveEffectiveness(type)+'</dd>';
+		buf += '<dt>Offensive effectiveness: <button class="button toggle-eff" data-target-eff="off-eff">Show</button></dt><dd class="eff-content" id="off-eff" style="display:none">'+this.renderOffensiveEffectiveness(type)+'</dd>';
 		buf += '</dl>';
 
 		// move list
@@ -172,14 +172,15 @@ var PokedexTypePanel = PokedexResultPanel.extend({
 		}
 	},
 	effectTypes: ['hail', 'sandstorm', 'powder', 'frz', 'brn', 'psn', 'par'],
-	renderDefensiveEffectiveness: function(defending) {
-		var imms = [];
+	getDefensiveEffectivenessData: function(defending) {
+		var immsMap = {};
+		var addImm = function(i) { immsMap[i] = true; };
 		if (Array.isArray(defending)) {
 			for (var i = 0; i < defending.length; i++) {
 				var defendingType = typeof defending[i] === 'string' ? Dex.types.get(defending[i]) : defending[i];
 				for (var j = 0; j < this.effectTypes.length; j++) {
 					if (defendingType.damageTaken[this.effectTypes[j]] === 3) {
-						imms.push(this.effectTypes[j]);
+						addImm(this.effectTypes[j]);
 					}
 				}
 			}
@@ -187,22 +188,153 @@ var PokedexTypePanel = PokedexResultPanel.extend({
 			var defendingType = typeof defending === 'string' ? Dex.types.get(defending) : defending;
 			for (var j = 0; j < this.effectTypes.length; j++) {
 				if (defendingType.damageTaken[this.effectTypes[j]] === 3) {
-					imms.push(this.effectTypes[j]);
+					addImm(this.effectTypes[j]);
 				}
 			}
 		}
 
-		var effs = [[], [], [], [], []];
-		for (var types = Dex.types.all(), i = 0; i < types.length; i++) {
-			var eff = this.getTypeEffectiveness(types[i], defending);
+		// baseEffMap: typeName -> effectiveness level (-2 to +2) or null for immune
+		var baseEffMap = {};
+		var allTypes = Dex.types.all();
+		for (var i = 0; i < allTypes.length; i++) {
+			var eff = this.getTypeEffectiveness(allTypes[i], defending);
 			if (eff === null) {
-				imms.push(types[i].name);
+				addImm(allTypes[i].name);
+				baseEffMap[allTypes[i].name] = null;
 			} else {
-				effs[eff + 2].push(types[i].name);
+				baseEffMap[allTypes[i].name] = eff;
 			}
 		}
 
-		return this.renderEffectivenessTable(effs, imms, 'defense');
+		var effs = [[], [], [], [], []];
+		for (var typeName in baseEffMap) {
+			if (baseEffMap[typeName] !== null) {
+				effs[baseEffMap[typeName] + 2].push(typeName);
+			}
+		}
+
+		var imms = Object.keys(immsMap);
+		return {effs: effs, imms: imms, baseEffMap: baseEffMap};
+	},
+	renderDefensiveEffectiveness: function(defending) {
+		var data = this.getDefensiveEffectivenessData(defending);
+		return this.renderEffectivenessTable(data.effs, data.imms, 'defense');
+	},
+	abilityImmunities: {
+		'Levitate': ['Ground'],
+		'Flash Fire': ['Fire'],
+		'Volt Absorb': ['Electric'],
+		'Water Absorb': ['Water'],
+		'Sap Sipper': ['Grass'],
+		'Dry Skin': ['Water'],
+		'Storm Drain': ['Water'],
+		'Lightning Rod': ['Electric'],
+		'Motor Drive': ['Electric']
+	},
+	// abilities that shift effectiveness of specific types by a number of steps
+	// negative = less damage (good for defender), positive = more damage (bad for defender)
+	abilityTypeModifiers: {
+		'Thick Fat': {'Fire': -1, 'Ice': -1},
+		'Heatproof': {'Fire': -1},
+		'Water Bubble': {'Fire': -1},
+		'Dry Skin': {'Fire': 1},
+		'Fluffy': {'Fire': 1}
+	},
+	// abilities that reduce all super-effective damage (displayed as a note)
+	abilitySEReduction: ['Filter', 'Solid Rock', 'Prism Armor'],
+	renderDefensiveEffectivenessWithAbilities: function(defending, abilities) {
+		var data = this.getDefensiveEffectivenessData(defending);
+		var buf = this.renderEffectivenessTable(data.effs, data.imms, 'defense');
+
+		// Now compute ability-modified effectiveness for each ability the Pokémon can have
+		var abilityChanges = [];
+		var seReductionAbilities = [];
+		var wonderGuardAbilities = [];
+
+		for (var slot in abilities) {
+			var abilityName = abilities[slot];
+			if (!abilityName) continue;
+
+			var isWonderGuard = (abilityName === 'Wonder Guard');
+			var immuneTypes = this.abilityImmunities[abilityName] || [];
+			var typeMods = this.abilityTypeModifiers[abilityName] || {};
+			var isSEReducer = this.abilitySEReduction.indexOf(abilityName) >= 0;
+
+			if (isWonderGuard) {
+				wonderGuardAbilities.push({name: abilityName, slot: slot});
+				continue;
+			}
+
+			if (isSEReducer) {
+				seReductionAbilities.push({name: abilityName, slot: slot});
+				continue;
+			}
+
+			if (immuneTypes.length === 0 && Object.keys(typeMods).length === 0) continue;
+
+			var changes = [];
+			// Check immunity changes
+			for (var k = 0; k < immuneTypes.length; k++) {
+				var iType = immuneTypes[k];
+				if (data.baseEffMap[iType] !== null) {
+					// Not already immune by type, so this ability grants immunity
+					changes.push({type: iType, from: data.baseEffMap[iType], to: 'immune'});
+				}
+			}
+			// Check type modifier changes
+			for (var modType in typeMods) {
+				if (data.baseEffMap[modType] === null) continue; // already immune
+				if (immuneTypes.indexOf(modType) >= 0) continue; // already handled as immune
+				var newEff = data.baseEffMap[modType] + typeMods[modType];
+				if (newEff < -2) newEff = -2;
+				if (newEff > 2) newEff = 2;
+				if (newEff !== data.baseEffMap[modType]) {
+					changes.push({type: modType, from: data.baseEffMap[modType], to: newEff});
+				}
+			}
+
+			if (changes.length > 0) {
+				abilityChanges.push({name: abilityName, slot: slot, changes: changes});
+			}
+		}
+
+		if (abilityChanges.length > 0 || seReductionAbilities.length > 0 || wonderGuardAbilities.length > 0) {
+			buf += '<div class="typeeff-abilities">';
+
+			var effLabels = {'-2': '.25x', '-1': '.5x', '0': '1x', '1': '2x', '2': '4x', 'immune': '0x'};
+
+			for (var a = 0; a < abilityChanges.length; a++) {
+				var ac = abilityChanges[a];
+				var slotLabel = ac.slot === 'H' ? ' <small>(Hidden)</small>' : (ac.slot === 'S' ? ' <small>(Special)</small>' : '');
+				buf += '<div class="ability-note"><strong><a href="/abilities/'+toID(ac.name)+'" data-target="push">'+ac.name+'</a></strong>'+slotLabel+': ';
+				var parts = [];
+				for (var c = 0; c < ac.changes.length; c++) {
+					var ch = ac.changes[c];
+					var fromLabel = effLabels[String(ch.from)];
+					var toLabel = effLabels[String(ch.to)];
+					var typeIcon = '<a href="/types/'+toID(ch.type)+'" data-target="push">'+Dex.getTypeIcon(ch.type)+'</a>';
+					parts.push(typeIcon + ' ' + fromLabel + ' <i class="fa fa-long-arrow-right"></i> ' + toLabel);
+				}
+				buf += parts.join(', ');
+				buf += '</div>';
+			}
+
+			for (var a = 0; a < seReductionAbilities.length; a++) {
+				var sa = seReductionAbilities[a];
+				var slotLabel = sa.slot === 'H' ? ' <small>(Hidden)</small>' : (sa.slot === 'S' ? ' <small>(Special)</small>' : '');
+				buf += '<div class="ability-note"><strong><a href="/abilities/'+toID(sa.name)+'" data-target="push">'+sa.name+'</a></strong>'+slotLabel+': reduces super-effective damage by 25%</div>';
+			}
+
+			for (var a = 0; a < wonderGuardAbilities.length; a++) {
+				var wa = wonderGuardAbilities[a];
+				var slotLabel = wa.slot === 'H' ? ' <small>(Hidden)</small>' : (wa.slot === 'S' ? ' <small>(Special)</small>' : '');
+				buf += '<div class="ability-note"><strong><a href="/abilities/'+toID(wa.name)+'" data-target="push">'+wa.name+'</a></strong>'+slotLabel+': immune to all non-super-effective moves</div>';
+			}
+
+			buf += '</div>';
+		}
+
+		return buf;
 	},
 	renderOffensiveEffectiveness: function(attacking) {
 		var effs = [[], [], [], [], []];
@@ -285,7 +417,20 @@ var PokedexTypePanel = PokedexResultPanel.extend({
 		return buf;
 	},
 	events: {
-		'click .tabbar button': 'selectTab'
+		'click .tabbar button': 'selectTab',
+		'click .toggle-eff': 'toggleEffectiveness'
+	},
+	toggleEffectiveness: function(e) {
+		var btn = $(e.currentTarget);
+		var targetId = btn.data('target-eff');
+		var content = this.$('#' + targetId);
+		if (content.is(':visible')) {
+			content.hide();
+			btn.text('Show');
+		} else {
+			content.show();
+			btn.text('Hide');
+		}
 	},
 	selectTab: function(e) {
 		this.$('.tabbar button').removeClass('cur');

@@ -443,6 +443,25 @@ a.subtle:hover {
 	background-color: rgba(128,128,128,.1);
 }
 
+.dexentry dt .toggle-eff {
+	font-size: 7pt;
+	padding: 0 6px;
+	margin-left: 4px;
+	vertical-align: middle;
+}
+
+.typeeff-abilities {
+	margin-top: 4px;
+	font-size: 8pt;
+}
+.typeeff-abilities .ability-note {
+	padding: 2px 0;
+	color: #555;
+}
+.typeeff-abilities .ability-note img.pixelated {
+	vertical-align: middle;
+}
+
 .pokemonicon, .picon {
 	display: inline-block;
 	vertical-align: -6px;
